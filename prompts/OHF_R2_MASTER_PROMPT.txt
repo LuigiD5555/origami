@@ -1,0 +1,86 @@
+# OHF R2 — MASTER PROMPT (ZIP EXACT CARRIER)
+
+You are receiving exactly two legitimate inputs: this prompt and one OHF image. Do not request helper files.
+
+Goal: navigate or reconstruct the ZIP encoded in the image. For EXACT requests, use deterministic pixel decoding when a code/Python tool is available. Never claim EXACT from visual guessing.
+
+## BOOT
+Read the visible BOOT header first. It declares GRID geometry, envelope layout, payload length, CRC32 and SHA256.
+
+## R2 binary decoding
+For the supplied carrier the BOOT header defines:
+- binary cells, black=1 and white=0
+- row-major order
+- MSB-first within every byte
+- sample the center of each cell
+- envelope:
+  magic[8] | version:u16 big-endian | len:u32 big-endian |
+  crc32:u32 big-endian | sha256[32] | zip[len]
+
+Use the geometry written in BOOT rather than assuming coordinates.
+
+If Python/PIL is available, decode directly from the original image:
+1. Open image without resizing.
+2. Convert to grayscale.
+3. Parse GRID x/y/cell/cols from BOOT.
+4. Read the first 50 bytes from cells.
+5. Require magic == b"OHFR2ZIP".
+6. Parse version, payload length, CRC32 and SHA256.
+7. Read exactly 50 + payload_length bytes.
+8. Extract ZIP payload.
+9. Verify CRC32 and SHA256.
+10. Only after verification may the ZIP payload be called EXACT_SOURCE.
+
+Reference algorithm:
+
+    from PIL import Image
+    import struct, hashlib, zlib, zipfile, io
+
+    img = Image.open(IMAGE_PATH).convert("L")
+    # Read x0,y0,cell,cols from BOOT. For this carrier BOOT states them explicitly.
+    x0, y0, cell, cols = GRID_X, GRID_Y, CELL, COLS
+
+    def read_bytes(n):
+        out = bytearray()
+        for byte_i in range(n):
+            v = 0
+            for j in range(8):
+                bit_i = byte_i*8 + j
+                r, c = divmod(bit_i, cols)
+                px = img.getpixel((x0 + c*cell + cell//2,
+                                   y0 + r*cell + cell//2))
+                v = (v << 1) | (1 if px < 128 else 0)
+            out.append(v)
+        return bytes(out)
+
+    h = read_bytes(50)
+    assert h[:8] == b"OHFR2ZIP"
+    version, n, expected_crc = struct.unpack(">HII", h[8:18])
+    expected_sha = h[18:50]
+    blob = read_bytes(50+n)[50:]
+    assert (zlib.crc32(blob) & 0xffffffff) == expected_crc
+    assert hashlib.sha256(blob).digest() == expected_sha
+
+After verification:
+- For file listing: inspect the ZIP central directory in memory.
+- For a specific file: extract only that member when practical.
+- For semantic/code questions: inspect only the smallest relevant set of members, expanding as needed.
+- For full reconstruction: write the verified ZIP bytes only if explicitly requested.
+
+## Fidelity law
+SEMANTIC: may summarize verified extracted content.
+STRUCTURAL: must be grounded in verified ZIP paths/content.
+EXACT_CONTENT: quote exact bytes/text from the verified requested member.
+EXACT_SOURCE: requires the reconstructed ZIP SHA256 to match BOOT.
+
+UNKNOWN is preferable to false exactness.
+
+## Attention law
+Do not repeatedly scan the image visually once BOOT has been read.
+Do not OCR the binary grid.
+Do not decode unrelated files for a narrow query.
+Do not loop on pixel-density analysis.
+Decode the binary envelope once, verify it, then navigate the ZIP structure.
+
+## Output
+For each answer state only the fidelity actually achieved. If verification fails, report UNKNOWN/NOT VERIFIED and the failing stage.

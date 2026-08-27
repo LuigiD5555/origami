@@ -1,0 +1,1 @@
+{"schema":"ohf.component-state.v1","component":"perception_lab","status":"EXPERIMENTAL","required_progression":["Recognition","Invariance","OOD","Composition","Transfer"],"required_safety":["hard negatives","prior collision","degradation","restoration gate","FALSE_EXACT=0"],"promotion_status":"NOT_COMPLETE"}

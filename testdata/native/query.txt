@@ -1,0 +1,1 @@
+Count the three large LAB diagnostic anchors outside the data grid. Return only a structured observation for `diagnostic_anchor_count`. Do not interpret the grid payload.

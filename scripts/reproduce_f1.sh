@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")/..";FIXTURE="experiments/lab-foundation-001.json";TMP_ROOT="$(mktemp -d)";trap 'rm -rf "$TMP_ROOT"' EXIT
+go test ./...;go vet ./...;go run ./cmd/ohf-lab experiment validate "$FIXTURE";OUT1="$(go run ./cmd/ohf-lab experiment prepare "$FIXTURE")";echo "$OUT1";RUN_ID="$(printf '%s\n' "$OUT1"|awk -F= '/^RUN_ID=/{print $2}')";RUN_DIR="$(printf '%s\n' "$OUT1"|awk -F= '/^RUN_DIR=/{print $2}')";SOURCE_SHA="$(printf '%s\n' "$OUT1"|awk -F= '/^SOURCE_SHA256=/{print $2}')";cp -a "$RUN_DIR" "$TMP_ROOT/first";go run ./cmd/ohf-lab run verify "$RUN_ID";OUT2="$(go run ./cmd/ohf-lab experiment prepare "$FIXTURE")";[ "$RUN_ID" = "$(printf '%s\n' "$OUT2"|awk -F= '/^RUN_ID=/{print $2}')" ];[ "$SOURCE_SHA" = "$(printf '%s\n' "$OUT2"|awk -F= '/^SOURCE_SHA256=/{print $2}')" ];diff -ru "$TMP_ROOT/first" "$RUN_DIR";echo BYTE_FOR_BYTE_REPLAY=PASS
+set +e;DOCTOR_OUT="$(go run ./cmd/ohf-lab doctor 2>&1)";RC=$?;set -e;printf '%s\n' "$DOCTOR_OUT";if [ -f baseline/r310/ORIGAMI_SDK_R310_EXPLICIT_CODEBOOK.zip ];then echo F1_INFRA=PASS,BASELINE_ARTIFACT_PRESENT;else [ "$RC" -ne 0 ];echo F1_INFRA=PASS,EXPECTED_BLOCK=MISSING_R310_SDK;fi

@@ -1,0 +1,1 @@
+{"schema":"ohf.component-state.v1","component":"macro_gestalt","status":"EXPERIMENTAL","implementation":"DESIGN_ACTIVE_NOT_PROMOTED","semantic_meaning":"NONE_FIXED","candidate_families":["F03","F35","F37","F39","F40","F41"],"known_requirement":"ZERO_DETERMINISTIC_PIXEL_COLLISIONS_BEFORE_NATIVE_TESTS","promotion_status":"NOT_PROMOTED"}

@@ -1,0 +1,8 @@
+{
+  "schema": "ohf.origami-state.v1",
+  "status_date": "2026-08-27",
+  "production": {"version": "R3.10", "historical_baseline_bytes": "MISSING_R310_SDK"},
+  "lab": {"version": "R3.10-LAB", "foundation": "F1.15_PASS", "active_components": ["glyph_calculus","glyph_microisa","context_simd","macro_gestalt","evolution_control"]},
+  "invariants": ["FALSE_EXACT=0","NATIVE_INPUT=MASTER_PROMPT+ONE_IMAGE+QUERY","GO_CANONICAL_RUNTIME","CARRIER_TARGET_LE_500KB","UNKNOWN_OVER_INVENTED_EXACTNESS","PERCEPTION_NE_RESOLUTION_NE_EXECUTION_NE_VERIFICATION","EXTERNAL_TESTS_PROGRESSIVE_CACHED_RATE_LIMITED"],
+  "last_change": "CHG-REPO-0001"
+}

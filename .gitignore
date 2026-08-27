@@ -1,0 +1,29 @@
+# Generated experimental runs
+runs/*
+!runs/.gitkeep
+
+# Historical SDK bytes are staged locally until provenance/freeze is explicit
+baseline/r310/sdk/*
+!baseline/r310/sdk/.gitkeep
+
+# Local regression evidence; curated definitions can be force-added intentionally
+regressions/*
+!regressions/.gitkeep
+
+# Local build output
+bin/
+ohf-lab
+ohf-glyphcalc
+
+# Local external responses / secrets
+**/response.json
+.env
+.env.*
+*.key
+*.pem
+
+# Editor / OS / temporary
+*.tmp
+.DS_Store
+.idea/
+.vscode/

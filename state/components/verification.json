@@ -1,0 +1,1 @@
+{"schema":"ohf.component-state.v1","component":"verification","status":"EXPERIMENTAL_VALIDATED","invariants":["FALSE_EXACT=0","HASH_MATCH_REQUIRED_FOR_EXACTNESS"],"current_mechanisms":["SHA-256 artifact manifests","source hash","PNG hash","pixel hash"],"promotion_status":"CORE_INVARIANT"}

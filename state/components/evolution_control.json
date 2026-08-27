@@ -1,0 +1,1 @@
+{"schema":"ohf.component-state.v1","component":"evolution_control","status":"EXPERIMENTAL_VALIDATED","production_effect":"NONE","contract":"Repository state, component states, change records and evidence identify what changed without relying on chat history.","last_change":"CHG-REPO-0001","promotion_status":"LAB_PROCESS"}

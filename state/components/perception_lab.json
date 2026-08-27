@@ -1,1 +1,34 @@
-{"schema":"ohf.component-state.v1","component":"perception_lab","status":"EXPERIMENTAL","required_progression":["Recognition","Invariance","OOD","Composition","Transfer"],"required_safety":["hard negatives","prior collision","degradation","restoration gate","FALSE_EXACT=0"],"promotion_status":"NOT_COMPLETE"}
+{
+  "schema": "ohf.component-state.v1",
+  "component": "perception_lab",
+  "status": "EXPERIMENTAL",
+  "required_progression": [
+    "Recognition",
+    "Invariance",
+    "OOD",
+    "Composition",
+    "Transfer"
+  ],
+  "required_safety": [
+    "hard negatives",
+    "prior collision",
+    "degradation",
+    "restoration gate",
+    "FALSE_EXACT=0"
+  ],
+  "promotion_status": "NOT_COMPLETE",
+  "dimensional_progression": [
+    "state visibility",
+    "controlled mutation",
+    "pairwise orthogonality",
+    "correlated failures",
+    "compound collisions",
+    "invariance",
+    "OOD",
+    "composition",
+    "transfer",
+    "restoration where exact"
+  ],
+  "safe_capacity_rule": "ONLY_PROMOTED_SAFE_PSS_COUNTS",
+  "last_change": "CHG-DVR-0001"
+}

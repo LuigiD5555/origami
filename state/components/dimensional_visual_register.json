@@ -1,0 +1,12 @@
+{
+  "schema": "ohf.component-state.v1",
+  "component": "dimensional_visual_register",
+  "status": "EXPERIMENTAL_IMPLEMENTED",
+  "version": "DVR-PSS-0.1.0",
+  "scales": ["MICRO", "MESO", "MACRO"],
+  "model": "DIMENSION_TREE_TO_LEAF_VARIABLES_TO_DVR",
+  "semantic_meaning": "NONE_FIXED",
+  "capacity_rule": "COUNT_ONLY_LEAF_DIMENSIONS_AT_THEIR_VISUAL_SCOPE",
+  "promotion_status": "NOT_PROMOTED",
+  "last_change": "CHG-DVR-0001"
+}

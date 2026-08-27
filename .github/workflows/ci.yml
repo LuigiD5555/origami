@@ -34,3 +34,9 @@ jobs:
 
       - name: Installer prerequisite check
         run: ./install.sh --check-only
+
+      - name: Dimensional DVR/PSS gates
+        run: ./scripts/dimensional_inspect.sh
+
+      - name: Reversible install/uninstall roundtrip
+        run: ./scripts/test_install_uninstall_roundtrip.sh

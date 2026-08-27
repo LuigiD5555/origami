@@ -12,6 +12,8 @@ The documentation is split deliberately so that architectural ideas, current imp
 
 ## Specialized documents
 
+- [`DIMENSIONAL_VISUAL_REGISTER.md`](DIMENSIONAL_VISUAL_REGISTER.md) — DVR/PSS, scope-aware capacity and perceptual orthogonality.
+- [`DVR_PSS_EXECUTION_REPORT.md`](DVR_PSS_EXECUTION_REPORT.md) — local validation evidence for `CHG-DVR-0001`.
 - [`GLYPH_CALCULUS_PROTOCOL.md`](GLYPH_CALCULUS_PROTOCOL.md)
 - [`GLYPH_CALCULUS_LOCAL_TESTS.md`](GLYPH_CALCULUS_LOCAL_TESTS.md)
 - [`GLYPH_CALCULUS_RESULTS.md`](GLYPH_CALCULUS_RESULTS.md)
@@ -34,3 +36,6 @@ state/ORIGAMI_STATE.json
 state/components/*.json
 changes/*.json
 ```
+
+- `INSTALLATION_LIFECYCLE.md` — reversible install/uninstall contract and safety rules.
+- `INSTALL_UNINSTALL_EXECUTION_REPORT.md` — local gates proving reversible installation behavior.

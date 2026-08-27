@@ -1,0 +1,325 @@
+{
+  "schema": "ohf.dimensional-registry.v1",
+  "version": "DVR-PSS-0.1.0",
+  "dimensions": [
+    {
+      "id": "micro_intrinsic",
+      "label": "Micro intrinsic register",
+      "scale": "MICRO",
+      "status": "REFERENCE_GROUP",
+      "subdimensions": [
+        {
+          "id": "micro.outer_shape",
+          "label": "Outer shape",
+          "scale": "MICRO",
+          "family_ids": [
+            "F01"
+          ],
+          "status": "R310_PHYSICAL_REFERENCE",
+          "states": [
+            {
+              "id": "circle",
+              "label": "circle"
+            },
+            {
+              "id": "square",
+              "label": "square"
+            },
+            {
+              "id": "diamond",
+              "label": "diamond"
+            },
+            {
+              "id": "triangle",
+              "label": "triangle"
+            }
+          ],
+          "perceptual_status": "UNPROVEN_NATIVE"
+        },
+        {
+          "id": "micro.topology_holes",
+          "label": "Topology holes",
+          "scale": "MICRO",
+          "family_ids": [
+            "F02"
+          ],
+          "status": "R310_PHYSICAL_REFERENCE",
+          "states": [
+            {
+              "id": "holes_0",
+              "label": "holes 0"
+            },
+            {
+              "id": "holes_1",
+              "label": "holes 1"
+            },
+            {
+              "id": "holes_2",
+              "label": "holes 2"
+            },
+            {
+              "id": "holes_3",
+              "label": "holes 3"
+            }
+          ],
+          "perceptual_status": "UNPROVEN_NATIVE"
+        },
+        {
+          "id": "micro.frame_count",
+          "label": "Frame count",
+          "scale": "MICRO",
+          "family_ids": [
+            "F04"
+          ],
+          "status": "R310_PHYSICAL_REFERENCE",
+          "states": [
+            {
+              "id": "frames_0",
+              "label": "frames 0"
+            },
+            {
+              "id": "frames_1",
+              "label": "frames 1"
+            },
+            {
+              "id": "frames_2",
+              "label": "frames 2"
+            },
+            {
+              "id": "frames_3",
+              "label": "frames 3"
+            }
+          ],
+          "perceptual_status": "UNPROVEN_NATIVE"
+        }
+      ],
+      "perceptual_status": "GROUP_ONLY"
+    },
+    {
+      "id": "micro_directional",
+      "label": "Micro directional register",
+      "scale": "MICRO",
+      "status": "REFERENCE_GROUP",
+      "subdimensions": [
+        {
+          "id": "micro.direction_beacon",
+          "label": "Direction beacon",
+          "scale": "MICRO",
+          "family_ids": [
+            "F03"
+          ],
+          "status": "R310_PHYSICAL_REFERENCE",
+          "states": [
+            {
+              "id": "north",
+              "label": "north"
+            },
+            {
+              "id": "east",
+              "label": "east"
+            },
+            {
+              "id": "south",
+              "label": "south"
+            },
+            {
+              "id": "west",
+              "label": "west"
+            }
+          ],
+          "perceptual_status": "UNPROVEN_NATIVE"
+        }
+      ],
+      "perceptual_status": "GROUP_ONLY"
+    },
+    {
+      "id": "meso_relational",
+      "label": "Meso relational register",
+      "scale": "MESO",
+      "status": "LAB_CANDIDATE_GROUP",
+      "subdimensions": [
+        {
+          "id": "meso.ordering",
+          "label": "Ordering",
+          "scale": "MESO",
+          "family_ids": [
+            "F28"
+          ],
+          "status": "LAB_CANDIDATE",
+          "states": [
+            {
+              "id": "row_major",
+              "label": "row major"
+            },
+            {
+              "id": "column_major",
+              "label": "column major"
+            },
+            {
+              "id": "clockwise",
+              "label": "clockwise"
+            },
+            {
+              "id": "radial",
+              "label": "radial"
+            }
+          ],
+          "perceptual_status": "UNTESTED"
+        },
+        {
+          "id": "meso.grouping",
+          "label": "Grouping",
+          "scale": "MESO",
+          "family_ids": [
+            "F29"
+          ],
+          "status": "LAB_CANDIDATE",
+          "states": [
+            {
+              "id": "singleton",
+              "label": "singleton"
+            },
+            {
+              "id": "pair",
+              "label": "pair"
+            },
+            {
+              "id": "cluster",
+              "label": "cluster"
+            },
+            {
+              "id": "ring",
+              "label": "ring"
+            }
+          ],
+          "perceptual_status": "UNTESTED"
+        }
+      ],
+      "perceptual_status": "GROUP_ONLY"
+    },
+    {
+      "id": "macro_gestalt",
+      "label": "Macro gestalt register",
+      "scale": "MACRO",
+      "status": "LAB_CANDIDATE_GROUP",
+      "subdimensions": [
+        {
+          "id": "macro.topology",
+          "label": "Macro topology",
+          "scale": "MACRO",
+          "family_ids": [
+            "F35",
+            "F40"
+          ],
+          "status": "LAB_CANDIDATE",
+          "states": [
+            {
+              "id": "radial",
+              "label": "radial"
+            },
+            {
+              "id": "branching",
+              "label": "branching"
+            },
+            {
+              "id": "bilateral",
+              "label": "bilateral"
+            },
+            {
+              "id": "nested",
+              "label": "nested"
+            }
+          ],
+          "perceptual_status": "UNTESTED"
+        },
+        {
+          "id": "macro.symmetry",
+          "label": "Macro symmetry",
+          "scale": "MACRO",
+          "family_ids": [
+            "F37"
+          ],
+          "status": "LAB_CANDIDATE",
+          "states": [
+            {
+              "id": "none",
+              "label": "none"
+            },
+            {
+              "id": "bilateral",
+              "label": "bilateral"
+            },
+            {
+              "id": "rotational_4",
+              "label": "rotational 4"
+            },
+            {
+              "id": "rotational_6",
+              "label": "rotational 6"
+            }
+          ],
+          "perceptual_status": "UNTESTED"
+        },
+        {
+          "id": "macro.orientation",
+          "label": "Macro orientation",
+          "scale": "MACRO",
+          "family_ids": [
+            "F03",
+            "F39"
+          ],
+          "status": "LAB_CANDIDATE",
+          "states": [
+            {
+              "id": "north",
+              "label": "north"
+            },
+            {
+              "id": "east",
+              "label": "east"
+            },
+            {
+              "id": "south",
+              "label": "south"
+            },
+            {
+              "id": "west",
+              "label": "west"
+            }
+          ],
+          "perceptual_status": "UNTESTED"
+        },
+        {
+          "id": "macro.region_structure",
+          "label": "Macro region structure",
+          "scale": "MACRO",
+          "family_ids": [
+            "F40",
+            "F41"
+          ],
+          "status": "LAB_CANDIDATE",
+          "states": [
+            {
+              "id": "single_core",
+              "label": "single core"
+            },
+            {
+              "id": "dual_core",
+              "label": "dual core"
+            },
+            {
+              "id": "ring_core",
+              "label": "ring core"
+            },
+            {
+              "id": "distributed",
+              "label": "distributed"
+            }
+          ],
+          "perceptual_status": "UNTESTED"
+        }
+      ],
+      "perceptual_status": "GROUP_ONLY"
+    }
+  ]
+}

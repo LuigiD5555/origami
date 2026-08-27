@@ -10,6 +10,7 @@ import (
 	"github.com/LuigiD5555/origami/internal/lab/artifact"
 	"github.com/LuigiD5555/origami/internal/lab/baseline"
 	"github.com/LuigiD5555/origami/internal/lab/canonical"
+	"github.com/LuigiD5555/origami/internal/lab/dimensional"
 	"github.com/LuigiD5555/origami/internal/lab/environment"
 	"github.com/LuigiD5555/origami/internal/lab/evaluator"
 	"github.com/LuigiD5555/origami/internal/lab/failure"
@@ -39,6 +40,8 @@ func main() {
 	switch args[0] {
 	case "doctor":
 		doctor(root)
+	case "dimensional":
+		dimensionalCmd(args[1:])
 	case "baseline":
 		baselineCmd(root, args[1:])
 	case "experiment":
@@ -64,6 +67,10 @@ func main() {
 func usage() {
 	fmt.Println(`ohf-lab commands:
   doctor
+  dimensional registry
+  dimensional capacity [cells] [groups]
+  dimensional validate-register <dvr.json>
+  dimensional orthogonality <matrix.json>
   baseline verify
   baseline freeze --confirm-r310
   experiment validate <spec.json>
@@ -199,6 +206,7 @@ func experimentCmd(root string, args []string) {
 		if err := json.Unmarshal(b, &pretty); err != nil {
 			fatal(err)
 		}
+		// Print exact canonical bytes, not pretty JSON.
 		os.Stdout.Write(b)
 		os.Stdout.Write([]byte("\n"))
 	default:
@@ -376,6 +384,94 @@ func regressionCmd(root string, args []string) {
 		fatal(err)
 	}
 	fmt.Printf("REGRESSION_ID=%s\nREPLAY_MANIFEST=PASS\n", args[1])
+}
+
+func dimensionalCmd(args []string) {
+	if len(args) < 1 {
+		usage()
+		os.Exit(2)
+	}
+	r := dimensional.DefaultRegistry()
+	switch args[0] {
+	case "registry":
+		if err := dimensional.ValidateRegistry(r); err != nil {
+			fatal(err)
+		}
+		b, err := dimensional.MarshalCanonical(r)
+		if err != nil {
+			fatal(err)
+		}
+		os.Stdout.Write(b)
+		os.Stdout.Write([]byte("\n"))
+	case "capacity":
+		cells, groups := 1, 1
+		if len(args) >= 2 {
+			if _, err := fmt.Sscan(args[1], &cells); err != nil {
+				fatal(fmt.Errorf("invalid cells: %w", err))
+			}
+		}
+		if len(args) == 3 {
+			if _, err := fmt.Sscan(args[2], &groups); err != nil {
+				fatal(fmt.Errorf("invalid groups: %w", err))
+			}
+		} else if len(args) > 3 {
+			usage()
+			os.Exit(2)
+		}
+		report, err := dimensional.Capacity(r, dimensional.OrthogonalityMatrix{Schema: "ohf.orthogonality.v1"}, cells, groups)
+		if err != nil {
+			fatal(err)
+		}
+		b, err := dimensional.MarshalCanonical(report)
+		if err != nil {
+			fatal(err)
+		}
+		os.Stdout.Write(b)
+		os.Stdout.Write([]byte("\n"))
+	case "validate-register":
+		if len(args) != 2 {
+			usage()
+			os.Exit(2)
+		}
+		b, err := os.ReadFile(args[1])
+		if err != nil {
+			fatal(err)
+		}
+		var reg dimensional.Register
+		if err := json.Unmarshal(b, &reg); err != nil {
+			fatal(err)
+		}
+		if err := dimensional.ValidateRegister(r, reg); err != nil {
+			fatal(err)
+		}
+		fmt.Println("DVR_VALID=PASS")
+	case "orthogonality":
+		if len(args) != 2 {
+			usage()
+			os.Exit(2)
+		}
+		b, err := os.ReadFile(args[1])
+		if err != nil {
+			fatal(err)
+		}
+		var matrix dimensional.OrthogonalityMatrix
+		if err := json.Unmarshal(b, &matrix); err != nil {
+			fatal(err)
+		}
+		report, err := dimensional.Capacity(r, matrix, 1, 1)
+		if err != nil {
+			fatal(err)
+		}
+		out, err := dimensional.MarshalCanonical(report)
+		if err != nil {
+			fatal(err)
+		}
+		os.Stdout.Write(out)
+		os.Stdout.Write([]byte("\n"))
+	default:
+		usage()
+		os.Exit(2)
+	}
 }
 
 func seedCmd(args []string) {

@@ -176,6 +176,47 @@ composition
 
 A compound is not considered reliable merely because its primitive dimensions work separately.
 
+
+## Dimensional Visual Register and Perceptual State Space
+
+The Visual Compiler now has an explicit dimensional contract. Families may contain subdimensions; only observable leaf variables contribute candidate capacity. A rendered physical state is represented as a DVR vector.
+
+```text
+Dimension tree
+  ↓
+leaf variables
+  ↓
+DVR physical state
+  ↓
+PSS candidate combinations
+  ↓
+Perception Lab
+  ↓
+SAFE_PSS
+```
+
+Capacity is scope-aware: MICRO is counted per cell, MESO per group, MACRO per carrier. Nominal cartesian products are never reported as perceptually safe capacity.
+
+The Perceptual Orthogonality Law requires a controlled mutation of one dimension to preserve the relevant states of the other active dimensions. An absent pair result is `UNKNOWN`, not PASS; pairwise PASS remains insufficient for higher-order promotion.
+
+The bounded-machine interpretation is therefore:
+
+```text
+visual multidimensional tape/registers
+        ↓
+attention/window head
+        ↓
+VLM physical observation
+        ↓
+PERCEPTION WALL
+        ↓
+Glyph Calculus / SAFE_MICRO_ISA in Go
+        ↓
+verification
+```
+
+See [`DIMENSIONAL_VISUAL_REGISTER.md`](DIMENSIONAL_VISUAL_REGISTER.md).
+
 ## Macro -> meso -> micro
 
 The current research direction explicitly allows multiple perceptual scales:

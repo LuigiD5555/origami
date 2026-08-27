@@ -1,0 +1,15 @@
+{
+  "schema": "ohf.component-state.v1",
+  "component": "bounded_multidimensional_machine",
+  "status": "EXPERIMENTAL_ARCHITECTURAL_CONTRACT",
+  "visual_tape": "DVR/PSS across MICRO/MESO/MACRO scopes",
+  "head": "Attention Router + multidimensional Window Sliders",
+  "transition_system": "SAFE_MICRO_ISA / Glyph Calculus",
+  "execution_runtime": "Go",
+  "general_vm": false,
+  "turing_complete_required": false,
+  "bounded_execution": true,
+  "verification_required_for_exactness": true,
+  "promotion_status": "NOT_PROMOTED",
+  "last_change": "CHG-DVR-0001"
+}

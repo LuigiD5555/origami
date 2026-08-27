@@ -98,6 +98,33 @@ manifest verification
 
 If a local structural gate fails, external testing is forbidden because the request cannot answer the relevant engineering question.
 
+
+## Dimensional visual experiments
+
+Before an external perception request, dimension work follows an additional cheap-to-expensive progression:
+
+```text
+state visibility
+  ↓
+controlled one-dimension mutation
+  ↓
+deterministic collision check
+  ↓
+pairwise orthogonality
+  ↓
+correlated failures
+  ↓
+higher-order compounds
+  ↓
+invariance / degradation / OOD
+  ↓
+transfer / restoration where applicable
+```
+
+A pair missing from the orthogonality matrix is `UNKNOWN`, never implicitly PASS. A pairwise-compatible set is only a candidate for compound testing; it is not a promoted alphabet.
+
+Capacity reports must keep three scopes separate: MICRO per cell, MESO per group and MACRO per carrier.
+
 ## Progressive external testing
 
 Do not send a full combinatorial campaign immediately.

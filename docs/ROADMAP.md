@@ -21,6 +21,20 @@ Implemented through the evaluator/failure-registry foundation:
 
 ## Active experiments
 
+
+### Dimensional Visual Register / Perceptual State Space
+
+Implemented locally as an experimental formalization. Next evidence steps:
+
+1. controlled state-visibility probes per leaf dimension;
+2. one-dimension mutation tests;
+3. pairwise orthogonality matrix;
+4. correlated-failure analysis;
+5. higher-order compound collision tests;
+6. only then calculate non-zero `SAFE_PSS`.
+
+The optimization target is safe perceptual bits per visual unit, not raw cartesian cardinality.
+
 ### Glyph Calculus
 
 Reduce open-ended LLM work to local glyph observation and deterministic Go execution.

@@ -98,3 +98,18 @@ The canonical Go module for this repository is:
 ```text
 github.com/LuigiD5555/origami
 ```
+
+## Dimensional-change workflow
+
+A change that adds or modifies a visual dimension/subdimension must additionally record:
+
+1. visual scale: `MICRO`, `MESO` or `MACRO`;
+2. the OHF family/families it belongs to;
+3. physical states and controlled render mutation;
+4. whether it changes only one declared dimension;
+5. deterministic collision results;
+6. pairwise orthogonality evidence with existing active dimensions;
+7. higher-order compound evidence before promotion;
+8. the delta between nominal PSS and `SAFE_PSS`.
+
+Do not increase safe-capacity metrics from registry cardinality alone.

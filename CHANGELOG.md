@@ -1,6 +1,29 @@
 # Changelog
 
+## Unreleased
+
+### Reversible installation lifecycle
+
+- added `uninstall.sh` with tracked restore semantics;
+- `install.sh` now records SHA-256 installation state and preserves the binaries that existed before the first tracked Origami install;
+- reinstalls preserve the original rollback point instead of backing up a previous Origami binary as if it were user state;
+- uninstall refuses to overwrite/remove binaries changed after installation unless `--force` is explicit;
+- added opt-in legacy uninstall support for the previous `.bak`-based installer;
+- normal smoke tests are now ephemeral and leave no persistent `runs/install-smoke` directory.
+
+
 This file summarizes major repository-level milestones. Detailed experimental state belongs in `state/` and `changes/`.
+
+
+## 2026-08-27 — Dimensional Visual Register / PSS formalization
+
+- added hierarchical MICRO/MESO/MACRO visual-dimension registry;
+- added executable DVR validation and scope-aware capacity reporting;
+- separated nominal PSS from evidence-gated `SAFE_PSS`;
+- added Perceptual Orthogonality Law and pair-evidence model;
+- integrated Macro-Gestalt as the MACRO scale of the same dimensional system;
+- added machine-readable state and `CHG-DVR-0001`;
+- added local inspection script with zero external requests.
 
 ## 2026-08-27 — R3.10-LAB repository modernization
 

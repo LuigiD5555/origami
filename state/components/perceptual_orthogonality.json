@@ -1,0 +1,23 @@
+{
+  "schema": "ohf.component-state.v1",
+  "component": "perceptual_orthogonality",
+  "status": "EXPERIMENTAL_IMPLEMENTED",
+  "law": "A_DIMENSION_COUNTS_AS_INDEPENDENT_CAPACITY_ONLY_IF_CONTROLLED_MUTATION_PRESERVES_RELEVANT_OTHER_DIMENSIONS",
+  "unknown_pair_policy": "UNKNOWN_NOT_PASS",
+  "pairwise_pass_is_sufficient_for_promotion": false,
+  "current_evidence_matrix": "profiles/orthogonality_matrix_v1.json",
+  "current_pair_evidence": 1,
+  "promotion_status": "NOT_PROMOTED",
+  "last_change": "CHG-DVR-0001",
+  "known_failures": [
+    {
+      "pair": [
+        "macro.orientation",
+        "macro.symmetry"
+      ],
+      "status": "FAIL",
+      "evidence": "LOCAL-F2-M0333-M0313",
+      "reason": "rotational symmetry erased east/west orientation in a deterministic render"
+    }
+  ]
+}

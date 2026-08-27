@@ -1,0 +1,18 @@
+{
+  "schema": "ohf.component-state.v1",
+  "component": "installer_lifecycle",
+  "scope": "TOOLING",
+  "production_version": null,
+  "lab_version": "1.1.0",
+  "status": "EXPERIMENTAL_VALIDATED_LOCAL",
+  "contract": {
+    "install": "record installed hashes and preserve pre-install binaries",
+    "reinstall": "retain original rollback point",
+    "uninstall": "restore exact pre-install binary state when manifest evidence is intact",
+    "conflict": "STOP if installed files changed unless --force is explicit",
+    "shell_profiles": "NEVER_MODIFIED",
+    "user_experiment_data": "PRESERVE_BY_DEFAULT"
+  },
+  "last_change": "CHG-INSTALL-0001",
+  "promotion_status": "TOOLING_ONLY"
+}

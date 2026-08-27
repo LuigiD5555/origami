@@ -45,7 +45,9 @@ The executable repository contains a reproducible development workbench through 
 | Glyph Calculus deterministic runtime | EXPERIMENTAL / implemented |
 | SAFE_MICRO_ISA profiler | EXPERIMENTAL / implemented |
 | Context SIMD bundles/checker | EXPERIMENTAL / implemented |
-| Macro-Gestalt | DESIGN/EXPERIMENT ACTIVE; not promoted |
+| Dimensional Visual Register / PSS | EXPERIMENTAL / implemented locally |
+| Perceptual orthogonality model | EXPERIMENTAL / implemented locally |
+| Macro-Gestalt | DVR MACRO candidate; not promoted |
 | historical R3.10 SDK freeze | BLOCKED: artifact missing |
 
 ## Current hard invariants
@@ -79,6 +81,35 @@ byte = shape + 4*holes + 16*direction + 64*frame
 ```
 
 The LAB is investigating whether a VLM should output the byte directly or emit smaller physical state tuples and let Go perform the arithmetic.
+
+
+## Active research: Dimensional Visual Register / PSS
+
+Visual families and subdimensions are now modeled as hierarchical variables whose leaf states modify the carrier at a declared scope.
+
+```text
+MICRO -> per glyph/cell
+MESO  -> per group/motif
+MACRO -> per carrier
+```
+
+The current candidate registry has nominal capacities of:
+
+```text
+MICRO: 4 × 4 × 4 × 4 = 256 states = 8 bits/glyph
+MESO:  4 × 4         = 16 states  = 4 bits/group
+MACRO: 4 × 4 × 4 × 4 = 256 states = 8 bits/carrier
+```
+
+These are mathematical upper bounds only. `SAFE_PSS` is still `UNPROVEN`. Independent capacity requires explicit perceptual orthogonality evidence, and pairwise PASS does not promote a higher-order compound.
+
+See [`DIMENSIONAL_VISUAL_REGISTER.md`](DIMENSIONAL_VISUAL_REGISTER.md).
+
+
+### Known inherited interaction failure
+
+The pre-DVR Macro-Gestalt experiment found a deterministic collision between orientation and rotational symmetry (`M0333` vs `M0313`): the symmetry erased the east/west distinction. The initial orthogonality matrix therefore records `macro.orientation × macro.symmetry = FAIL` until a corrected renderer passes controlled-mutation and perception gates.
+
 
 ## Active research: Glyph Calculus
 

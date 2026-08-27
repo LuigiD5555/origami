@@ -1,3 +1,39 @@
 {
-  "schema":"ohf.component-state.v1","component":"glyph_calculus","production_version":null,"lab_version":"0.1.0","status":"EXPERIMENTAL_VALIDATED_LOCAL","promotion_status":"NOT_PROMOTED","semantic_meaning":"NONE_AT_PHYSICAL_GLYPH_LAYER","physical_codebook":{"families":["F01","F02","F03","F04"],"formula":"byte = shape + 4*holes + 16*direction + 64*frames"},"runtime":{"kind":"BOUNDED_REWRITE_CALCULUS","operations":["HALT","LIT","RUN","REF","SEQ"],"general_vm":false,"llm_execution_required":false},"current_evidence":{"all_256_physical_bytes_roundtrip":"PASS","local_exact_reconstruction":"PASS","structured_perception_reduction":"PASS","high_entropy_raw_fallback":"PASS","native_vlm_perception":"NOT_YET_TESTED"},"last_change":"CHG-GLYPHCALC-0001"
+  "schema": "ohf.component-state.v1",
+  "component": "glyph_calculus",
+  "production_version": null,
+  "lab_version": "0.1.0",
+  "status": "EXPERIMENTAL_VALIDATED_LOCAL",
+  "promotion_status": "NOT_PROMOTED",
+  "semantic_meaning": "NONE_AT_PHYSICAL_GLYPH_LAYER",
+  "physical_codebook": {
+    "families": [
+      "F01",
+      "F02",
+      "F03",
+      "F04"
+    ],
+    "formula": "byte = shape + 4*holes + 16*direction + 64*frames"
+  },
+  "runtime": {
+    "kind": "BOUNDED_REWRITE_CALCULUS",
+    "operations": [
+      "HALT",
+      "LIT",
+      "RUN",
+      "REF",
+      "SEQ"
+    ],
+    "general_vm": false,
+    "llm_execution_required": false
+  },
+  "current_evidence": {
+    "all_256_physical_bytes_roundtrip": "PASS",
+    "local_exact_reconstruction": "PASS",
+    "structured_perception_reduction": "PASS",
+    "high_entropy_raw_fallback": "PASS",
+    "native_vlm_perception": "NOT_YET_TESTED"
+  },
+  "last_change": "CHG-DVR-0001",
+  "dvr_role": "Consumes MICRO physical DVR tuples; deterministic runtime performs packing/execution after the Perception Wall."
 }

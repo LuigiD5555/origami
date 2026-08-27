@@ -1,4 +1,4 @@
-.PHONY: test vet check build install prepare-microisa clean-runs
+.PHONY: test vet check build install uninstall prepare-microisa inspect-dimensions clean-runs
 
 test:
 	go test ./...
@@ -16,8 +16,14 @@ build:
 install:
 	./install.sh
 
+uninstall:
+	./uninstall.sh
+
 prepare-microisa:
 	./scripts/microisa_prepare_local.sh
+
+inspect-dimensions:
+	./scripts/dimensional_inspect.sh
 
 clean-runs:
 	find runs -mindepth 1 -maxdepth 1 ! -name '.gitkeep' -exec rm -rf {} +

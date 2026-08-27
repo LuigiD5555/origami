@@ -37,6 +37,30 @@ Implemented:
 - failure registration and reproducible regressions;
 - conservative external-execution policy.
 
+### Dimensional Visual Register and Perceptual State Space
+
+OHF now models visual families/subdimensions as hierarchical observable variables across `MICRO`, `MESO` and `MACRO` scales. A **Dimensional Visual Register (DVR)** is a vector of physical state assignments; the **Perceptual State Space (PSS)** is the set of candidate combinations, while `SAFE_PSS` contains only evidence-promoted states.
+
+The implementation keeps nominal and safe capacity separate and respects visual scope:
+
+```text
+MICRO  -> bits per glyph/cell
+MESO   -> bits per group/motif
+MACRO  -> bits per carrier
+```
+
+Current nominal candidate values are `8 bits/glyph`, `4 bits/group` and `8 bits/carrier`, but `SAFE_PSS` remains unproven until Perception Lab and orthogonality/compound gates provide evidence.
+
+Useful local commands:
+
+```bash
+go run ./cmd/ohf-lab dimensional registry
+go run ./cmd/ohf-lab dimensional capacity 64 8
+./scripts/dimensional_inspect.sh
+```
+
+See [`docs/DIMENSIONAL_VISUAL_REGISTER.md`](docs/DIMENSIONAL_VISUAL_REGISTER.md).
+
 ### Glyph Calculus
 
 `ohf-glyphcalc` explores a lower-cost execution model in which the VLM performs only small perceptual operations over glyphs and Go performs deterministic reconstruction.
@@ -132,7 +156,32 @@ The installer:
 - does not download packages;
 - makes zero external VLM/API requests;
 - installs `ohf-lab` and `ohf-glyphcalc` under `~/.local/bin` by default;
-- runs a local deterministic smoke test.
+- records a reversible installation manifest under `PREFIX/share/origami/install-state-v1/`;
+- preserves pre-existing binaries so they can be restored exactly;
+- runs an ephemeral local deterministic smoke test without leaving smoke artifacts in the project.
+
+### Uninstall / restore the pre-install state
+
+Preview first:
+
+```bash
+./uninstall.sh --dry-run
+```
+
+Then uninstall:
+
+```bash
+./uninstall.sh
+```
+
+If you installed under a custom prefix, pass the same prefix to both scripts:
+
+```bash
+./install.sh --prefix "$HOME/bin-tools"
+./uninstall.sh --prefix "$HOME/bin-tools"
+```
+
+The uninstaller removes only artifacts tracked by the installer. If `ohf-lab` or `ohf-glyphcalc` existed before installation, the original binaries are restored from their recorded backups. It does not delete the project checkout, runs, evidence or shell configuration. See `docs/INSTALLATION_LIFECYCLE.md`.
 
 Useful alternatives:
 
@@ -194,7 +243,7 @@ origami/
 │   └── ohf-glyphcalc/        # glyph calculus / micro-ISA CLI
 ├── internal/lab/             # deterministic laboratory implementation
 ├── experiments/              # declarative experiment specifications
-├── profiles/                 # execution policies
+├── profiles/                 # execution + dimensional/orthogonality profiles
 ├── state/                    # current machine-readable protocol/component state
 ├── changes/                  # immutable-ish change records
 ├── regressions/              # reproducible failures (local evidence ignored by default)
@@ -203,6 +252,7 @@ origami/
 ├── docs/                     # architecture, state, experiment protocol and research docs
 ├── prompts/                  # prompt history; R2 is legacy
 ├── install.sh
+├── uninstall.sh
 ├── Makefile
 └── go.mod
 ```

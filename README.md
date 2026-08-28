@@ -1,291 +1,89 @@
-# Origami HyperFold (OHF)
+# Origami 6.0.0-alpha.1
 
-**Origami HyperFold is an experimental protocol for encoding data into a compact, addressable carrier that can be navigated and reconstructed by an LLM and/or deterministic software.**
+Origami is an experimental **visual/computational representation and state-machine language** for expressing complex states, relations and evolution.
 
-The long-term goal is not simply to make another compressor. OHF explores whether structured information can be represented through reusable rules, graphs, references, transforms and residual data so that a receiver can **unfold only what it needs** instead of expanding the complete source for every query.
+Origami is **not** the name of the complete work system. The broader orchestration, behavior compilation, Tlaloque coordination and model-facing workflow now belong to **Tlaloc**.
 
-The repository currently includes the **R2 exact visual-carrier baseline** and the scientific/architectural documentation for the larger HyperFold system.
-
-> OHF is experimental research. Extreme ratios such as 1:10,000 are a target to investigate on highly structured/generative data, not a universal compression guarantee.
-
-## What R2 does today
-
-R2 provides a simple exact baseline:
+## Project boundary
 
 ```text
-SOURCE FILE / PROJECT
-        ↓
-       ZIP
-        ↓
-R2 binary envelope
-        ↓
-CRC32 + SHA-256
-        ↓
-binary visual grid
-        ↓
-      PNG
+TLALOC                          ORIGAMI
+work system                     representation
+orchestration                   state language
+behavior compilation   ----->   semantics contract
+Tlaloque coordination  ----->   reference semantics engine/API
+verification                     dynamics / projection
 ```
 
-The PNG contains a visible **BOOT** header and a deterministic binary payload. The BOOT header tells a decoder how to locate and interpret the grid.
+Origami may be used independently of Tlaloc. Tlaloc may also operate without Origami or with another representation provider.
 
-When the receiving environment has pixel-processing/code execution available, it can reconstruct the embedded ZIP and verify it cryptographically before calling the result exact.
+> Tlaloc coordinates work; Tlaloque perform bounded specialist work; Origami defines how a class of states is represented and transformed.
 
-R2 is intentionally much simpler than the final OHF architecture. It gives the project a deterministic transport and exactness baseline while Folding, SuperIndex, Perception Lab and Native decoding continue to evolve.
+## Current semantic profile
 
-## Quick start — test OHF with another LLM
+The 6.0 line formalizes a quantum-inspired coherent-state profile as one representation mode. It is a computational analogy, **not a claim of physical quantum computation** and not the entire scope of Origami.
 
-The easiest experiment uses exactly two inputs:
+Current state kinds:
 
-1. `prompts/OHF_R2_MASTER_PROMPT.txt`
-2. an `.ohf-r2.png` carrier from `examples/`
+- `determinate` — one active branch;
+- `superposed` — multiple coherent branches with complex amplitudes;
+- `coupled` — a joint state whose members must not be evaluated independently;
+- `observed` — an explicitly resolved state.
 
-Start a **fresh conversation** with the target LLM.
+Core laws include:
 
-### Step 1 — send the Master Prompt
+1. `TRANSFORM` evolves a valid state but cannot select a branch.
+2. `OBSERVE` is an explicit resolution boundary.
+3. `INTERFERE` combines complex amplitudes; equal/opposite paths cancel.
+4. Zero amplitude means cancellation, not unknown.
+5. Absence, unknown and inhibited are distinct semantic conditions.
+6. A coupled state remains a joint object until an explicit decomposition operation is applied.
 
-Copy the complete contents of:
+See [`docs/STATE_SEMANTICS_R0.md`](docs/STATE_SEMANTICS_R0.md).
 
-```text
-prompts/OHF_R2_MASTER_PROMPT.txt
-```
+## Fold / Unfold
 
-Do not add a decoder manifest, ABI file or other helper metadata.
+In the current semantic contract:
 
-### Step 2 — send the OHF image
+- `UNFOLD` constructs or expands alternatives under a declared representation rule.
+- `FOLD` constrains and/or explicitly resolves according to a declared policy.
 
-Upload the original PNG without resizing, screenshotting or recompressing it.
+These are Origami operations. Model training, prompt compilation and behavior enforcement are Tlaloc responsibilities.
 
-The image's visible BOOT section describes the grid geometry and verification information required by R2.
+## Historical continuity
 
-### Step 3 — ask a question
+Origami keeps the existing 6.x numbering. `6.0.0-alpha.1` is the representation-side branch point created when the former unified project separated into **Tlaloc + Origami**.
 
-For a project carrier, examples include:
+The repository previously described **Origami HyperFold (OHF) R2** as the complete project. Those materials are retained as historical research inputs:
 
-```text
-List the files contained in this OHF carrier.
-```
+- `docs/SCIENTIFIC_FOUNDATIONS.md`
+- `prompts/OHF_R2_MASTER_PROMPT.txt`
 
-```text
-Show me exactly README.md.
-```
+They document an earlier carrier/compression direction and **do not define the current project boundary**. See [`docs/LEGACY_OHF_R2.md`](docs/LEGACY_OHF_R2.md).
 
-```text
-Which file contains the main entry point?
-```
+## Repository status
 
-```text
-Reconstruct the ZIP and verify its SHA-256.
-```
+This repository currently contains the semantic contract and project-boundary documentation for Origami 6.0.0-alpha.1.
 
-For a document stored inside a carrier you can similarly ask for its contents after the ZIP has been verified.
+The exact pre-split Origami 5.1 implementation remains the authoritative implementation base until the 6.0 semantic overlay is merged and regression-tested against it. Therefore this release remains **experimental**.
 
-### Step 4 — inspect the fidelity reported by the model
-
-OHF distinguishes:
-
-| Fidelity | Meaning |
-|---|---|
-| `SEMANTIC` | interpreted/summarized information |
-| `STRUCTURAL` | claims grounded in verified paths/structure |
-| `EXACT_CONTENT` | exact requested content from a verified member |
-| `EXACT_SOURCE` | reconstructed ZIP matches the SHA-256 stored by the encoder |
-
-A model must not claim exactness merely because its visual interpretation looks plausible.
-
-If deterministic decoding is unavailable or verification fails, the correct answer is `UNKNOWN` / `NOT VERIFIED`.
-
-## Why the Master Prompt is reusable
-
-R2 is designed around a **universal prompt + self-describing carrier** model.
-
-The prompt defines the decoding contract:
-
-```text
-how to read BOOT
-how to interpret binary cells
-how to verify the envelope
-how to report fidelity
-```
-
-The image supplies carrier-specific values such as grid geometry, payload length and hashes.
-
-Therefore a new source normally requires a **new carrier image, not a new Master Prompt**, as long as it uses the same R2 protocol version.
-
-A protocol-version change may require an updated prompt.
-
-## Why BOOT matters
-
-The decoder must not depend on magic coordinates hard-coded for one image.
-
-BOOT declares the geometry required to locate the binary payload. The Master Prompt explicitly instructs the receiver to use those values instead of assuming them.
-
-The envelope is:
-
-```text
-magic[8]
-version:u16 big-endian
-payload_length:u32 big-endian
-crc32:u32 big-endian
-sha256[32]
-zip[payload_length]
-```
-
-The R2 magic value is:
-
-```text
-OHFR2ZIP
-```
-
-## Exact decoding path
-
-For an exact request the intended process is:
-
-```text
-OHF PNG
-  ↓
-read BOOT
-  ↓
-locate GRID
-  ↓
-sample cell centers
-  ↓
-bits → bytes
-  ↓
-parse R2 envelope
-  ↓
-extract ZIP
-  ↓
-CRC32 check
-  ↓
-SHA-256 check
-  ↓
-VERIFIED ZIP
-```
-
-Only after verification should the receiver navigate or extract exact members.
-
-## Selective use
-
-Once the ZIP has been reconstructed and verified, a narrow question should not cause every member to be semantically analyzed.
-
-For example:
-
-```text
-"Show me exactly config.yaml"
-```
-
-should conceptually become:
-
-```text
-verify carrier once
-      ↓
-read ZIP directory
-      ↓
-locate config.yaml
-      ↓
-extract requested member
-      ↓
-return content
-```
-
-This is an early baseline for OHF's broader **Selective Unfolding** principle.
-
-## Current limitations of R2
-
-R2 should not be confused with the final research target.
-
-Currently:
-
-- the visual grid primarily acts as an exact binary transport;
-- exact decoding works best when the receiving environment can inspect pixels programmatically;
-- a VLM without a sandbox may not be able to reconstruct a large binary carrier exactly;
-- R2 does not yet provide the planned full generative Folding system;
-- R2 does not prove a 1:10,000 compression ratio;
-- R2 exactness comes from deterministic reconstruction + hashes, not from LLM consensus.
-
-These limitations are precisely why OHF also contains Perception Lab and the larger R3+/1.0 architecture.
-
-## Where OHF is going
-
-The complete architecture is intended to evolve toward:
-
-```text
-SOURCE
-  ↓
-Canonical Source Model
-  ↓
-Dedup / Grammar / Graph / Motif / Transform discovery
-  ↓
-Representation Tournament
-  ↓
-Generative IR + Residual
-  ↓
-SuperIndex
-  ↓
-Attention Router + Window Sliders
-  ↓
-Visual Compiler
-  ↓
-OHF Carrier
-```
-
-On reception:
-
-```text
-QUERY
-  ↓
-SuperIndex
-  ↓
-small dependency window
-  ↓
-Perception / Resolution
-  ↓
-Deterministic Execution
-  ↓
-Residual
-  ↓
-Verification
-  ↓
-ANSWER
-```
-
-The represented object may be large while the active working context remains small.
-
-## Repository layout
+## Files
 
 ```text
 origami/
 ├── README.md
+├── VERSION
+├── CHANGELOG.md
+├── PROJECT_BOUNDARY.md
+├── CHANGE_CONTROL_6.0.0-alpha.1.md
 ├── docs/
-│   └── SCIENTIFIC_FOUNDATIONS.md
-├── prompts/
-│   └── OHF_R2_MASTER_PROMPT.txt
-└── examples/
-    └── ... OHF R2 carrier images
+│   ├── STATE_SEMANTICS_R0.md
+│   ├── LEGACY_OHF_R2.md
+│   └── SCIENTIFIC_FOUNDATIONS.md      # historical OHF material
+└── prompts/
+    └── OHF_R2_MASTER_PROMPT.txt        # historical OHF R2 artifact
 ```
 
-`README.md` is the practical introduction and usage guide.
+## Version
 
-`docs/SCIENTIFIC_FOUNDATIONS.md` contains the detailed scientific motivation, architecture, assumptions, experimental status and theoretical foundations.
-
-`prompts/OHF_R2_MASTER_PROMPT.txt` is the reusable R2 receiver prompt.
-
-`examples/` contains carriers intended for cross-model experiments.
-
-## Scientific documentation
-
-For the detailed explanation of information theory, MDL/Kolmogorov motivation, grammar folding, graph motifs, Representation Tournament, SuperIndex, Window Sliders, Perception Lab, swarms and Verification Spine, see:
-
-**`docs/SCIENTIFIC_FOUNDATIONS.md`**
-
-## Core rule
-
-OHF uses one rule above all others:
-
-> **UNKNOWN is preferable to false exactness.**
-
-Semantic interpretation may be probabilistic. Exact recovery is deterministic and independently verified.
-
-## Status
-
-OHF is under active experimental development. R2 is a working exact-carrier baseline; the broader HyperFold architecture remains a staged research and engineering effort toward a generative, addressable and selectively unfoldable protocol.
+`6.0.0-alpha.1`

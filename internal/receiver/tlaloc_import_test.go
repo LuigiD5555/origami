@@ -2,6 +2,8 @@ package receiver
 
 import "testing"
 
+const testTraceSHA256 = "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+
 func TestImportTlalocCandidatePreservesAction(t *testing.T) {
 	got, err := ImportTlalocCandidate(TlalocHybridArtifactSet{
 		Schema:             TlalocHybridArtifactSchema,
@@ -12,7 +14,7 @@ func TestImportTlalocCandidatePreservesAction(t *testing.T) {
 		MicroProgram: []TlalocMicroRule{{
 			ID: "m0000", State: "S0", Token: "BOOT_OK", Action: "advance", NextState: "S1", Emit: "ROSETTA",
 		}},
-		SourceTraceSHA256: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+		SourceTraceSHA256: testTraceSHA256,
 		WorkingWindow:     4000,
 	})
 	if err != nil {
@@ -34,7 +36,7 @@ func TestImportTlalocCandidateDoesNotBindPhysicalSymbols(t *testing.T) {
 		BootStrategy:       []string{"find BOOT"},
 		RosettaConstraints: []string{"do not hardcode glyph meaning"},
 		MicroProgram:       []TlalocMicroRule{{ID: "m0", State: "S0", Token: "T", NextState: "S1"}},
-		SourceTraceSHA256:  "hash",
+		SourceTraceSHA256:  testTraceSHA256,
 		WorkingWindow:      4000,
 	})
 	if err != nil {
@@ -45,4 +47,20 @@ func TestImportTlalocCandidateDoesNotBindPhysicalSymbols(t *testing.T) {
 	}
 	// ImportedCandidate intentionally has no Rosetta physical bindings. Origami
 	// must create those when constructing a concrete carrier.
+}
+
+func TestImportTlalocCandidateRejectsShortTraceHash(t *testing.T) {
+	_, err := ImportTlalocCandidate(TlalocHybridArtifactSet{
+		Schema:             TlalocHybridArtifactSchema,
+		CandidateID:        "candidate-3",
+		UniversalPrompt:    "bootstrap",
+		BootStrategy:       []string{"find BOOT"},
+		RosettaConstraints: []string{"carrier-local"},
+		MicroProgram:       []TlalocMicroRule{{ID: "m0", State: "S0", Token: "T", NextState: "S1"}},
+		SourceTraceSHA256:  "short",
+		WorkingWindow:      4000,
+	})
+	if err == nil {
+		t.Fatal("expected short provenance hash to be rejected")
+	}
 }

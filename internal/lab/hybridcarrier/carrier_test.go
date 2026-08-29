@@ -63,7 +63,7 @@ func TestEnvelopeRoundTripAndMemoryVerification(t *testing.T) {
 	}
 }
 
-func TestGlyphTransportRoundTripAndPNGTarget(t *testing.T) {
+func TestGlyphTransportAndPNGAreExactCarrierSources(t *testing.T) {
 	envelope, err := BuildEnvelope(
 		receiverSpec(),
 		[]IndexEntry{{Key: "K7F91", Address: "mem:1"}},
@@ -79,12 +79,21 @@ func TestGlyphTransportRoundTripAndPNGTarget(t *testing.T) {
 		t.Fatal("glyph transport changed carrier payload")
 	}
 
-	rendered, err := Render(envelope, 24, 40, 8, DefaultMaxPNGBytes)
+	rendered, err := Render(envelope, DefaultColumns, DefaultCellPixels, DefaultMargin, DefaultMaxPNGBytes)
 	if err != nil { t.Fatal(err) }
 	if rendered.PNGBytes == 0 || rendered.PNGBytes > DefaultMaxPNGBytes {
 		t.Fatalf("unexpected PNG size %d", rendered.PNGBytes)
 	}
 	if rendered.PayloadSHA256 == "" || rendered.PNGSHA256 == "" {
 		t.Fatal("missing carrier identities")
+	}
+
+	decodedFromPNG, err := DecodePNG(rendered.PNG, DefaultColumns, DefaultCellPixels, DefaultMargin)
+	if err != nil { t.Fatal(err) }
+	if decodedFromPNG.Verification.MemorySHA256 != envelope.Verification.MemorySHA256 {
+		t.Fatalf("PNG decode changed memory identity: got=%s want=%s", decodedFromPNG.Verification.MemorySHA256, envelope.Verification.MemorySHA256)
+	}
+	if len(decodedFromPNG.Memory) != 1 || decodedFromPNG.Memory[0].Value != "AMBER-10593" {
+		t.Fatalf("unexpected PNG-decoded memory: %+v", decodedFromPNG.Memory)
 	}
 }

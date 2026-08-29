@@ -4,7 +4,7 @@ Status: **EXPERIMENTAL / LAB-ONLY / NOT PROMOTED**
 
 ## Hypothesis
 
-Minimize VLM work by discovering an empirically safe set of local operations and batching independent operations into context lanes. Black-box internal FLOPs are not observable, so cost is ranked with observable proxies: exact-known/false-known rates, latency, output tokens, retries and monetary cost when available.
+Minimize model work by discovering an empirically safe set of local operations and batching independent operations into context lanes. Black-box internal FLOPs are not observable, so cost is ranked with observable proxies: exact-known/false-known rates, latency, output tokens, retries and monetary cost when available.
 
 The hard invariant remains `FALSE_EXACT = 0`.
 
@@ -46,6 +46,8 @@ The supplied kit never contacts an external service by itself.
 
 ## Receive path under test
 
+The original MicroISA experiment isolates a deliberately narrow receive path:
+
 ```text
 IMAGE
   -> local tuple observations
@@ -54,4 +56,31 @@ IMAGE
   -> exact verification
 ```
 
-rather than asking the VLM to understand, decompress, execute and verify the carrier itself.
+rather than asking the VLM to understand, decompress, execute and verify the whole carrier itself.
+
+## Relation to Hybrid Receiver R0
+
+This narrow path remains valuable as a **low-level execution baseline**. The Hybrid Receiver adds an outer self-boot/navigation layer rather than replacing MicroISA:
+
+```text
+model
+  -> find BOOT
+  -> interpret carrier-local ROSETTA
+  -> select required program/address
+        ↓
+SAFE_MICRO_ISA / deterministic micro-agents
+  -> local mechanical operation(s)
+  -> compact result/proof
+        ↓
+model
+  -> retain semantic state / choose next access
+```
+
+The terms `micro-agent` and `MicroISA` are related but not identical:
+
+- a receiver **micro-agent rule** is a small deterministic state transition distilled from useful swarm behavior;
+- SAFE_MICRO_ISA is an empirically tested substrate of low-level operations that such receiver machinery may invoke or compile toward.
+
+Tlaloc may search/distill receiver micro-agent candidates. Origami owns the execution semantics and decides whether a candidate can safely map to available MicroISA/runtime operations.
+
+A successful MicroISA benchmark does not by itself establish BOOT discovery, Rosetta interpretation or Hybrid end-to-end correctness. Those remain separate gates.

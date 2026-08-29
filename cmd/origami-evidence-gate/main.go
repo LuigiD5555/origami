@@ -38,6 +38,7 @@ func main() {
 	}
 	for k,v := range counts { if ev.Counts[k] != v { fatal(fmt.Errorf("count mismatch for %s: evidence=%d computed=%d", k, ev.Counts[k], v)) } }
 	for k,v := range ev.Counts { if counts[k] != v { fatal(fmt.Errorf("unexpected count for %s: evidence=%d computed=%d", k, v, counts[k])) } }
+	for classification,minimum := range e.Protocol.RequiredClassifications { if counts[classification] < minimum { fatal(fmt.Errorf("required classification %s: got=%d want-at-least=%d",classification,counts[classification],minimum)) } }
 
 	fmt.Printf("evidence gate PASS: experiment=%s runs=%d", e.ID, len(ev.Runs))
 	for _,k := range []string{"FIXED_POINT","CYCLE","CONTRADICTION","BUDGET_EXHAUSTED"} { fmt.Printf(" %s=%d", k, counts[k]) }

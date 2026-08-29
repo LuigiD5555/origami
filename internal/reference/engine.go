@@ -9,7 +9,10 @@ import (
 )
 
 type Relation struct { Type, From, To string }
-type Protocol struct { MaxSteps int `json:"max_steps_per_state"` }
+type Protocol struct {
+	MaxSteps int `json:"max_steps_per_state"`
+	RequiredClassifications map[string]int `json:"required_classifications,omitempty"`
+}
 type Experiment struct {
 	ID string `json:"experiment_id"`
 	Entities []string `json:"entities"`
@@ -62,6 +65,8 @@ func step(s State, rels []Relation) State {
 	for _,r:=range rels { if r.Type=="excludes" && active(s[r.From]) && s[r.To]!="active" { n[r.To]="inactive" } }
 	s=clone(n)
 	for _,r:=range rels { if r.Type=="couples" { if active(s[r.From]) && s[r.To]!="inactive" { n[r.To]="active" }; if s[r.From]=="inactive" && s[r.To]!="active" { n[r.To]="inactive" } } }
+	s=clone(n)
+	for _,r:=range rels { if r.Type=="toggles" && active(s[r.From]) { if active(s[r.To]) { n[r.To]="inactive" } else { n[r.To]="active" } } }
 	return n
 }
 

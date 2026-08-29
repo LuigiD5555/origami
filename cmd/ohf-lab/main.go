@@ -19,10 +19,14 @@ import (
 	"github.com/LuigiD5555/origami/internal/lab/observation"
 	"github.com/LuigiD5555/origami/internal/lab/pipeline"
 	"github.com/LuigiD5555/origami/internal/lab/prepare"
+	"github.com/LuigiD5555/origami/internal/lab/query"
+	"github.com/LuigiD5555/origami/internal/lab/renderer"
 	"github.com/LuigiD5555/origami/internal/lab/runid"
 	"github.com/LuigiD5555/origami/internal/lab/scorer"
 	"github.com/LuigiD5555/origami/internal/lab/seed"
+	"github.com/LuigiD5555/origami/internal/lab/source"
 	"github.com/LuigiD5555/origami/internal/lab/spec"
+	"github.com/LuigiD5555/origami/internal/lab/superindex"
 	"github.com/LuigiD5555/origami/internal/lab/visualverify"
 )
 
@@ -50,6 +54,8 @@ func main() {
 		seedCmd(args[1:])
 	case "run":
 		runCmd(root, args[1:])
+	case "query":
+		queryCmd(root, args[1:])
 	case "evaluator":
 		evaluatorCmd(args[1:])
 	case "native":
@@ -80,6 +86,7 @@ func usage() {
   experiment run <spec.json>
   run verify <run-id>
   run visual-verify <run-id>
+  query <run-id> <question> [--native <master-prompt.md>]
   seed derive <master-uint64> <namespace>
   evaluator verify
   native bundle <run-id> <master-prompt.md> <query.txt>
@@ -260,6 +267,40 @@ func runCmd(root string, args []string) {
 			}
 			fmt.Printf("VISUAL_REOPEN=PASS\nPIXEL_SHA256=%s\nPNG_SHA256=%s\nPNG_BYTES=%d\n", v.PixelSHA256, v.PNGSHA256, v.PNGBytes)
 		}
+		if indexBytes, err := os.ReadFile(filepath.Join(dir, "page_index.json")); err == nil {
+			var index source.PageIndex
+			if err := json.Unmarshal(indexBytes, &index); err != nil {
+				fatal(err)
+			}
+			if err := source.VerifyPageIndex(sourceBytes, index); err != nil {
+				fatal(err)
+			}
+			fmt.Printf("PAGE_INDEX=PASS\nPAGES=%d\n", len(index.Pages))
+		}
+		if superIndexBytes, err := os.ReadFile(filepath.Join(dir, "superindex.json")); err == nil {
+			var index superindex.Index
+			if err := json.Unmarshal(superIndexBytes, &index); err != nil {
+				fatal(err)
+			}
+			renderBytes, err := os.ReadFile(filepath.Join(dir, "render.json"))
+			if err != nil {
+				fatal(err)
+			}
+			var renderResult renderer.Result
+			if err := json.Unmarshal(renderBytes, &renderResult); err != nil {
+				fatal(err)
+			}
+			if renderResult.RepresentationScope == "REFERENCED" {
+				expectedHash, err := superindex.Hash(index)
+				if err != nil {
+					fatal(err)
+				}
+				if renderResult.ExternalPayloadSHA256 != expectedHash {
+					fatal(fmt.Errorf("referenced SuperIndex payload hash mismatch"))
+				}
+				fmt.Printf("REFERENCED_PAYLOAD=PASS\nSUPERINDEX_SHA256=%s\n", expectedHash)
+			}
+		}
 	case "visual-verify":
 		v, err := visualverify.Verify(dir)
 		if err != nil {
@@ -269,6 +310,71 @@ func runCmd(root string, args []string) {
 	default:
 		usage()
 		os.Exit(2)
+	}
+}
+
+func queryCmd(root string, args []string) {
+	if len(args) != 2 && (len(args) != 4 || args[2] != "--native") {
+		usage()
+		os.Exit(2)
+	}
+	runID := args[0]
+	if strings.Contains(runID, "/") || strings.Contains(runID, "\\") || runID == "" {
+		fatal(fmt.Errorf("invalid run id %q", runID))
+	}
+	runDir := filepath.Join(root, "runs", runID)
+	indexBytes, err := os.ReadFile(filepath.Join(runDir, "page_index.json"))
+	if err != nil {
+		fatal(fmt.Errorf("read page index: %w", err))
+	}
+	var index source.PageIndex
+	if err := json.Unmarshal(indexBytes, &index); err != nil {
+		fatal(fmt.Errorf("decode page index: %w", err))
+	}
+	if index.Schema != source.PageIndexSchemaV1 {
+		fatal(fmt.Errorf("page index: unsupported schema %q", index.Schema))
+	}
+	material, err := os.ReadFile(filepath.Join(runDir, "source", "source.bin"))
+	if err != nil {
+		fatal(fmt.Errorf("read canonical source: %w", err))
+	}
+	plan := query.Plan(index.Pages, args[1])
+	unfolded, err := query.Unfold(material, index.Pages, plan)
+	if err != nil {
+		fatal(err)
+	}
+	addresses := make([]string, 0, len(plan.Addresses))
+	for _, address := range plan.Addresses {
+		addresses = append(addresses, fmt.Sprintf("P%d", address.Page))
+	}
+	percentage := 0.0
+	if plan.TotalBytes > 0 {
+		percentage = 100 * float64(plan.ClosureBytes) / float64(plan.TotalBytes)
+	}
+	fmt.Println("QUERY")
+	fmt.Printf(" addresses: [%s]\n", strings.Join(addresses, ", "))
+	fmt.Printf(" unfolded: %d regions / %d\n", len(plan.Addresses), len(index.Pages))
+	fmt.Printf(" unfolded_bytes: %d / %d (%.1f%%)\n", plan.ClosureBytes, plan.TotalBytes, percentage)
+	fmt.Println("ANSWER (deterministic extracted text; no LLM)")
+	if unfolded == "" {
+		fmt.Println("No page matched the query tokens.")
+	} else {
+		fmt.Print(unfolded)
+	}
+	if len(args) == 4 {
+		promptPath := args[3]
+		if !filepath.IsAbs(promptPath) {
+			promptPath = filepath.Join(root, promptPath)
+		}
+		prompt, err := os.ReadFile(promptPath)
+		if err != nil {
+			fatal(fmt.Errorf("read native master prompt: %w", err))
+		}
+		bundle, err := nativebundle.BuildWithQuery(root, runID, prompt, []byte(args[1]))
+		if err != nil {
+			fatal(err)
+		}
+		fmt.Printf("NATIVE_BUNDLE=%s\nBLIND_PATH=%s\n", bundle.BundleID, bundle.BlindRelativePath)
 	}
 }
 

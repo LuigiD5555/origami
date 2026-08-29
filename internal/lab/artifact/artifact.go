@@ -176,6 +176,8 @@ func role(path string) string {
 		return "provenance"
 	case path == "ground_truth.json":
 		return "ground-truth"
+	case path == "page_index.json":
+		return "address-index"
 	case path == "verdict.json":
 		return "verdict"
 	case path == "render.json":

@@ -1,0 +1,11 @@
+{
+  "schema": "ohf.preregistered-experiment.v1",
+  "id": "EXP-004-superindex-carrier-001",
+  "hypothesis": "The referenced SuperIndex manifest can be rendered within the fixed carrier budgets while preserving an explicit verifiable payload address.",
+  "fixture": "EXP-002-pdf-carrier-001 pages 17-20",
+  "seed": 817392,
+  "budgets": {"width": 1600, "height": 2000, "png_bytes": 500000},
+  "pass": ["PNG_BYTES <= 500000", "representation_scope = REFERENCED", "external_payload_sha256 matches canonical SuperIndex", "FALSE_EXACT = 0"],
+  "fail": ["surface overflow", "PNG budget overflow", "missing or mismatched payload hash"],
+  "non_claims": ["self-contained source recovery", "native VLM readability", "perceptual safety", "retrieval superiority over text tiles"]
+}

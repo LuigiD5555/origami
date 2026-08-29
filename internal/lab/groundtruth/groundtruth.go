@@ -42,7 +42,7 @@ func Build(s spec.ExperimentSpec) (GroundTruth, labsource.Material, error) {
 	if err != nil {
 		return GroundTruth{}, labsource.Material{}, err
 	}
-	if len(material.Bytes) != s.Source.Length {
+	if s.Source.Kind == "synthetic" && len(material.Bytes) != s.Source.Length {
 		return GroundTruth{}, labsource.Material{}, fmt.Errorf("ground truth: generated source length mismatch")
 	}
 

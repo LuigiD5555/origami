@@ -13,9 +13,12 @@ import (
 )
 
 const (
-	SchemaR0            = "origami.hybrid-carrier.r0"
-	MagicR0             = "ORIGAMI-HYBRID-R0\n"
-	DefaultMaxPNGBytes  = 512000
+	SchemaR0           = "origami.hybrid-carrier.r0"
+	MagicR0            = "ORIGAMI-HYBRID-R0\n"
+	DefaultColumns     = 24
+	DefaultCellPixels  = 56
+	DefaultMargin      = 8
+	DefaultMaxPNGBytes = 512000
 )
 
 type IndexEntry struct {
@@ -24,8 +27,8 @@ type IndexEntry struct {
 }
 
 type MemoryEntry struct {
-	Address string            `json:"address"`
-	Value   string            `json:"value"`
+	Address string              `json:"address"`
+	Value   string              `json:"value"`
 	Links   map[string][]string `json:"links,omitempty"`
 }
 
@@ -34,21 +37,21 @@ type Verification struct {
 }
 
 type Envelope struct {
-	Schema       string            `json:"schema"`
-	Receiver     receiver.Spec     `json:"receiver"`
-	Index        []IndexEntry      `json:"index"`
-	Memory       []MemoryEntry     `json:"memory"`
-	Verification Verification      `json:"verification"`
+	Schema       string       `json:"schema"`
+	Receiver     receiver.Spec `json:"receiver"`
+	Index        []IndexEntry `json:"index"`
+	Memory       []MemoryEntry `json:"memory"`
+	Verification Verification `json:"verification"`
 }
 
 type Rendered struct {
-	PNG              []byte                `json:"-"`
-	PNGBytes         int                   `json:"png_bytes"`
-	PNGSHA256        string                `json:"png_sha256"`
-	PayloadBytes     int                   `json:"payload_bytes"`
-	PayloadSHA256    string                `json:"payload_sha256"`
-	GlyphCount       int                   `json:"glyph_count"`
-	RenderMeta       glyphcalc.RenderMeta  `json:"render_meta"`
+	PNG           []byte               `json:"-"`
+	PNGBytes      int                  `json:"png_bytes"`
+	PNGSHA256     string               `json:"png_sha256"`
+	PayloadBytes  int                  `json:"payload_bytes"`
+	PayloadSHA256 string               `json:"payload_sha256"`
+	GlyphCount    int                  `json:"glyph_count"`
+	RenderMeta    glyphcalc.RenderMeta `json:"render_meta"`
 }
 
 func BuildEnvelope(spec receiver.Spec, index []IndexEntry, memory []MemoryEntry) (Envelope, error) {
@@ -62,9 +65,7 @@ func BuildEnvelope(spec receiver.Spec, index []IndexEntry, memory []MemoryEntry)
 		return idx[i].Key < idx[j].Key
 	})
 	sort.Slice(mem, func(i, j int) bool { return mem[i].Address < mem[j].Address })
-	if len(mem) == 0 {
-		return Envelope{}, fmt.Errorf("memory cannot be empty")
-	}
+	if len(mem) == 0 { return Envelope{}, fmt.Errorf("memory cannot be empty") }
 	seen := map[string]bool{}
 	for _, entry := range mem {
 		if entry.Address == "" { return Envelope{}, fmt.Errorf("memory address cannot be empty") }
@@ -78,10 +79,10 @@ func BuildEnvelope(spec receiver.Spec, index []IndexEntry, memory []MemoryEntry)
 	memoryBytes, err := json.Marshal(mem)
 	if err != nil { return Envelope{}, err }
 	return Envelope{
-		Schema:   SchemaR0,
-		Receiver: spec,
-		Index:    idx,
-		Memory:   mem,
+		Schema:       SchemaR0,
+		Receiver:     spec,
+		Index:        idx,
+		Memory:       mem,
 		Verification: Verification{MemorySHA256: hash(memoryBytes)},
 	}, nil
 }
@@ -113,17 +114,23 @@ func DecodePayload(payload []byte) (Envelope, error) {
 	return envelope, nil
 }
 
-// Render projects the complete logical carrier payload into the existing
-// Glyph Calculus physical transport. This proves deterministic integration and
-// exact round-trip at the transport layer; it does NOT by itself prove that a
-// VLM can perceptually recover BOOT/ROSETTA from the image.
+// Render projects the complete logical carrier payload into the existing Glyph
+// Calculus physical transport. R0 requires non-overlapping cells so the PNG is
+// deterministically recoverable without a semantic sidecar.
 func Render(envelope Envelope, columns, cell, margin, maxPNGBytes int) (Rendered, error) {
+	if columns <= 0 { columns = DefaultColumns }
+	if cell <= 0 { cell = DefaultCellPixels }
+	if margin <= 0 { margin = DefaultMargin }
+	if cell < DefaultCellPixels {
+		return Rendered{}, fmt.Errorf("Hybrid carrier requires cell >= %d for independent deterministic decoding", DefaultCellPixels)
+	}
+	if maxPNGBytes <= 0 { maxPNGBytes = DefaultMaxPNGBytes }
+
 	payload, err := EncodePayload(envelope)
 	if err != nil { return Rendered{}, err }
 	glyphs := glyphcalc.GlyphsFromBytes(payload)
 	pngBytes, meta, err := glyphcalc.RenderGlyphGrid(glyphs, columns, cell, margin)
 	if err != nil { return Rendered{}, err }
-	if maxPNGBytes <= 0 { maxPNGBytes = DefaultMaxPNGBytes }
 	if len(pngBytes) > maxPNGBytes {
 		return Rendered{}, fmt.Errorf("carrier exceeds PNG target: bytes=%d max=%d", len(pngBytes), maxPNGBytes)
 	}
@@ -136,6 +143,20 @@ func Render(envelope Envelope, columns, cell, margin, maxPNGBytes int) (Rendered
 		GlyphCount:    len(glyphs),
 		RenderMeta:    meta,
 	}, nil
+}
+
+// DecodePNG recovers the complete logical carrier directly from carrier.png.
+// Layout parameters are transport metadata; no private source/envelope sidecar
+// is consulted.
+func DecodePNG(pngBytes []byte, columns, cell, margin int) (Envelope, error) {
+	if columns <= 0 { columns = DefaultColumns }
+	if cell <= 0 { cell = DefaultCellPixels }
+	if margin <= 0 { margin = DefaultMargin }
+	glyphs, err := glyphcalc.DecodeGlyphGridPNG(pngBytes, columns, cell, margin)
+	if err != nil { return Envelope{}, err }
+	payload, err := glyphcalc.BytesFromGlyphs(glyphs)
+	if err != nil { return Envelope{}, err }
+	return DecodePayload(payload)
 }
 
 func hash(b []byte) string {

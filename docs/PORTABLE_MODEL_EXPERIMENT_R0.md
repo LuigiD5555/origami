@@ -1,65 +1,117 @@
-# Portable Model Experiment R0
+# Portable Hybrid Model Experiment R0
 
 ## Goal
 
-Make an Origami experiment runnable in an external/local model with an unambiguous receiver contract.
+Make an Origami carrier runnable in an external/local model with a reproducible **self-boot + hybrid execution** contract.
 
-Two modes are intentionally separate.
+The primary target is Hybrid. Native and Computational remain diagnostic baselines so failures can be localized to perception/bootstrap versus deterministic execution/navigation.
 
-### Native
+## Primary Hybrid packet
 
-Public answering packet:
+The answering model receives:
 
 ```text
-generated/MASTER_PROMPT.md
+public/MASTER_PROMPT.md
+public/carrier.png
+public/model_packet.json
+question
++ only the Origami tools explicitly declared by model_packet.json
+```
+
+The model must discover carrier-local semantics from the image's own `BOOT -> ROSETTA -> PROGRAM` path. The external prompt must not reveal the carrier's private symbol mapping.
+
+Hybrid division of labor:
+
+```text
+carrier perception / BOOT discovery
+              ↓
+        model / VLM
+              ↓
+carrier-local ROSETTA + high-level route
+              ↓
+    Origami deterministic runtime
+  micro-agents / addressing / computation
+              ↓
+small verifiable result or next region
+              ↓
+             model
+```
+
+### Native baseline
+
+```text
+MASTER_PROMPT.md
 carrier.png
 question
 ```
 
-The answering VLM receives no source, oracle, private manifest or external decoder.
+No external decoder or Origami runtime. This isolates self-boot/perceptual readability.
 
-### Computational
-
-Public answering packet:
+### Computational baseline
 
 ```text
-generated/MASTER_PROMPT.md
+MASTER_PROMPT.md
 model_packet.json
 question
-Origami tool endpoint/runtime
+Origami runtime/tools
 ```
 
-The answering model can use bounded Origami operations but cannot read the underlying source/memory directly.
+No hidden source access. This isolates addressability, micro-machine execution, selective unfolding and context recycling from visual perception.
 
 ## Experiment directory contract
-
-A prepared portable run should have:
 
 ```text
 runs/<run-id>/
   public/
     MASTER_PROMPT.md
     model_packet.json
-    carrier.png              # required for Native/Hybrid
+    carrier.png
     questions.json
   private/
     manifest.json
     oracle.json
-    source/                   # synthetic or real canonical source
+    source/
+    carrier_semantics.json      # evaluator truth; NEVER public
   results/
     responses.jsonl
+    traces.jsonl
     metrics.json
     report.md
 ```
 
-`public/` is the only directory that may be shared with the answering model. `private/` is evaluator-only.
+Only `public/` plus the declared runtime interface may reach the answering model. `private/` is evaluator-only.
+
+## Carrier section requirement
+
+A Hybrid R0 carrier should expose, directly or through its boot-discovered references:
+
+```text
+BOOT
+ROSETTA
+PROGRAM
+INDEX
+MEMORY
+VERIFICATION
+[RESIDUAL]
+```
+
+- `BOOT` says where/how to begin.
+- `ROSETTA` gives carrier-local symbol semantics.
+- `PROGRAM` contains deterministic micro-agent/automata behavior.
+- `INDEX` supports selective addressing.
+- `MEMORY` contains represented knowledge/behavior.
+- `VERIFICATION` supports proof/exactness checks.
+- `RESIDUAL` is optional and must remain explicit/measured.
+
+The carrier is not a screenshot/poster of the source.
 
 ## model_packet.json minimum fields
 
 ```json
 {
   "schema": "origami.model-packet.r0",
-  "mode": "native|computational|hybrid",
+  "receiver_contract": "origami.hybrid-receiver.r0",
+  "mode": "hybrid",
   "working_window_token_eq": 4000,
   "master_prompt_sha256": "...",
   "carrier_sha256": "...",
@@ -68,50 +120,66 @@ runs/<run-id>/
 }
 ```
 
-The packet describes the interface; it must not contain the answer key or hidden source facts.
+The packet describes transport/interface capability only. It must not contain hidden source facts, answer keys or the carrier-local Rosetta mapping.
 
-## questions.json
+## Symbol permutation test
 
-Questions must be generated or selected after the source representation/carrier is frozen whenever the experiment is intended to test retrieval rather than memorized benchmark behavior.
+A mandatory anti-memorization test uses at least two equivalent carriers with different physical symbol assignments:
 
-Each public question has an opaque id and question text. Expected answers remain only in `private/oracle.json`.
+```text
+Carrier A: triangle=OPEN, circle=VALUE
+Carrier B: circle=OPEN, square=VALUE
+```
 
-## Native carrier requirement
+The same Master Prompt is used for both. Questions and underlying semantics are equivalent. Success requires discovering each local Rosetta rather than relying on globally memorized glyph semantics.
 
-The carrier is not a screenshot of the source text. It is an Origami visual/computational representation with enough boot/Rosetta/index structure for the receiver to identify how to navigate it.
+## Questions
 
-Native carrier target remains <= 500 KB. Failure to encode irreducible exact information within that target must be reported rather than hidden behind a poster, external file or undeclared side channel.
+Freeze the synthetic source and carrier before selecting/generating held-out questions. Each public question has an opaque id. Expected answers and full carrier semantics remain in `private/`.
 
 ## Local manual protocol
 
-1. Start a fresh model session with no source document in context.
-2. Use a vision-capable model for Native/Hybrid.
-3. Set `public/MASTER_PROMPT.md` as the system prompt when the client supports system prompts; otherwise paste it before any question.
-4. Attach only `public/carrier.png` for Native.
-5. Ask one entry from `public/questions.json`.
-6. Save the model's answer verbatim.
-7. Repeat in a fresh session when independence between questions is required.
-8. Evaluate answers against `private/oracle.json` outside the answering model.
+1. Start a fresh session with no source/PDF in context.
+2. Use a vision-capable local model for Hybrid/Native.
+3. Set `public/MASTER_PROMPT.md` as system prompt when supported.
+4. Attach only `public/carrier.png`.
+5. For Hybrid, expose only tools named in `public/model_packet.json`.
+6. Ask one held-out question.
+7. Save answer and tool trace verbatim.
+8. Evaluate externally against `private/oracle.json` and the expected route/evidence.
+9. Repeat with a symbol-permuted carrier using the same Master Prompt.
+
+## Metrics
+
+At minimum record:
+
+- BOOT_FOUND;
+- ROSETTA_RESOLVED;
+- PROGRAM_INITIALIZED;
+- ANSWER_CORRECT;
+- ROUTE_INTEGRITY;
+- EVIDENCE_INTEGRITY;
+- UNKNOWN_CORRECT;
+- FALSE_EXACT;
+- TOOL_CALLS;
+- INTERNAL_TOUCHED;
+- PEAK_ACTIVE_TOKEN_EQ;
+- CUMULATIVE_EXPOSED_TOKEN_EQ;
+- RETAINED_STATE_TOKEN_EQ;
+- CONTAMINATED.
 
 ## Contamination failures
 
-Mark a trial CONTAMINATED when the answering model can access any of:
-
-- original source document;
-- private manifest/oracle;
-- hidden full-memory dump;
-- previous answer containing the oracle;
-- another retrieval channel not declared in `model_packet.json`.
+Mark `CONTAMINATED` if the answering model can access the original source, oracle, private carrier semantics, a hidden full-memory dump, previous oracle-bearing answers or an undeclared decoder/retrieval channel.
 
 A contaminated correct answer is not a PASS.
 
 ## Promotion sequence
 
-1. Synthetic Native boot/readability.
-2. Synthetic Computational navigation.
-3. Synthetic Hybrid.
-4. Frozen real-source Computational.
-5. Frozen real-source Native/Hybrid.
-6. Cross-model replication.
-
-Do not use a real PDF as the first proof that the receiver protocol works.
+1. Deterministic Go receiver contract + symbol-permutation tests.
+2. Synthetic Computational baseline.
+3. Synthetic Native BOOT/ROSETTA baseline.
+4. Synthetic Hybrid end-to-end.
+5. Symbol-permuted cross-model Hybrid replication.
+6. Frozen real-source Hybrid.
+7. PDF/image source transfer only after the synthetic gates are clean.

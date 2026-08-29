@@ -1,0 +1,14 @@
+{
+  "schema": "ohf.component-state.v1",
+  "component": "perceptual_state_space",
+  "status": "EXPERIMENTAL_IMPLEMENTED",
+  "nominal_micro": "256 states / 8 bits per glyph candidate",
+  "nominal_meso": "16 states / 4 bits per group candidate",
+  "nominal_macro": "256 states / 8 bits per carrier candidate",
+  "safe_pss": "UNPROVEN",
+  "rule": "NOMINAL_CAPACITY_NE_SAFE_CAPACITY",
+  "higher_order_gate": "REQUIRED",
+  "restoration_gate": "REQUIRED_WHERE_EXACTNESS_APPLIES",
+  "promotion_status": "NOT_PROMOTED",
+  "last_change": "CHG-DVR-0001"
+}

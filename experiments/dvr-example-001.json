@@ -1,0 +1,16 @@
+{
+  "schema": "ohf.dvr.v1",
+  "registry": "DVR-PSS-0.1.0",
+  "assignments": {
+    "micro.outer_shape": "triangle",
+    "micro.topology_holes": "holes_2",
+    "micro.direction_beacon": "east",
+    "micro.frame_count": "frames_1",
+    "meso.ordering": "clockwise",
+    "meso.grouping": "cluster",
+    "macro.topology": "branching",
+    "macro.symmetry": "bilateral",
+    "macro.orientation": "north",
+    "macro.region_structure": "single_core"
+  }
+}

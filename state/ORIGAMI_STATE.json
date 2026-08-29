@@ -1,0 +1,41 @@
+{
+  "schema": "ohf.origami-state.v1",
+  "status_date": "2026-08-27",
+  "production": {
+    "version": "R3.10",
+    "historical_baseline_bytes": "MISSING_R310_SDK"
+  },
+  "lab": {
+    "version": "R3.10-LAB",
+    "foundation": "F1.15_PASS",
+    "active_components": [
+      "glyph_calculus",
+      "glyph_microisa",
+      "context_simd",
+      "macro_gestalt",
+      "evolution_control",
+      "dimensional_visual_register",
+      "perceptual_state_space",
+      "perceptual_orthogonality",
+      "bounded_multidimensional_machine",
+      "installer_lifecycle"
+    ]
+  },
+  "invariants": [
+    "FALSE_EXACT=0",
+    "NATIVE_INPUT=MASTER_PROMPT+ONE_IMAGE+QUERY",
+    "GO_CANONICAL_RUNTIME",
+    "CARRIER_TARGET_LE_500KB",
+    "UNKNOWN_OVER_INVENTED_EXACTNESS",
+    "PERCEPTION_NE_RESOLUTION_NE_EXECUTION_NE_VERIFICATION",
+    "EXTERNAL_TESTS_PROGRESSIVE_CACHED_RATE_LIMITED",
+    "NOMINAL_CAPACITY_NE_SAFE_CAPACITY",
+    "PERCEPTUAL_ORTHOGONALITY_REQUIRED_FOR_INDEPENDENT_CAPACITY",
+    "MICRO_MESO_MACRO_CAPACITY_RESPECTS_VISUAL_SCOPE",
+    "PAIRWISE_PASS_NE_HIGHER_ORDER_PROMOTION",
+    "INSTALL_UNINSTALL_RESTORE_PREINSTALL_STATE",
+    "UNINSTALL_PRESERVES_AMBIGUOUS_USER_DATA",
+    "INSTALLER_NEVER_EDITS_SHELL_PROFILE"
+  ],
+  "last_change": "CHG-INSTALL-0001"
+}

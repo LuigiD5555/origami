@@ -1,0 +1,1 @@
+{"schema":"ohf.observation.v1","bundle_id":"REPLACE_WITH_BUNDLE_ID","model":"synthetic-fixture-pass","trial":1,"status":"KNOWN","observations":{"diagnostic_anchor_count":3},"notes":"Template fixture only; not real VLM evidence."}

@@ -1,0 +1,12 @@
+{
+  "schema": "ohf.baseline-status.v1",
+  "baseline": "R3.10",
+  "expected_artifact": "ORIGAMI_SDK_R310_EXPLICIT_CODEBOOK.zip",
+  "status": "MISSING_R310_SDK",
+  "frozen": false,
+  "sha256": null,
+  "bytes": null,
+  "verified_at": null,
+  "source": null,
+  "note": "Do not reconstruct this artifact from the continuity document. Supply the exact historical SDK bytes, then freeze and verify them explicitly."
+}

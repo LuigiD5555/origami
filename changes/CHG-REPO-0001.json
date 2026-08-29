@@ -1,0 +1,22 @@
+{
+  "schema": "ohf.change.v1",
+  "change_id": "CHG-REPO-0001",
+  "title": "Modernize public repository to current R3.10-LAB state",
+  "date": "2026-08-27",
+  "primary_component": "evolution_control",
+  "reason": "The public repository remained R2 documentation-only while the active project had advanced to R3.10-LAB, Glyph Calculus and SAFE_MICRO_ISA experiments.",
+  "before": {
+    "repository": "README + SCIENTIFIC_FOUNDATIONS + R2 Master Prompt",
+    "go_module": "absent",
+    "executable_lab": "absent"
+  },
+  "after": {
+    "repository": "executable Go LAB + current docs + state/change tracking",
+    "go_module": "github.com/LuigiD5555/origami",
+    "legacy_r2": "preserved and explicitly labeled"
+  },
+  "production_effect": "NONE",
+  "protocol_reference": "R3.10",
+  "lab_version": "R3.10-LAB",
+  "status": "EXPERIMENTAL_VALIDATED"
+}

@@ -1,0 +1,1 @@
+{"schema":"ohf.component-state.v1","component":"native_boundary","status":"EXPERIMENTAL_VALIDATED","inputs":["MASTER_PROMPT.md","carrier.png","query.txt"],"forbidden_sidecars":["ground_truth","seed","ABI","Go decoder","expected answer"],"epistemic_outputs":["KNOWN","AMBIGUOUS","UNKNOWN","INVALID"],"promotion_status":"LAB_FOUNDATION"}

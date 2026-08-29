@@ -1,0 +1,30 @@
+{
+  "schema": "ohf.change.v1",
+  "change_id": "CHG-GLYPHCALC-0001",
+  "title": "Introduce bounded glyph-level rewrite calculus",
+  "primary_component": "glyph_calculus",
+  "reason": {
+    "kind": "DESIGN_HYPOTHESIS",
+    "question": "Can OHF move computation out of the LLM by reducing Native work to local glyph perception and deterministic bounded micro-operations?"
+  },
+  "before": {
+    "glyph_calculus": "UNIMPLEMENTED",
+    "native_role": "perception plus later protocol stages"
+  },
+  "after": {
+    "glyph_calculus": "EXPERIMENTAL_VALIDATED_LOCAL",
+    "native_role_for_this_probe": "decode physical glyph states to bytes only",
+    "execution": "Go bounded rewrite runtime"
+  },
+  "micro_operations": ["HALT", "LIT", "RUN", "REF", "SEQ"],
+  "impact": ["perception_lab", "visual_compiler", "execution"],
+  "production_effect": "NONE",
+  "promotion_status": "NOT_PROMOTED",
+  "evidence": [
+    "go test ./...",
+    "glyphcalc local matrix",
+    "exact source reconstruction",
+    "raw fallback for pseudo-random control"
+  ],
+  "next_gate": "NATIVE_LOCAL_GLYPH_PERCEPTION"
+}

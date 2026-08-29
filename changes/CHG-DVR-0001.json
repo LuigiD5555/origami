@@ -1,0 +1,54 @@
+{
+  "schema": "ohf.change.v1",
+  "change_id": "CHG-DVR-0001",
+  "title": "Formalize dimensional visual registers and perceptual state space",
+  "status": "EXPERIMENTAL_IMPLEMENTED_LOCAL",
+  "production_effect": "NONE",
+  "primary_components": [
+    "dimensional_visual_register",
+    "perceptual_state_space",
+    "perceptual_orthogonality",
+    "bounded_multidimensional_machine"
+  ],
+  "reason": {
+    "kind": "DESIGN_FORMALIZATION",
+    "summary": "Treat OHF families/subdimensions as observable visual variables and define capacity from their combinations without confusing nominal mathematical capacity with perceptually safe capacity."
+  },
+  "before": {
+    "dimension_model": "families described conceptually; no executable hierarchical register/capacity model",
+    "capacity_model": "informal cartesian products",
+    "orthogonality": "design principle only"
+  },
+  "after": {
+    "dimension_model": "hierarchical MICRO/MESO/MACRO registry with leaf observable variables",
+    "capacity_model": "scope-aware nominal capacity plus separate SAFE_PSS capacity",
+    "orthogonality": "explicit PASS/FAIL/UNKNOWN pair evidence and candidate compatibility search",
+    "cli": [
+      "ohf-lab dimensional registry",
+      "ohf-lab dimensional capacity",
+      "ohf-lab dimensional validate-register",
+      "ohf-lab dimensional orthogonality"
+    ],
+    "machine_model": "finite multidimensional visual tape/registers + attention head + bounded SAFE_MICRO_ISA/Glyph Calculus transitions in Go"
+  },
+  "invariants_added": [
+    "NOMINAL_CAPACITY_NE_SAFE_CAPACITY",
+    "PERCEPTUAL_ORTHOGONALITY_REQUIRED_FOR_INDEPENDENT_CAPACITY",
+    "MICRO_MESO_MACRO_CAPACITY_MUST_RESPECT_VISUAL_SCOPE",
+    "PAIRWISE_PASS_NE_HIGHER_ORDER_PROMOTION"
+  ],
+  "affected_downstream": [
+    "macro_gestalt",
+    "visual_compiler",
+    "perception_lab",
+    "glyph_calculus",
+    "representation_tournament"
+  ],
+  "evidence": [
+    "LOCAL_GO_TESTS",
+    "LOCAL_GO_VET",
+    "DVR_EXAMPLE_VALIDATION",
+    "SCOPE_AWARE_CAPACITY_SMOKE"
+  ],
+  "promotion_status": "NOT_PROMOTED"
+}

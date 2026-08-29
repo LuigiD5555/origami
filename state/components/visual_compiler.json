@@ -1,0 +1,11 @@
+{
+  "schema": "ohf.component-state.v1",
+  "component": "visual_compiler",
+  "status": "EXPERIMENTAL",
+  "implemented_renderer": "lab-geometry@v1",
+  "renderer_scope": "LAB_ONLY_NON_R310_NON_PROMOTED",
+  "hard_carrier_target_bytes": 500000,
+  "promotion_status": "NOT_PROMOTED",
+  "dimensional_contract": "Renderer changes must declare which DVR leaf dimensions they mutate and preserve scope/orthogonality evidence.",
+  "last_change": "CHG-DVR-0001"
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "ohf.component-state.v1",
+  "component": "macro_gestalt",
+  "status": "EXPERIMENTAL",
+  "implementation": "DVR_MACRO_SCALE_CANDIDATE_NOT_PROMOTED",
+  "semantic_meaning": "NONE_FIXED",
+  "candidate_families": [
+    "F03",
+    "F35",
+    "F37",
+    "F39",
+    "F40",
+    "F41"
+  ],
+  "known_requirement": "ZERO_DETERMINISTIC_PIXEL_COLLISIONS_BEFORE_NATIVE_TESTS",
+  "promotion_status": "NOT_PROMOTED",
+  "dimensional_model": "profiles/dimensional_registry_v1.json",
+  "orthogonality_requirement": "PERCEPTUAL_ORTHOGONALITY_PLUS_ZERO_PIXEL_COLLISIONS_BEFORE_NATIVE_PROMOTION",
+  "last_change": "CHG-DVR-0001"
+}

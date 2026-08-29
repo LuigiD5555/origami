@@ -1,0 +1,12 @@
+{
+  "schema": "ohf.orthogonality.v1",
+  "pairs": [
+    {
+      "a": "macro.orientation",
+      "b": "macro.symmetry",
+      "status": "FAIL",
+      "evidence_ids": ["LOCAL-F2-M0333-M0313"],
+      "note": "Known deterministic rendering collision: rotational symmetry erased east/west orientation in the pre-DVR Macro-Gestalt experiment. Keep FAIL until a corrected renderer passes controlled mutation and perception tests."
+    }
+  ]
+}

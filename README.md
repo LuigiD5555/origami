@@ -110,7 +110,12 @@ Earlier **Origami HyperFold (OHF) R2** material remains archived as historical r
 
 Those files do not define the current project boundary.
 
-## Repository layout
+1. component changed;
+2. before/after state;
+3. evidence/run identifiers;
+4. affected downstream components;
+5. regressions created or resolved;
+6. promotion state.
 
 ```text
 origami/

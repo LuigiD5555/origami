@@ -1,0 +1,24 @@
+{
+  "schema": "ohf.change.v1",
+  "change_id": "CHG-GLYPHCALC-0002",
+  "title": "Profile safe low-cost glyph micro-ops and logical context parallelism",
+  "primary_components": ["glyph_microisa", "context_simd"],
+  "reason": {
+    "kind": "DESIGN_HYPOTHESIS",
+    "question": "Can receive-time LLM effort be reduced by selecting only empirically cheap local operations and batching independent glyph operations in context?"
+  },
+  "before": {
+    "native_probe": "model decodes each glyph directly to byte stream",
+    "parallelism_policy": "UNDEFINED"
+  },
+  "after": {
+    "microisa_profiler": "IMPLEMENTED_LOCAL",
+    "candidate_ops": ["OBSERVE4", "TUPLE4", "DECODE8"],
+    "context_simd": "IMPLEMENTED_LOCAL",
+    "external_testing": "ADAPTIVE_AND_RATE_LIMITED"
+  },
+  "critical_caveat": "Black-box model internal FLOPs are not observable or controllable; optimization is empirical using accuracy, latency, token, retry and cost proxies.",
+  "production_effect": "NONE",
+  "promotion_status": "NOT_PROMOTED",
+  "next_gate": "RUN_STAGE_A_ON_TARGET_MODEL"
+}

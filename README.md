@@ -28,6 +28,8 @@ ORIGAMI
 
 **OHF is an Origami research track, not the name or complete architecture of Origami.** Its R3.10-LAB Go code remains useful and executable, but OHF-specific carrier goals and Native experiments do not redefine the whole language.
 
+Detailed pre-reconciliation OHF documentation is preserved under [`docs/ohf/`](docs/ohf/README.md), rather than being discarded.
+
 ## Current semantic contracts
 
 ### Coherent-state profile
@@ -82,7 +84,7 @@ go test ./...
 go vet ./...
 ```
 
-For OHF dimensional/laboratory work, run the affected scripts and regression gates documented under `docs/` and `scripts/`. External model campaigns remain progressive, cached and conservative.
+For OHF dimensional/laboratory work, run the affected scripts and regression gates documented under `docs/`, `docs/ohf/` and `scripts/`. External model campaigns remain progressive, cached and conservative.
 
 `install.sh` installs the **OHF laboratory command-line tools** (`ohf-lab`, `ohf-glyphcalc`) under the user prefix. It is not a global installer for every future Origami runtime/profile.
 

@@ -9,6 +9,7 @@
 - replaced the stale OHF-only `state/ORIGAMI_STATE.json` root model with a project-level state that tracks semantic contracts and the OHF substate separately;
 - repaired README and documentation that described R3.10/OHF as the current state or architecture of all Origami;
 - clarified that `install.sh` / `uninstall.sh` manage OHF laboratory CLIs, not the complete future Origami runtime;
+- preserved the detailed pre-reconciliation OHF R3.10-LAB architecture/state/development/installation/roadmap documents under `docs/ohf/`;
 - preserved R3.10-LAB, DVR/PSS, Glyph Calculus, SAFE_MICRO_ISA, Context SIMD and reversible-installation work as active experimental assets rather than discarding them.
 
 ### Preserved

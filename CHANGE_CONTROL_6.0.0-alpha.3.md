@@ -16,6 +16,7 @@ Origami `6.0.0-alpha.2` correctly defined the Tlaloc/Origami split and perceptua
 - Origami advances to `6.0.0-alpha.3` without changing alpha.1/alpha.2 semantic laws.
 - root project state uses `origami.state.v2` and separates semantic contracts from the OHF research-track substate;
 - README, current state, architecture, roadmap, boundary and development/contribution docs consistently represent `Origami > OHF`;
+- detailed R3.10-LAB documents displaced from root/current authority are preserved byte-for-byte under `docs/ohf/`;
 - OHF R3.10-LAB code, DVR/PSS, Glyph Calculus, SAFE_MICRO_ISA, Context SIMD and reversible tooling lifecycle are preserved;
 - the installer is documented accurately as OHF laboratory tooling rather than the complete Origami runtime;
 - historical evidence remains intact.
@@ -29,6 +30,7 @@ Impact closure is documentation/evolution-control only; no Go runtime source is 
 - project hierarchy scan confirms OHF is labeled as a nested research track in active root/current docs;
 - Tlaloc ownership remains outside Origami;
 - existing semantic contract files are unchanged;
+- detailed displaced OHF documents are retained under `docs/ohf/` using their original blobs;
 - no historical R2/R3.10 change record is deleted.
 
 ## Regression risk

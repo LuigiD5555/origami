@@ -1,141 +1,93 @@
-# Origami 6.0.0-alpha.2
+# Origami 6.0.0-alpha.3
 
 Origami is an experimental **visual/computational representation and state-machine language** for expressing complex states, relations, dynamics and perceptual emergence.
 
-Origami is **not** the complete work system. Orchestration, behavior compilation, Tlaloque coordination and model-facing workflows belong to **Tlaloc**.
+Origami is independent of **Tlaloc**. Tlaloc is the work/orchestration system; Origami defines representation and transformation semantics and may be used with Tlaloc or independently.
 
-## Project boundary
+## Project hierarchy
 
 ```text
-TLALOC                          ORIGAMI
-work system                     representation
-orchestration                   state language
-behavior compilation   ----->   semantics contracts
-Tlaloque coordination  ----->   reference semantics / projection contracts
-verification                     dynamics / perceptual channels
+ORIGAMI
+├── State semantics
+│   └── coherent-state profile
+├── Perceptual channels
+│   ├── spatial
+│   ├── interference / moiré
+│   ├── depth / stereo / parallax
+│   ├── temporal
+│   └── emergent
+├── Machine / dynamics / visual projection
+└── Research profiles and carriers
+    └── OHF — Origami HyperFold
+        ├── R3.10 / R3.10-LAB workbench
+        ├── DVR / PSS
+        ├── Glyph Calculus
+        ├── SAFE_MICRO_ISA
+        └── Context SIMD
 ```
 
-Origami may be used independently of Tlaloc. Tlaloc may also operate without Origami or with another representation provider.
+**OHF is an Origami research track, not the name or complete architecture of Origami.** Its R3.10-LAB Go code remains useful and executable, but OHF-specific carrier goals and Native experiments do not redefine the whole language.
 
-> Tlaloc coordinates work; Tlaloque perform bounded specialist work; Origami defines how a class of states is represented, transformed and made perceptually available.
-
-## Semantic layers
-
-Origami 6.0 currently separates two orthogonal semantic layers.
+## Current semantic contracts
 
 ### Coherent-state profile
 
-Defined in [`docs/STATE_SEMANTICS_R0.md`](docs/STATE_SEMANTICS_R0.md):
+Defined in [`docs/STATE_SEMANTICS_R0.md`](docs/STATE_SEMANTICS_R0.md): `determinate`, `superposed`, `coupled`, `observed`, explicit observation authority, coherent interference/cancellation and Fold/Unfold semantics.
 
-- `determinate`
-- `superposed`
-- `coupled`
-- `observed`
+The profile is quantum-inspired as a computational analogy, not a claim of physical quantum computation.
 
-This profile is quantum-inspired as a computational analogy. It is not a claim of physical quantum computation.
+### Perceptual Channels R0
 
-### Perceptual channels R0
+Defined in [`docs/PERCEPTUAL_CHANNELS_R0.md`](docs/PERCEPTUAL_CHANNELS_R0.md) and [`spec/PERCEPTUAL_CHANNELS_R0.json`](spec/PERCEPTUAL_CHANNELS_R0.json).
 
-New in `6.0.0-alpha.2`, defined in [`docs/PERCEPTUAL_CHANNELS_R0.md`](docs/PERCEPTUAL_CHANNELS_R0.md):
+It formalizes spatial, interference, depth, temporal and emergent channels, including **Temporal Latent Images (TLI)** and operations such as `MOIRE`, `STEREO_BIND`, `PARALLAX_RESOLVE`, `KINETIC_REVEAL` and `TEMPORAL_INTEGRATE`.
 
-- spatial channels;
-- interference / moiré channels;
-- depth / stereoscopic / parallax channels;
-- temporal channels;
-- emergent channels.
+A valid Origami percept may exist only through a declared relation or trajectory; failure to reveal it in one static frame is not proof of absence.
 
-A represented structure does not need to exist as a complete static image. Some structures may become available only through interaction among layers or through a declared observation trajectory over time.
+## Executable OHF research track
 
-## Temporal Latent Image
+The repository also contains the experimental Go workbench inherited from OHF R3.10-LAB. It currently includes deterministic experiment identity, truth-first fixtures, artifact hashing, Native isolation, observation/scoring, failure-to-regression plumbing, DVR/PSS, Glyph Calculus, SAFE_MICRO_ISA, Context SIMD and reversible installation for the OHF laboratory CLIs.
 
-A **Temporal Latent Image (TLI)** is a representation whose intended percept is unavailable or incomplete under a valid static observation and becomes available only through a declared temporal transformation.
+These implementations are **experimental profile/tooling**, not proof that every Origami 6.x semantic operation has a renderer, detector or reference executor.
 
-```text
-carrier + layer relation + trajectory + temporal integration
-                         -> percept
-```
+The exact historical `ORIGAMI_SDK_R310_EXPLICIT_CODEBOOK.zip` remains missing; that blocks byte-identical historical R3.10 baseline claims, but it does not block independent Origami 6.x semantic development or OHF-LAB experiments.
 
-The motion/trajectory is part of the representation contract, not incidental animation.
+## Source of truth and change control
 
-The corresponding operations include:
-
-- `MOIRE`
-- `PHASE_SHIFT`
-- `STEREO_BIND`
-- `PARALLAX_RESOLVE`
-- `KINETIC_REVEAL`
-- `TEMPORAL_INTEGRATE`
-- `TEMPORAL_DECAY`
-
-Machine-readable form: [`spec/PERCEPTUAL_CHANNELS_R0.json`](spec/PERCEPTUAL_CHANNELS_R0.json).
-
-## Important distinction
-
-Origami keeps state semantics and perceptual availability separate.
+Current project identity and state must be recoverable from the repository:
 
 ```text
-state semantics != perceptual availability
+VERSION
+README.md
+PROJECT_BOUNDARY.md
+docs/CURRENT_STATE.md
+docs/ARCHITECTURE.md
+docs/STATE_SEMANTICS_R0.md
+docs/PERCEPTUAL_CHANNELS_R0.md
+spec/PERCEPTUAL_CHANNELS_R0.json
+state/ORIGAMI_STATE.json
+state/components/          # OHF/LAB component state where applicable
+changes/                   # machine-readable change records
+CHANGE_CONTROL_*.md
 ```
 
-For example, a `superposed` state may have a `motion-bound` projection; an `observed` state may still be encoded as a Temporal Latent Image.
+Historical documents and OHF R2/R3.10 artifacts remain evidence, but they do not override the current project boundary.
 
-Perceptual conditions such as `latent`, `motion-bound`, `phase-bound`, `stereo-bound`, `revealed` and `decayed` are therefore annotations on availability, not replacements for coherent-state kinds.
+## Development
 
-## Fold / Unfold
+Cheap local gates first:
 
-- `UNFOLD` constructs or expands alternatives under a declared representation rule.
-- `FOLD` constrains and/or explicitly resolves according to a declared policy.
-
-These remain Origami operations. Model training, prompt compilation and behavior enforcement remain Tlaloc responsibilities.
-
-## Runtime status
-
-`6.0.0-alpha.2` formalizes semantic contracts. It does **not** yet claim complete production renderers/detectors/decoders for every perceptual operation.
-
-Unsupported operations must be reported explicitly rather than approximated silently.
-
-The exact pre-split Origami 5.1 implementation remains the authoritative implementation base until these 6.0 contracts are integrated and regression-tested against it.
-
-## Historical continuity
-
-`6.0.0-alpha.1` established the Tlaloc/Origami project split and coherent-state semantic overlay.
-
-`6.0.0-alpha.2` adds perceptual-channel semantics while preserving that boundary.
-
-Earlier **Origami HyperFold (OHF) R2** material remains archived as historical research input:
-
-- `docs/SCIENTIFIC_FOUNDATIONS.md`
-- `prompts/OHF_R2_MASTER_PROMPT.txt`
-- `docs/LEGACY_OHF_R2.md`
-
-Those files do not define the current project boundary.
-
-1. component changed;
-2. before/after state;
-3. evidence/run identifiers;
-4. affected downstream components;
-5. regressions created or resolved;
-6. promotion state.
-
-```text
-origami/
-├── README.md
-├── VERSION
-├── CHANGELOG.md
-├── PROJECT_BOUNDARY.md
-├── CHANGE_CONTROL_6.0.0-alpha.1.md
-├── CHANGE_CONTROL_6.0.0-alpha.2.md
-├── docs/
-│   ├── STATE_SEMANTICS_R0.md
-│   ├── PERCEPTUAL_CHANNELS_R0.md
-│   ├── LEGACY_OHF_R2.md
-│   └── SCIENTIFIC_FOUNDATIONS.md      # historical OHF material
-├── spec/
-│   └── PERCEPTUAL_CHANNELS_R0.json
-└── prompts/
-    └── OHF_R2_MASTER_PROMPT.txt        # historical OHF R2 artifact
+```bash
+go test ./...
+go vet ./...
 ```
+
+For OHF dimensional/laboratory work, run the affected scripts and regression gates documented under `docs/` and `scripts/`. External model campaigns remain progressive, cached and conservative.
+
+`install.sh` installs the **OHF laboratory command-line tools** (`ohf-lab`, `ohf-glyphcalc`) under the user prefix. It is not a global installer for every future Origami runtime/profile.
 
 ## Version
 
-`6.0.0-alpha.2`
+`6.0.0-alpha.3`
+
+This release reconciles repository hierarchy and machine-readable state after integrating the OHF R3.10-LAB workbench. It does not change the semantic laws introduced in alpha.1 or alpha.2.

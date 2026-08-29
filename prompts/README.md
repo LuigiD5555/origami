@@ -1,11 +1,11 @@
 # Prompt directory
 
-Prompt files in this directory may belong to different historical protocol generations.
+Prompt files here belong to specific Origami research profiles or historical protocol generations. Origami itself does **not** have one universal Master Prompt.
 
 ## `OHF_R2_MASTER_PROMPT.txt`
 
-**Status: LEGACY / R2 ONLY.**
+**Status: LEGACY / OHF R2 ONLY.**
 
-It is retained for reproducibility of the older binary-grid ZIP carrier and must not be treated as the current R3.10-LAB Native protocol.
+It is retained for reproducibility of the older binary-grid ZIP carrier and must not be treated as the current Origami 6.x semantic contract or the current OHF R3.10-LAB Native profile.
 
-Current LAB Native fixtures are generated/tested through the laboratory commands and the blind-bundle boundary. The long-term direction is for the canonical Go protocol definition to generate the Master Prompt rather than maintaining an unrelated hand-written specification.
+Current OHF-LAB Native fixtures are generated/tested through laboratory commands and the blind-bundle boundary. Any future generated prompt should be derived from the owning profile's canonical contracts rather than becoming an alternate source of truth.

@@ -1,115 +1,42 @@
 # Development and change control
 
-OHF evolves quickly enough that repository state must be more trustworthy than conversation history.
+Origami evolves through multiple semantic and research tracks. Repository state must be more trustworthy than conversation history.
 
-## Installation
-
-```bash
-./install.sh --check-only
-./install.sh
-```
-
-Development checks:
+## Basic local checks
 
 ```bash
-make test
-make vet
-make check
+go test ./...
+go vet ./...
 ```
+
+The current Go code primarily exercises the OHF laboratory track. A passing OHF suite does not by itself prove runtime support for every Origami 6.x semantic operation.
 
 ## Change workflow
 
-Every material change should follow this sequence:
+For every material change:
 
-1. open a Change Record under `changes/`;
-2. name the primary component;
-3. record the reason/hypothesis;
-4. determine downstream impact;
-5. preserve the before-state identity;
-6. modify only the declared scope;
-7. run cheap local gates first;
-8. run affected regressions;
-9. produce evidence;
-10. compare before/after;
-11. classify the result;
-12. create regressions for reproducible new failures;
-13. update component state;
-14. promote only through a separate promotion decision.
+1. identify whether it belongs to core Origami semantics/runtime or a specific profile/research track such as OHF;
+2. open/update a change record under `changes/`;
+3. record component, reason, before/after state and downstream impact;
+4. run the smallest valid impact closure first;
+5. add regressions for reproducible failures;
+6. update `state/ORIGAMI_STATE.json` for root changes and `state/components/` for OHF/component changes;
+7. promote only through an explicit decision.
 
-## Allowed states
+## Semantic ownership
 
-Component/change status should use explicit values rather than informal prose:
+Do not put Tlaloc responsibilities into Origami. Behavior compilation, Tlaloque coordination, target-model orchestration and behavioral-artifact promotion are Tlaloc-owned.
 
-```text
-UNIMPLEMENTED
-EXPERIMENTAL
-BLOCKED
-FAILED
-EXPERIMENTAL_VALIDATED
-PROMOTION_CANDIDATE
-PROMOTED
-REJECTED
-SUPERSEDED
-```
+Do not silently turn OHF-specific constraints into universal Origami laws. If a capability is being generalized from OHF into core Origami, record that ownership transition explicitly.
 
-Experiment results:
+## Dimensional/perceptual changes
 
-```text
-PASS
-FAIL
-INCONCLUSIVE
-BLOCKED
-```
+Record visual scope, physical states, controlled render mutation, collision results, orthogonality evidence and the difference between nominal capacity and evidence-gated safe capacity. Pairwise success does not establish higher-order independence.
 
-## Impact closure
-
-Do not rerun the entire system when a component cannot affect unrelated upstream layers.
-
-Example: changing a visual renderer normally requires renderer/perception/visual regressions, but does not automatically require canonical-source or grammar-discovery tests.
-
-A Generative IR change has a much larger downstream closure and should trigger execution/verification/restoration tests.
-
-The goal is rigorous **and** efficient testing.
+Perceptual availability must remain distinct from coherent-state kind. Failure to reveal a latent/motion-bound percept in one static frame is not proof of absence.
 
 ## Repository hygiene
 
-Do not commit:
+Do not commit generated runs, raw external-model responses, local binaries, secrets or unverified historical SDK bytes. Commit deterministic source, minimal fixtures, semantic contracts, state/change records and evidence summaries required to justify claims.
 
-- generated `runs/` contents;
-- external-model raw responses unless they are converted into a curated regression fixture;
-- historical R3.10 SDK bytes until their provenance is known;
-- local binaries;
-- secrets or API keys.
-
-Do commit:
-
-- experiment specifications;
-- deterministic source code;
-- minimal fixtures;
-- component states;
-- change records;
-- reproducible regression definitions;
-- summarized evidence needed to justify a protocol claim.
-
-## Module path
-
-The canonical Go module for this repository is:
-
-```text
-github.com/LuigiD5555/origami
-```
-
-## Dimensional-change workflow
-
-A change that adds or modifies a visual dimension/subdimension must additionally record:
-
-1. visual scale: `MICRO`, `MESO` or `MACRO`;
-2. the OHF family/families it belongs to;
-3. physical states and controlled render mutation;
-4. whether it changes only one declared dimension;
-5. deterministic collision results;
-6. pairwise orthogonality evidence with existing active dimensions;
-7. higher-order compound evidence before promotion;
-8. the delta between nominal PSS and `SAFE_PSS`.
-
-Do not increase safe-capacity metrics from registry cardinality alone.
+External campaigns should be incremental, cached, low-concurrency and respectful of rate limits/Retry-After.

@@ -1,0 +1,39 @@
+{
+  "schema": "origami.change.v1",
+  "change_id": "CHG-ORIGAMI-0001",
+  "title": "Reconcile Origami 6.x project hierarchy with the integrated OHF R3.10-LAB workbench",
+  "date": "2026-08-28",
+  "primary_components": [
+    "project_boundary",
+    "evolution_control",
+    "documentation",
+    "root_state"
+  ],
+  "reason": {
+    "kind": "REPOSITORY_RECONCILIATION",
+    "finding": "After the R3.10-LAB merge, several root/current documents and state/ORIGAMI_STATE.json again described OHF/R3.10 as the state or architecture of all Origami, conflicting with the 6.x Tlaloc/Origami split and perceptual-channel contracts."
+  },
+  "before": {
+    "version": "6.0.0-alpha.2",
+    "root_state_schema": "ohf.origami-state.v1",
+    "hierarchy": "mixed Origami 6.x semantics with OHF-as-root documentation"
+  },
+  "after": {
+    "version": "6.0.0-alpha.3",
+    "root_state_schema": "origami.state.v2",
+    "hierarchy": "Origami root with OHF as a nested research track",
+    "semantic_change": "NONE"
+  },
+  "preserved": [
+    "origami.perceptual-channels.r0",
+    "coherent-state semantic laws",
+    "OHF R3.10-LAB Go code",
+    "DVR/PSS",
+    "Glyph Calculus",
+    "SAFE_MICRO_ISA",
+    "Context SIMD",
+    "reversible OHF laboratory tooling installation",
+    "historical change records"
+  ],
+  "promotion_status": "PROMOTED_REPOSITORY_HYGIENE"
+}

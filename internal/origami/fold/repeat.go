@@ -18,7 +18,7 @@ func ExactRepeat(source, unit []byte) (ir.Representation, error) {
 		return ir.Representation{}, fmt.Errorf("origami fold: source is not an exact repetition")
 	}
 	count := len(source) / len(unit)
-	if !bytes.Equal(source, bytes.Repeat(unit, count)) {
+	if count < 2 || !bytes.Equal(source, bytes.Repeat(unit, count)) {
 		return ir.Representation{}, fmt.Errorf("origami fold: source is not an exact repetition")
 	}
 
@@ -29,4 +29,23 @@ func ExactRepeat(source, unit []byte) (ir.Representation, error) {
 			"root":    {ID: "root", Kind: ir.KindRepeat, Target: "pattern", Count: uint64(count)},
 		},
 	}, nil
+}
+
+// ExactRepeatAuto finds the shortest exact repeating unit. This is deliberately
+// a simple deterministic reference Fold, not a general-purpose compressor.
+func ExactRepeatAuto(source []byte) (ir.Representation, error) {
+	if len(source) < 2 {
+		return ir.Representation{}, fmt.Errorf("origami fold: source has no repeated structure")
+	}
+	for size := 1; size <= len(source)/2; size++ {
+		if len(source)%size != 0 {
+			continue
+		}
+		unit := source[:size]
+		count := len(source) / size
+		if count >= 2 && bytes.Equal(source, bytes.Repeat(unit, count)) {
+			return ExactRepeat(source, unit)
+		}
+	}
+	return ir.Representation{}, fmt.Errorf("origami fold: source has no exact repeating unit")
 }

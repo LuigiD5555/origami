@@ -1,0 +1,38 @@
+{
+  "schema": "origami.tlaloc-hybrid-import.r0",
+  "status": "EXPERIMENTAL_NOT_PROMOTED",
+  "accepts": "tlaloc.origami-hybrid-artifact-set.r0",
+  "receiver_contract": "origami.hybrid-receiver.r0",
+  "authority": {
+    "tlaloc": [
+      "discover receiver behavior with richer swarm/Tlaloque processes",
+      "distill semantic transitions into deterministic micro-rules",
+      "propose a universal bootstrap prompt",
+      "propose BOOT strategy and Rosetta constraints",
+      "rank candidates using experimental evidence"
+    ],
+    "origami": [
+      "define carrier semantics",
+      "bind carrier-local physical symbols",
+      "construct concrete BOOT/ROSETTA/INDEX/MEMORY/VERIFICATION sections",
+      "validate deterministic execution",
+      "store candidate and promoted receiver artifacts",
+      "render the final carrier"
+    ]
+  },
+  "preservation": [
+    "state",
+    "token",
+    "action",
+    "next_state",
+    "emit",
+    "source_trace_sha256"
+  ],
+  "forbidden_imports": [
+    "Tlaloc-assigned universal physical glyph meanings",
+    "automatic PROMOTED status",
+    "hidden source/oracle data",
+    "undeclared decoder dependencies"
+  ],
+  "hybrid_target": "External model performs universal bootstrap and high-level perceptual navigation; Origami executes deterministic micro-agent/addressing/computation/verification work; the model receives bounded semantic results and decides the next access or answer."
+}

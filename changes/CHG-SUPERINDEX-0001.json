@@ -1,0 +1,34 @@
+{
+  "schema": "ohf.change.v1",
+  "change_id": "CHG-SUPERINDEX-0001",
+  "title": "Separate SuperIndex representation scopes and preregister capacity tournament",
+  "primary_components": ["canonical_document", "superindex", "representation_tournament"],
+  "reason": {
+    "kind": "SCIENTIFIC_CORRECTION",
+    "question": "Which declared SuperIndex representation scopes fit the fixed visual surface and PNG budget without hiding dependencies?"
+  },
+  "before": {
+    "metric": "fits_carrier",
+    "candidates": ["direct JSON glyph projection"],
+    "problem": "A failed encoding could be misread as a general carrier impossibility."
+  },
+  "after": {
+    "preregistration": "experiments/EXP-003-superindex-capacity-001.json",
+    "metric": "passes_declared_scope",
+    "candidates": ["direct-json-glyph-v1", "deflate-json-glyph-v1", "referenced-payload-manifest-v1"],
+    "dependency_policy": "EXPLICIT",
+    "claim_classes": ["ESTABLISHED_FOUNDATION", "ORIGAMI_ADOPTED_ANALOGY", "RESEARCH_HYPOTHESIS", "ORIGAMI_EXPERIMENTAL_RESULT"]
+  },
+  "evidence": {
+    "run_id": "93ae706b66dc7e21",
+    "direct_json": "FAIL_SURFACE_AND_PNG",
+    "deflate_json": "FAIL_SURFACE_PASS_PNG",
+    "referenced_manifest": "PASS_REFERENCED_SCOPE",
+    "artifact_manifest": "PASS",
+    "ground_truth": "PASS",
+    "false_exact": 0
+  },
+  "production_effect": "NONE",
+  "promotion_status": "EXPERIMENTAL_NOT_PROMOTED",
+  "next_gate": "BUILD_REFERENCED_SUPERINDEX_RENDERER_AND_COMPARE_WITH_TEXT_TILE"
+}

@@ -1,0 +1,27 @@
+{
+  "schema": "ohf.component-state.v1",
+  "component": "superindex_capacity",
+  "status": "EXPERIMENTAL_VALIDATED_LOCAL",
+  "promotion_status": "NOT_PROMOTED",
+  "fixture_scope": "Thinking Swarms PDF pages 17-20; 7647 canonical extracted bytes",
+  "safe_claim": "A 250-byte referenced manifest fits the tested surface and PNG budgets when its external SHA-256 dependency is explicit.",
+  "unsupported_claims": [
+    "The full SuperIndex is self-contained in the referenced manifest.",
+    "Every SuperIndex can fit the carrier.",
+    "The glyph states are perceptually safe for a VLM."
+  ],
+  "candidate_results": {
+    "direct-json-glyph-v1": "FAIL_SURFACE_AND_PNG",
+    "deflate-json-glyph-v1": "FAIL_SURFACE_PASS_PNG",
+    "referenced-payload-manifest-v1": "PASS_REFERENCED_SCOPE"
+  },
+  "evidence_run": "93ae706b66dc7e21",
+  "referenced_renderer": {
+    "id": "superindex-carrier@v1",
+    "run": "2f68a4155acf3c67",
+    "png_bytes": 24687,
+    "payload_verification": "PASS",
+    "native_perception": "NOT_TESTED"
+  },
+  "last_change": "CHG-SUPERINDEX-0002"
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "ohf.change.v1",
+  "change_id": "CHG-SUPERINDEX-0002",
+  "title": "Add referenced SuperIndex visual renderer with independent payload verification",
+  "primary_components": ["visual_compiler", "superindex", "verification"],
+  "reason": {"kind": "EXPERIMENTAL_IMPLEMENTATION", "question": "Can the capacity-tournament winner be materialized without hiding its external payload dependency?"},
+  "before": {"renderer": "NONE", "payload_verification": "NONE"},
+  "after": {"renderer": "superindex-carrier@v1", "scope": "REFERENCED", "payload_address": "SHA-256", "verification": "run verify recomputes hash from superindex.json"},
+  "evidence": {
+    "preregistration": "experiments/EXP-004-superindex-carrier-001.preregistration.json",
+    "run_id": "2f68a4155acf3c67",
+    "png_bytes": 24687,
+    "carrier_size_gate": "PASS",
+    "visual_reopen": "PASS",
+    "referenced_payload": "PASS",
+    "superindex_sha256": "2565019658ff60095e66b4ee60e0f392612994bc947242323f187ee786bfe7d5",
+    "false_exact": 0
+  },
+  "production_effect": "NONE",
+  "promotion_status": "EXPERIMENTAL_NOT_PROMOTED",
+  "next_gate": "PREREGISTER_AND_RUN_TRANSVERSE_QUERY_COMPARISON_AGAINST_PDF_CARRIER_BASELINE"
+}

@@ -1,0 +1,37 @@
+{
+  "schema": "ohf.preregistered-experiment.v1",
+  "id": "EXP-003-superindex-capacity-001",
+  "registered_before_run": true,
+  "fixture": {
+    "experiment": "EXP-002-pdf-carrier-001",
+    "source_sha256": "2338506034f1297f3e9bf7cf2c85b299932af68ac32c256011dbbf07b93f4df5",
+    "canonical_bytes": 7647,
+    "pages": [17, 18, 19, 20]
+  },
+  "hypothesis": "At least one explicitly scoped SuperIndex representation fits the 1600x2000 surface and 500000-byte PNG budget without concealing dependencies.",
+  "candidates": [
+    {"id": "direct-json-glyph-v1", "self_contained": true, "decoder": "glyphcalc byte decoder plus JSON"},
+    {"id": "deflate-json-glyph-v1", "self_contained": true, "decoder": "glyphcalc byte decoder plus zlib plus JSON"},
+    {"id": "referenced-payload-manifest-v1", "self_contained": false, "decoder": "glyphcalc byte decoder plus external payload resolved by SHA-256"}
+  ],
+  "fixed_parameters": {
+    "canvas_width": 1600,
+    "canvas_height": 2000,
+    "glyph_cell_pixels": 36,
+    "glyph_margin_pixels": 4,
+    "maximum_png_bytes": 500000
+  },
+  "pass": "A candidate passes its declared scope only when both surface and PNG budgets pass; dependencies must remain explicit.",
+  "fail": "No candidate passes both budgets in its declared scope.",
+  "non_claims": [
+    "A failed candidate does not prove that every SuperIndex representation fails.",
+    "A referenced candidate does not prove self-contained compression.",
+    "Mathematical distinguishability does not establish perceptual safety."
+  ],
+  "claim_classes": {
+    "information_limits": "ESTABLISHED_FOUNDATION",
+    "glyph_dialect": "ORIGAMI_ADOPTED_ANALOGY",
+    "compact_visual_superindex": "RESEARCH_HYPOTHESIS",
+    "candidate_measurements": "ORIGAMI_EXPERIMENTAL_RESULT"
+  }
+}

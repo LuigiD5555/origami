@@ -13,59 +13,48 @@ import (
 func TestExactRepeatFoldUnfoldHash(t *testing.T) {
 	unit := []byte("ABC")
 	source := bytes.Repeat(unit, 100000)
-
 	rep, err := fold.ExactRepeat(source, unit)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if rep.Nodes[rep.Root].Kind != ir.KindRepeat {
-		t.Fatalf("root kind = %q, want REPEAT", rep.Nodes[rep.Root].Kind)
-	}
-	if len(rep.Nodes) != 2 {
-		t.Fatalf("nodes = %d, want 2", len(rep.Nodes))
-	}
+	if err != nil { t.Fatal(err) }
+	if rep.Nodes[rep.Root].Kind != ir.KindRepeat { t.Fatalf("root kind = %q, want REPEAT", rep.Nodes[rep.Root].Kind) }
+	if len(rep.Nodes) != 2 { t.Fatalf("nodes = %d, want 2", len(rep.Nodes)) }
+	got, stats, err := machine.UnfoldExact(rep, machine.Budget{MaxBytes: uint64(len(source)), MaxNodes: 100001, MaxDepth: 2})
+	if err != nil { t.Fatal(err) }
+	if sha256.Sum256(got) != sha256.Sum256(source) { t.Fatal("unfolded SHA-256 differs from source") }
+	if stats.BytesMaterialized != uint64(len(source)) { t.Fatalf("materialized bytes = %d, want %d", stats.BytesMaterialized, len(source)) }
+	if stats.NodesVisited != 100001 { t.Fatalf("nodes visited = %d, want 100001", stats.NodesVisited) }
+}
 
-	got, stats, err := machine.UnfoldExact(rep, machine.Budget{
-		MaxBytes: uint64(len(source)),
-		MaxNodes: 100001,
-		MaxDepth: 2,
-	})
-	if err != nil {
-		t.Fatal(err)
-	}
-	if sha256.Sum256(got) != sha256.Sum256(source) {
-		t.Fatal("unfolded SHA-256 differs from source")
-	}
-	if stats.BytesMaterialized != uint64(len(source)) {
-		t.Fatalf("materialized bytes = %d, want %d", stats.BytesMaterialized, len(source))
-	}
-	if stats.NodesVisited != 100001 {
-		t.Fatalf("nodes visited = %d, want 100001", stats.NodesVisited)
-	}
+func TestExactRepeatAutoFindsShortestUnit(t *testing.T) {
+	rep, err := fold.ExactRepeatAuto([]byte("ABCABCABCABC"))
+	if err != nil { t.Fatal(err) }
+	if got := string(rep.Nodes["pattern"].Literal); got != "ABC" { t.Fatalf("pattern = %q, want ABC", got) }
+	if got := rep.Nodes[rep.Root].Count; got != 4 { t.Fatalf("count = %d, want 4", got) }
+}
+
+func TestExactRepeatAutoFindsSingleByteUnit(t *testing.T) {
+	rep, err := fold.ExactRepeatAuto([]byte("AAAA"))
+	if err != nil { t.Fatal(err) }
+	if got := string(rep.Nodes["pattern"].Literal); got != "A" { t.Fatalf("pattern = %q, want A", got) }
+}
+
+func TestExactRepeatAutoRejectsLiteralOnlySource(t *testing.T) {
+	if _, err := fold.ExactRepeatAuto([]byte("ABCDEFG")); err == nil { t.Fatal("expected source without repeated structure to be rejected") }
 }
 
 func TestExactRepeatRejectsNonRepeatingSource(t *testing.T) {
-	if _, err := fold.ExactRepeat([]byte("ABCABD"), []byte("ABC")); err == nil {
-		t.Fatal("expected non-repeating source to be rejected")
-	}
+	if _, err := fold.ExactRepeat([]byte("ABCABD"), []byte("ABC")); err == nil { t.Fatal("expected non-repeating source to be rejected") }
+}
+
+func TestExactRepeatRejectsCountOne(t *testing.T) {
+	if _, err := fold.ExactRepeat([]byte("ABC"), []byte("ABC")); err == nil { t.Fatal("expected count-one literal to be rejected as non-generative") }
 }
 
 func TestUnfoldRequiresFiniteBudget(t *testing.T) {
-	rep, err := fold.ExactRepeat([]byte("ABCABC"), []byte("ABC"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	if _, _, err := machine.UnfoldExact(rep, machine.Budget{}); err == nil {
-		t.Fatal("expected zero budget to be rejected")
-	}
+	rep, err := fold.ExactRepeat([]byte("ABCABC"), []byte("ABC")); if err != nil { t.Fatal(err) }
+	if _, _, err := machine.UnfoldExact(rep, machine.Budget{}); err == nil { t.Fatal("expected zero budget to be rejected") }
 }
 
 func TestUnfoldRejectsInsufficientByteBudget(t *testing.T) {
-	rep, err := fold.ExactRepeat([]byte("ABCABC"), []byte("ABC"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	if _, _, err := machine.UnfoldExact(rep, machine.Budget{MaxBytes: 5, MaxNodes: 3, MaxDepth: 2}); err == nil {
-		t.Fatal("expected byte budget exhaustion")
-	}
+	rep, err := fold.ExactRepeat([]byte("ABCABC"), []byte("ABC")); if err != nil { t.Fatal(err) }
+	if _, _, err := machine.UnfoldExact(rep, machine.Budget{MaxBytes: 5, MaxNodes: 3, MaxDepth: 2}); err == nil { t.Fatal("expected byte budget exhaustion") }
 }

@@ -1,0 +1,19 @@
+{
+  "schema": "origami.receiver-artifact.r0",
+  "status": "REFERENCE_CANDIDATE",
+  "receiver_contract": "origami.hybrid-receiver.r0",
+  "distiller_contract": "tlaloc.origami-receiver-distillation.r0",
+  "candidate_id": "universal-bootstrap-r0",
+  "prompt_path": "generated/MASTER_PROMPT.md",
+  "prompt_sha256": "122ff484e8b026b486038ab84f47c749d2b7b2bf4b07cfbd6adb882f0c07d46a",
+  "validation_suite": [
+    "internal/receiver symbol-permutation",
+    "internal/receiver unknown-fail-closed",
+    "internal/lab/hybridbundle isolation"
+  ],
+  "false_exact": 0,
+  "contaminated": false,
+  "peak_active_token_eq": 0,
+  "working_window_token_eq": 4000,
+  "notes": "Bootstrap reference candidate only. It is stored by Origami but is NOT PROMOTED until model-facing Hybrid and cross-model permutation gates pass. source_trace_sha256 is intentionally absent because this seed predates automated Tlaloc distillation."
+}

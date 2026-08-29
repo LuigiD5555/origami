@@ -2,14 +2,29 @@
 
 Status: **EXPERIMENTAL / REFERENCE CANDIDATE / NOT PROMOTED**
 
-This is the shortest reproducible path from the current repository to a real `carrier.png` plus deterministic Hybrid tools.
+This is the shortest reproducible path from the current repositories to a real `carrier.png`, deterministic Origami tools and an automatic OpenAI-compatible model↔tool loop coordinated by Tlaloc.
 
-## 1. Generate the self-contained synthetic carrier
+## 1. Build the Origami Hybrid tools
 
 From the Origami repository root:
 
 ```bash
-go run ./cmd/origami-hybrid-carrier
+make build
+```
+
+The experimental Hybrid binaries are written to:
+
+```text
+bin/origami-hybrid-carrier
+bin/origami-hybrid-tool
+```
+
+They are intentionally built from the feature tree and are not claimed as globally promoted/installable release commands yet.
+
+## 2. Generate the self-contained synthetic carrier
+
+```bash
+./bin/origami-hybrid-carrier
 ```
 
 Default input:
@@ -34,12 +49,12 @@ runs/hybrid-carrier-synthetic-r0/
 
 Only `public/` belongs on the answering side. `private/` exists for evaluator/debug evidence and sharing it with the answering model contaminates the experiment.
 
-The generator verifies before returning that the logical carrier can be reconstructed directly from `public/carrier.png`; it does not use the private envelope to perform that check.
+Before returning, the generator verifies that the logical carrier can be reconstructed directly from `public/carrier.png`; it does not use the private envelope to perform that check.
 
-## 2. Inspect BOOT from the image-backed runtime
+## 3. Inspect BOOT from the image-backed runtime
 
 ```bash
-go run ./cmd/origami-hybrid-tool \
+./bin/origami-hybrid-tool \
   -op BOOT
 ```
 
@@ -51,10 +66,12 @@ The tool:
 4. verifies the embedded memory commitment;
 5. exposes the BOOT structure.
 
-## 3. Query one address/key
+The defaults point to `runs/hybrid-carrier-synthetic-r0/public/`.
+
+## 4. Query one address/key
 
 ```bash
-go run ./cmd/origami-hybrid-tool \
+./bin/origami-hybrid-tool \
   -op LOOKUP \
   -query K7F91
 ```
@@ -65,10 +82,10 @@ Expected synthetic value:
 VIOLET-48271
 ```
 
-## 4. Follow the dependency path
+## 5. Follow the dependency path
 
 ```bash
-go run ./cmd/origami-hybrid-tool \
+./bin/origami-hybrid-tool \
   -op FOLLOW \
   -query K7F91 \
   -relation depends \
@@ -85,33 +102,48 @@ K7F91 / VIOLET-48271
 
 The tool reports per-operation touched/exposed metrics separately from carrier-open/index-build metrics. Parsing/index construction therefore cannot be silently presented as zero-cost selective access.
 
-## 5. Verify the carrier memory
+## 6. Verify the carrier memory
 
 ```bash
-go run ./cmd/origami-hybrid-tool -op VERIFY
+./bin/origami-hybrid-tool -op VERIFY
 ```
 
 `VERIFY` succeeds only after the image-backed runtime has already checked the embedded memory SHA-256 during carrier open.
 
-## 6. Current local-model use
+## 7. Run the automatic Hybrid loop with a local model
 
-For a fresh VLM session:
+The Tlaloc feature branch adds an OpenAI-compatible multimodal tool loop. The model receives the Master Prompt and carrier image, may request declared Origami functions, and Tlaloc executes those requests through `origami-hybrid-tool` before returning the tool results to the model.
+
+Assuming sibling clones such as:
 
 ```text
-System prompt: public/MASTER_PROMPT.md
-Image:         public/carrier.png
-Interface:     public/model_packet.json
+projects/
+├── origami/
+└── tlaloc/
 ```
 
-Do not provide anything from `private/`.
+start LM Studio's OpenAI-compatible local server, load a model that supports the image/tool behavior being tested, then from `tlaloc/behavior-lab/` run:
 
-The current repository now provides the deterministic tool CLI, but it does **not yet automatically register these CLI operations as OpenAI-compatible function calls inside LM Studio**. Until the model↔tool harness is added, a manual Hybrid probe can relay a requested declared operation to `origami-hybrid-tool` and return only its JSON output to the model.
+```bash
+go run ./cmd/behaviorlab receiver-run \
+  -endpoint http://127.0.0.1:1234/v1 \
+  -model <YOUR_MODEL_ID> \
+  -prompt ../../origami/runs/hybrid-carrier-synthetic-r0/public/MASTER_PROMPT.md \
+  -carrier ../../origami/runs/hybrid-carrier-synthetic-r0/public/carrier.png \
+  -packet ../../origami/runs/hybrid-carrier-synthetic-r0/public/model_packet.json \
+  -origami-tool ../../origami/bin/origami-hybrid-tool \
+  -question 'What is the value of the second-order depends dependency of K7F91?'
+```
 
-A direct Native diagnostic may omit the tools and give the model only the Master Prompt + image + question; that tests VLM BOOT/ROSETTA readability and must not be confused with the Hybrid runtime result.
+Adjust relative paths if the repositories are located elsewhere.
 
-## 7. First held-out question
+Tlaloc sends the carrier image to the model and exposes only the declared Origami functions. The Origami tool itself re-validates `carrier.png` against `model_packet.json` on every invocation and reads the logical memory from the image, not from `private/source.json` or `private/carrier.envelope.json`.
 
-Ask the model:
+The JSON result records the final answer, model/tool turns, number of tool calls, tool-output bytes/token-equivalent and model-reported token usage when the endpoint supplies it.
+
+## 8. First held-out question
+
+The first synthetic question is:
 
 ```text
 What is the value of the second-order `depends` dependency of K7F91?
@@ -123,35 +155,49 @@ Ground truth is evaluator-side only:
 AMBER-10593
 ```
 
-The desired Hybrid route is conceptually:
+A valid Hybrid route may resemble:
 
 ```text
 BOOT
 -> LOOKUP K7F91
 -> FOLLOW depends depth=2
--> VERIFY when required
+-> VERIFY when exactness is required
 -> ANSWER
 ```
 
-The answering model must not receive `private/source.json` or `private/carrier.envelope.json`.
+The model is not required to choose exactly this sequence if another declared selective route is semantically equivalent and evidence-correct. It must not receive `private/source.json` or `private/carrier.envelope.json`.
 
-## What this proves and does not prove
+## 9. Native diagnostic
 
-The deterministic Go path can prove:
+To isolate visual self-boot behavior, start a fresh VLM session and provide only:
+
+```text
+System prompt: public/MASTER_PROMPT.md
+Image:         public/carrier.png
+Question:      held-out question
+```
+
+No Origami runtime tools are exposed. This tests VLM BOOT/ROSETTA readability and must not be confused with the Hybrid result.
+
+## What this implementation proves and does not prove
+
+The deterministic/transport integration can prove:
 
 - carrier payload is actually integrated into the PNG;
 - PNG -> glyphs -> bytes -> BOOT/ROSETTA/PROGRAM/INDEX/MEMORY is reversible for the generated transport;
 - memory commitment detects mutation;
 - queries use the image-backed index/runtime rather than a hidden source sidecar;
 - missing keys fail as UNKNOWN without a semantic global-scan fallback;
-- carrier target `<= 500 KB` is enforced by the generator.
+- carrier target `<= 500 KB` is enforced by the generator;
+- Tlaloc can execute the OpenAI-compatible image + declared-tool conversation protocol without importing Origami as a code dependency.
 
-It does **not** by itself prove:
+It does **not** yet prove:
 
-- a VLM can visually discover BOOT unaided;
+- a real VLM successfully discovers BOOT from this carrier;
 - a VLM correctly learns arbitrary carrier-local Rosetta assignments;
-- Tlaloc has found the optimal Master Prompt;
+- the current Master Prompt is optimal;
+- Tlaloc's swarm has already converged on the best receiver behavior;
 - cross-model Hybrid behavior is reliable;
 - a real PDF can already be transferred through the same carrier at useful scale.
 
-Those are the next model-facing promotion gates, not assumptions hidden inside this deterministic implementation.
+Those require actual held-out model-facing campaigns. They remain promotion gates rather than assumptions hidden inside the deterministic implementation.

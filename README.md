@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/origami-ant.webp" alt="Origami ant mark" width="360">
+</p>
+
 # Origami 6.0.0-alpha.3
 
 Origami is an experimental **visual/computational representation and state-machine language** for expressing complex states, relations, dynamics and perceptual emergence.
@@ -32,6 +36,10 @@ Detailed pre-reconciliation OHF documentation is preserved under [`docs/ohf/`](d
 
 ## Current semantic contracts
 
+### Formal Core R0
+
+Defined in [`docs/FORMAL_CORE_R0.md`](docs/FORMAL_CORE_R0.md), [`spec/FORMAL_CORE_R0.json`](spec/FORMAL_CORE_R0.json) and [`spec/OBSERVATION_CONTRACT_R0.json`](spec/OBSERVATION_CONTRACT_R0.json). Non-direct claims require a finite predeclared observation procedure capable of returning an explicit result rather than becoming unfalsifiable.
+
 ### Coherent-state profile
 
 Defined in [`docs/STATE_SEMANTICS_R0.md`](docs/STATE_SEMANTICS_R0.md): `determinate`, `superposed`, `coupled`, `observed`, explicit observation authority, coherent interference/cancellation and Fold/Unfold semantics.
@@ -44,7 +52,7 @@ Defined in [`docs/PERCEPTUAL_CHANNELS_R0.md`](docs/PERCEPTUAL_CHANNELS_R0.md) an
 
 It formalizes spatial, interference, depth, temporal and emergent channels, including **Temporal Latent Images (TLI)** and operations such as `MOIRE`, `STEREO_BIND`, `PARALLAX_RESOLVE`, `KINETIC_REVEAL` and `TEMPORAL_INTEGRATE`.
 
-A valid Origami percept may exist only through a declared relation or trajectory; failure to reveal it in one static frame is not proof of absence.
+A valid Origami percept may require a declared relation or trajectory. Failure to reveal it in an insufficient/static observation is not proof of absence; exhaustion of its valid finite Observation Contract without satisfying the expected predicate is `FAIL`.
 
 ## Executable OHF research track
 
@@ -64,12 +72,15 @@ README.md
 PROJECT_BOUNDARY.md
 docs/CURRENT_STATE.md
 docs/ARCHITECTURE.md
+docs/FORMAL_CORE_R0.md
 docs/STATE_SEMANTICS_R0.md
 docs/PERCEPTUAL_CHANNELS_R0.md
+spec/FORMAL_CORE_R0.json
+spec/OBSERVATION_CONTRACT_R0.json
 spec/PERCEPTUAL_CHANNELS_R0.json
 state/ORIGAMI_STATE.json
-state/components/          # OHF/LAB component state where applicable
-changes/                   # machine-readable change records
+state/components/
+changes/
 CHANGE_CONTROL_*.md
 ```
 
@@ -80,6 +91,7 @@ Historical documents and OHF R2/R3.10 artifacts remain evidence, but they do not
 Cheap local gates first:
 
 ```bash
+bash tests/test-formal-contracts.sh
 go test ./...
 go vet ./...
 ```
@@ -88,8 +100,12 @@ For OHF dimensional/laboratory work, run the affected scripts and regression gat
 
 `install.sh` installs the **OHF laboratory command-line tools** (`ohf-lab`, `ohf-glyphcalc`) under the user prefix. It is not a global installer for every future Origami runtime/profile.
 
+## Brand asset
+
+The ant mark shown above is stored at `assets/origami-ant.webp`. It is a project identity asset and has no semantic or runtime meaning.
+
 ## Version
 
 `6.0.0-alpha.3`
 
-This release reconciles repository hierarchy and machine-readable state after integrating the OHF R3.10-LAB workbench. It does not change the semantic laws introduced in alpha.1 or alpha.2.
+The repository now includes Formal Core R0 and finite Observation Contract R0 as experimental contracts. Runtime support remains explicitly separate from semantic specification.

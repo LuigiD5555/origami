@@ -1,24 +1,58 @@
 # Current Origami state
 
-**Status date:** 2026-08-28  
-**Project version:** 6.0.0-alpha.3  
+**Status date:** 2026-08-29  
+**Released project version:** 6.0.0-alpha.3  
+**Development track:** generative-machine recovery  
 **Status:** experimental
 
 ## Root project state
 
-Origami is the visual/computational representation and state-machine language. Tlaloc is a separate optional work/orchestration system.
+Origami is a relational, generative, visual/computational representation and state-machine language. Tlaloc is a separate optional work/orchestration system.
 
-Current semantic layers:
+The current recovery contract restores five core responsibilities: `FOLD`, `RELATE`, `EVOLVE`, `OBSERVE`, and `UNFOLD`. The formal state/observation laws remain authoritative; the generative Fold/Unfold runtime described by `docs/ORIGAMI_MODEL.md` is being implemented incrementally and must not be reported as complete until its executable gates pass.
+
+Current layers:
 
 | Area | State |
 |---|---|
+| formal relational machine | EXPERIMENTAL_CONTRACT |
 | coherent-state semantics | EXPERIMENTAL_CONTRACT — alpha.1 |
 | perceptual channels | EXPERIMENTAL_CONTRACT — alpha.2 |
 | Temporal Latent Image semantics | EXPERIMENTAL_CONTRACT |
+| generative Fold/Unfold recovery model | RECOVERY_CONTRACT — implementation pending |
+| stable addressing/selective unfolding core | NOT IMPLEMENTED |
 | complete perceptual runtime for all alpha.2 operations | NOT IMPLEMENTED |
 | OHF R3.10-LAB research track | EXPERIMENTAL / executable |
 
 The root machine-readable source is `state/ORIGAMI_STATE.json`. OHF-specific component state remains under `state/components/`.
+
+## Recovery invariant
+
+```text
+RASTER_IS_NOT_FOLD
+```
+
+A screenshot or rendered PDF page may be an ingestion artifact, projection, perception fixture or control baseline. Rasterization alone is not evidence of Origami generative Fold and must not be promoted as such.
+
+The minimum recovery path is:
+
+```text
+source
+  ↓
+canonical structure
+  ↓
+non-raster Fold
+  ↓
+generative / relational representation
+  ↓
+stable addressing
+  ↓
+selective Unfold
+  ↓
+deterministic verification
+```
+
+PDF ingestion and visual carriers are downstream experiments. Initial implementation should use small deterministic text/graph fixtures.
 
 ## OHF research track
 
@@ -43,6 +77,8 @@ pairwise PASS != higher-order promotion
 external tests are progressive/cached/rate-limited
 ```
 
+These OHF invariants do not make a raster carrier equivalent to a successful Origami Fold.
+
 ## Origami 6.x perceptual state
 
 `origami.perceptual-channels.r0` defines spatial, interference, depth, temporal and emergent channels. It includes Temporal Latent Images and the invariant that a motion-bound or otherwise latent percept is not absent merely because one static observation does not reveal it.
@@ -57,6 +93,8 @@ Use:
 VERSION
 state/ORIGAMI_STATE.json
 PROJECT_BOUNDARY.md
+docs/ORIGAMI_MODEL.md
+docs/FORMAL_CORE_R0.md
 docs/STATE_SEMANTICS_R0.md
 docs/PERCEPTUAL_CHANNELS_R0.md
 spec/PERCEPTUAL_CHANNELS_R0.json

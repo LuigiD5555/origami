@@ -1,0 +1,50 @@
+{
+  "receiver": {
+    "contract_id": "origami.hybrid-receiver.r0",
+    "boot": {
+      "version": "r0",
+      "entry_symbol": "BOOT",
+      "start_state": "boot",
+      "rosetta_ref": "ROSETTA",
+      "program_ref": "PROGRAM",
+      "index_ref": "INDEX",
+      "memory_ref": "MEMORY",
+      "verification_ref": "VERIFICATION",
+      "required_sections": ["BOOT", "ROSETTA", "PROGRAM", "INDEX", "MEMORY", "VERIFICATION"],
+      "working_window_token_eq": 4000
+    },
+    "rosetta": [
+      {"physical": "triangle", "semantic": "OPEN_BOOT"},
+      {"physical": "circle", "semantic": "OPEN_INDEX"},
+      {"physical": "diamond", "semantic": "READ_VALUE"},
+      {"physical": "square", "semantic": "HALT"}
+    ],
+    "program": [
+      {"id": "m0", "state": "boot", "token": "OPEN_BOOT", "next_state": "index"},
+      {"id": "m1", "state": "index", "token": "OPEN_INDEX", "next_state": "memory"},
+      {"id": "m2", "state": "memory", "token": "READ_VALUE", "emit": "VALUE_READY", "next_state": "done"},
+      {"id": "m3", "state": "done", "token": "HALT", "next_state": "done", "halt": true}
+    ]
+  },
+  "index": [
+    {"key": "K7F91", "address": "mem:K7F91"},
+    {"key": "P1Z83", "address": "mem:P1Z83"},
+    {"key": "R9C20", "address": "mem:R9C20"}
+  ],
+  "memory": [
+    {
+      "address": "mem:K7F91",
+      "value": "VIOLET-48271",
+      "links": {"depends": ["mem:P1Z83"]}
+    },
+    {
+      "address": "mem:P1Z83",
+      "value": "DELTA-77102",
+      "links": {"depends": ["mem:R9C20"]}
+    },
+    {
+      "address": "mem:R9C20",
+      "value": "AMBER-10593"
+    }
+  ]
+}

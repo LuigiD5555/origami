@@ -1,275 +1,114 @@
-# Origami HyperFold (OHF)
+# Origami 6.0.0-alpha.2
 
-**Origami HyperFold is an experimental protocol and Go workbench for representing structured information as a compact, addressable, selectively unfoldable and verifiable carrier.**
+Origami is an experimental **visual/computational representation and state-machine language** for expressing complex states, relations, dynamics and perceptual emergence.
 
-OHF is not intended to be a giant QR code or a PNG wrapper around conventional compression. The research direction is to move as much work as possible away from open-ended LLM reasoning and into deterministic structure: indexes, bounded generative instructions, local visual states, small dependency windows and cryptographic verification.
+Origami is **not** the complete work system. Orchestration, behavior compilation, Tlaloque coordination and model-facing workflows belong to **Tlaloc**.
 
-> **Research status:** R3.10 is the current protocol reference. This repository contains the **R3.10-LAB experimental workbench**, not a stable production release. The exact historical R3.10 SDK artifact is not currently present in the repository, so the laboratory reports that baseline as blocked rather than reconstructing it from documentation.
-
-## Core invariants
-
-- `FALSE_EXACT = 0` — exactness is never inferred from plausible visual interpretation.
-- `UNKNOWN` is preferable to invented certainty.
-- Go is the canonical deterministic runtime.
-- Native input is isolated to `Master Prompt + image + query`.
-- Perception, resolution, execution and verification are separate stages.
-- The target visual carrier remains `<= 500 KB` unless the protocol is explicitly changed.
-- Experimental visual dimensions are not promoted until Perception Lab evidence supports them.
-- External VLM tests are progressive, cached and rate-limited; the project avoids unnecessary requests.
-
-## Current implementation
-
-The repository now contains a reproducible experimental foundation rather than documentation only.
-
-### R3.10-LAB foundation
-
-Implemented:
-
-- canonical `ExperimentSpec` and content-addressed experiment identity;
-- deterministic namespaced seeds;
-- deterministic synthetic source generation and truth-first ground truth;
-- artifact manifests and SHA-256 verification;
-- deterministic LAB-only geometry renderer;
-- PNG save/reopen verification with separate file and pixel hashes;
-- Native blind bundles with an exact three-input boundary;
-- structured `ObservationEnvelope` values: `KNOWN`, `AMBIGUOUS`, `UNKNOWN`, `INVALID`;
-- external scoring against ground truth;
-- failure registration and reproducible regressions;
-- conservative external-execution policy.
-
-### Dimensional Visual Register and Perceptual State Space
-
-OHF now models visual families/subdimensions as hierarchical observable variables across `MICRO`, `MESO` and `MACRO` scales. A **Dimensional Visual Register (DVR)** is a vector of physical state assignments; the **Perceptual State Space (PSS)** is the set of candidate combinations, while `SAFE_PSS` contains only evidence-promoted states.
-
-The implementation keeps nominal and safe capacity separate and respects visual scope:
+## Project boundary
 
 ```text
-MICRO  -> bits per glyph/cell
-MESO   -> bits per group/motif
-MACRO  -> bits per carrier
+TLALOC                          ORIGAMI
+work system                     representation
+orchestration                   state language
+behavior compilation   ----->   semantics contracts
+Tlaloque coordination  ----->   reference semantics / projection contracts
+verification                     dynamics / perceptual channels
 ```
 
-Current nominal candidate values are `8 bits/glyph`, `4 bits/group` and `8 bits/carrier`, but `SAFE_PSS` remains unproven until Perception Lab and orthogonality/compound gates provide evidence.
+Origami may be used independently of Tlaloc. Tlaloc may also operate without Origami or with another representation provider.
 
-Useful local commands:
+> Tlaloc coordinates work; Tlaloque perform bounded specialist work; Origami defines how a class of states is represented, transformed and made perceptually available.
 
-```bash
-go run ./cmd/ohf-lab dimensional registry
-go run ./cmd/ohf-lab dimensional capacity 64 8
-./scripts/dimensional_inspect.sh
-```
+## Semantic layers
 
-See [`docs/DIMENSIONAL_VISUAL_REGISTER.md`](docs/DIMENSIONAL_VISUAL_REGISTER.md).
+Origami 6.0 currently separates two orthogonal semantic layers.
 
-### Glyph Calculus
+### Coherent-state profile
 
-`ohf-glyphcalc` explores a lower-cost execution model in which the VLM performs only small perceptual operations over glyphs and Go performs deterministic reconstruction.
+Defined in [`docs/STATE_SEMANTICS_R0.md`](docs/STATE_SEMANTICS_R0.md):
 
-The experimental bounded instruction set currently includes operations such as:
+- `determinate`
+- `superposed`
+- `coupled`
+- `observed`
+
+This profile is quantum-inspired as a computational analogy. It is not a claim of physical quantum computation.
+
+### Perceptual channels R0
+
+New in `6.0.0-alpha.2`, defined in [`docs/PERCEPTUAL_CHANNELS_R0.md`](docs/PERCEPTUAL_CHANNELS_R0.md):
+
+- spatial channels;
+- interference / moiré channels;
+- depth / stereoscopic / parallax channels;
+- temporal channels;
+- emergent channels.
+
+A represented structure does not need to exist as a complete static image. Some structures may become available only through interaction among layers or through a declared observation trajectory over time.
+
+## Temporal Latent Image
+
+A **Temporal Latent Image (TLI)** is a representation whose intended percept is unavailable or incomplete under a valid static observation and becomes available only through a declared temporal transformation.
 
 ```text
-HALT
-LIT
-RUN
-REF
-SEQ
+carrier + layer relation + trajectory + temporal integration
+                         -> percept
 ```
 
-The compiler can use structured instructions when they reduce work and fall back to raw transport when the data does not offer useful structure.
+The motion/trajectory is part of the representation contract, not incidental animation.
 
-### SAFE_MICRO_ISA and Context SIMD
+The corresponding operations include:
 
-Instead of assuming which visual operations are easy for an LLM, the laboratory profiles them empirically.
+- `MOIRE`
+- `PHASE_SHIFT`
+- `STEREO_BIND`
+- `PARALLAX_RESOLVE`
+- `KINETIC_REVEAL`
+- `TEMPORAL_INTEGRATE`
+- `TEMPORAL_DECAY`
 
-Candidate operations include:
+Machine-readable form: [`spec/PERCEPTUAL_CHANNELS_R0.json`](spec/PERCEPTUAL_CHANNELS_R0.json).
+
+## Important distinction
+
+Origami keeps state semantics and perceptual availability separate.
 
 ```text
-OBSERVE4   observe four physical glyph states
-TUPLE4     emit four base-4 state digits
-DECODE8    map the four states to one byte
+state semantics != perceptual availability
 ```
 
-The profiler measures correctness first and can then compare retries, output tokens, latency and cost when those metrics are available. `Context SIMD` batches independent lanes in one prompt without claiming hardware-level SIMD inside the model.
+For example, a `superposed` state may have a `motion-bound` projection; an `observed` state may still be encoded as a Temporal Latent Image.
 
-The widening policy is adaptive: test one lane first, select the safest operation, then try `4 -> 8 -> 16` lanes and stop at the first unsafe boundary.
+Perceptual conditions such as `latent`, `motion-bound`, `phase-bound`, `stereo-bound`, `revealed` and `decayed` are therefore annotations on availability, not replacements for coherent-state kinds.
 
-## Architecture
+## Fold / Unfold
 
-```text
-SOURCE
-  ↓
-Canonical Source Model
-  ↓
-Structure / Graph / Grammar / Transform discovery
-  ↓
-Representation Tournament
-  ↓
-Generative IR + Residual
-  ↓
-SuperIndex + Dependency Manifests
-  ↓
-Attention Router + Window Sliders
-  ↓
-Visual Compiler / Perceptual ABI
-  ↓
-OHF Carrier
-```
+- `UNFOLD` constructs or expands alternatives under a declared representation rule.
+- `FOLD` constrains and/or explicitly resolves according to a declared policy.
 
-Receiver:
+These remain Origami operations. Model training, prompt compilation and behavior enforcement remain Tlaloc responsibilities.
 
-```text
-QUERY
-  ↓
-BOOT / ROSETTA / SUPERINDEX
-  ↓
-minimum dependency closure
-  ↓
-PERCEPTION  -> evidence only
-  ↓
-RESOLUTION  -> deterministic candidate collapse
-  ↓
-EXECUTION   -> bounded generative operations
-  ↓
-RESIDUAL
-  ↓
-VERIFICATION
-  ↓
-ANSWER / EXACT DATA
-```
+## Runtime status
 
-See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the current design and [`docs/SCIENTIFIC_FOUNDATIONS.md`](docs/SCIENTIFIC_FOUNDATIONS.md) for the longer foundational research document.
+`6.0.0-alpha.2` formalizes semantic contracts. It does **not** yet claim complete production renderers/detectors/decoders for every perceptual operation.
 
-## Quick start
+Unsupported operations must be reported explicitly rather than approximated silently.
 
-Prerequisite: **Go 1.23+**.
+The exact pre-split Origami 5.1 implementation remains the authoritative implementation base until these 6.0 contracts are integrated and regression-tested against it.
 
-```bash
-git clone https://github.com/LuigiD5555/origami.git
-cd origami
-./install.sh --check-only
-./install.sh
-```
+## Historical continuity
 
-The installer:
+`6.0.0-alpha.1` established the Tlaloc/Origami project split and coherent-state semantic overlay.
 
-- does not use `sudo`;
-- does not download packages;
-- makes zero external VLM/API requests;
-- installs `ohf-lab` and `ohf-glyphcalc` under `~/.local/bin` by default;
-- records a reversible installation manifest under `PREFIX/share/origami/install-state-v1/`;
-- preserves pre-existing binaries so they can be restored exactly;
-- runs an ephemeral local deterministic smoke test without leaving smoke artifacts in the project.
+`6.0.0-alpha.2` adds perceptual-channel semantics while preserving that boundary.
 
-### Uninstall / restore the pre-install state
+Earlier **Origami HyperFold (OHF) R2** material remains archived as historical research input:
 
-Preview first:
+- `docs/SCIENTIFIC_FOUNDATIONS.md`
+- `prompts/OHF_R2_MASTER_PROMPT.txt`
+- `docs/LEGACY_OHF_R2.md`
 
-```bash
-./uninstall.sh --dry-run
-```
-
-Then uninstall:
-
-```bash
-./uninstall.sh
-```
-
-If you installed under a custom prefix, pass the same prefix to both scripts:
-
-```bash
-./install.sh --prefix "$HOME/bin-tools"
-./uninstall.sh --prefix "$HOME/bin-tools"
-```
-
-The uninstaller removes only artifacts tracked by the installer. If `ohf-lab` or `ohf-glyphcalc` existed before installation, the original binaries are restored from their recorded backups. It does not delete the project checkout, runs, evidence or shell configuration. See `docs/INSTALLATION_LIFECYCLE.md`.
-
-Useful alternatives:
-
-```bash
-./install.sh --prepare-local
-./install.sh --full-check
-./install.sh --prefix "$HOME/bin"
-```
-
-Or work directly with Go:
-
-```bash
-go test ./...
-go vet ./...
-go run ./cmd/ohf-lab doctor
-go run ./cmd/ohf-glyphcalc --help
-```
-
-## Reproducible local experiments
-
-Foundation checks:
-
-```bash
-./scripts/reproduce_f1.sh
-./scripts/reproduce_f1_visual.sh
-./scripts/reproduce_f1_evaluator.sh
-```
-
-Glyph Calculus local matrix:
-
-```bash
-./scripts/glyphcalc_local_matrix.sh
-```
-
-Prepare the SAFE_MICRO_ISA campaign locally:
-
-```bash
-./scripts/microisa_prepare_local.sh
-```
-
-This generates local blind bundles but makes **zero external requests**.
-
-Then ask the state machine which single probe is allowed next:
-
-```bash
-go run ./cmd/ohf-glyphcalc microbench-next \
-  --root runs/microbench \
-  --min-exact 0.98
-```
-
-Do not manually skip ahead in the campaign. The adaptive procedure exists to reduce cost, avoid redundant requests and stop early when a candidate is unsafe.
-
-## Repository layout
-
-```text
-origami/
-├── cmd/
-│   ├── ohf-lab/              # reproducible OHF laboratory CLI
-│   └── ohf-glyphcalc/        # glyph calculus / micro-ISA CLI
-├── internal/lab/             # deterministic laboratory implementation
-├── experiments/              # declarative experiment specifications
-├── profiles/                 # execution + dimensional/orthogonality profiles
-├── state/                    # current machine-readable protocol/component state
-├── changes/                  # immutable-ish change records
-├── regressions/              # reproducible failures (local evidence ignored by default)
-├── scripts/                  # repeatable workflows
-├── testdata/                 # minimal fixtures
-├── docs/                     # architecture, state, experiment protocol and research docs
-├── prompts/                  # prompt history; R2 is legacy
-├── install.sh
-├── uninstall.sh
-├── Makefile
-└── go.mod
-```
-
-## State and change control
-
-The chat history is not the source of truth for the implementation.
-
-Machine-readable state lives in:
-
-```text
-state/ORIGAMI_STATE.json
-state/components/*.json
-changes/*.json
-```
-
-Every material change should record:
+Those files do not define the current project boundary.
 
 1. component changed;
 2. before/after state;
@@ -278,41 +117,25 @@ Every material change should record:
 5. regressions created or resolved;
 6. promotion state.
 
-See [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md).
+```text
+origami/
+├── README.md
+├── VERSION
+├── CHANGELOG.md
+├── PROJECT_BOUNDARY.md
+├── CHANGE_CONTROL_6.0.0-alpha.1.md
+├── CHANGE_CONTROL_6.0.0-alpha.2.md
+├── docs/
+│   ├── STATE_SEMANTICS_R0.md
+│   ├── PERCEPTUAL_CHANNELS_R0.md
+│   ├── LEGACY_OHF_R2.md
+│   └── SCIENTIFIC_FOUNDATIONS.md      # historical OHF material
+├── spec/
+│   └── PERCEPTUAL_CHANNELS_R0.json
+└── prompts/
+    └── OHF_R2_MASTER_PROMPT.txt        # historical OHF R2 artifact
+```
 
-## R2 legacy baseline
+## Version
 
-The repository originally documented an R2 binary-grid ZIP carrier. That prompt remains under `prompts/OHF_R2_MASTER_PROMPT.txt` for historical reproducibility, but it is **not the current OHF research direction** and must not be confused with R3.10-LAB Native experiments.
-
-See [`docs/LEGACY_R2.md`](docs/LEGACY_R2.md).
-
-## What is not yet proven
-
-OHF does **not** currently claim that:
-
-- arbitrary multi-gigabyte data can be losslessly represented in a <=500 KB self-contained carrier;
-- Macro-Gestalt visual compounds are production-safe;
-- one SAFE_MICRO_ISA profile transfers across all VLMs;
-- Native-only reconstruction is solved for large carriers;
-- a visual description that looks plausible is exact.
-
-Those are experiment targets or open questions, not completed claims.
-
-## Documentation
-
-Start with [`docs/README.md`](docs/README.md).
-
-Key documents:
-
-- [`docs/CURRENT_STATE.md`](docs/CURRENT_STATE.md) — what exists now and what is blocked.
-- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — current sender/receiver architecture.
-- [`docs/EXPERIMENT_PROTOCOL.md`](docs/EXPERIMENT_PROTOCOL.md) — strict reproducibility and external-test procedure.
-- [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md) — contribution and change-control workflow.
-- [`docs/ROADMAP.md`](docs/ROADMAP.md) — current research sequence.
-- [`docs/SCIENTIFIC_FOUNDATIONS.md`](docs/SCIENTIFIC_FOUNDATIONS.md) — long-form scientific motivation and foundations.
-
-## Core law
-
-> **UNKNOWN is preferable to false exactness.**
-
-A model may perceive probabilistically. Exact recovery is committed only by deterministic verification.
+`6.0.0-alpha.2`

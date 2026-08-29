@@ -1,0 +1,89 @@
+{
+  "contract_id": "origami.perceptual-channels.r0",
+  "version": "6.0.0-alpha.2",
+  "status": "experimental_contract",
+  "channel_families": [
+    "spatial",
+    "interference",
+    "depth",
+    "temporal",
+    "emergent"
+  ],
+  "perceptual_conditions": [
+    "latent",
+    "masked",
+    "motion-bound",
+    "phase-bound",
+    "stereo-bound",
+    "emergent",
+    "revealed",
+    "decayed"
+  ],
+  "operations": {
+    "MOIRE": {
+      "family": "interference",
+      "requires": ["2+ patterns", "relative spatial relation"],
+      "effect": "derive or construct an emergent interference field"
+    },
+    "PHASE_SHIFT": {
+      "family": "interference",
+      "requires": ["relative phase/alignment reference"],
+      "effect": "change relative phase/alignment"
+    },
+    "STEREO_BIND": {
+      "family": "depth",
+      "requires": ["2+ compatible views"],
+      "effect": "construct a joint depth-bearing relation"
+    },
+    "PARALLAX_RESOLVE": {
+      "family": "depth",
+      "requires": ["authorized viewpoint or motion displacement"],
+      "effect": "derive depth/relational signal"
+    },
+    "KINETIC_REVEAL": {
+      "family": "temporal",
+      "requires": ["motion-bound representation", "declared trajectory"],
+      "effect": "make a temporal latent percept available when reveal conditions hold"
+    },
+    "TEMPORAL_INTEGRATE": {
+      "family": "temporal",
+      "requires": ["authorized observation sequence", "integration window"],
+      "effect": "integrate multiple instants into one perceptual result"
+    },
+    "TEMPORAL_DECAY": {
+      "family": "temporal",
+      "requires": ["persistence or integration rule"],
+      "effect": "update perceptual availability after temporal conditions cease"
+    }
+  },
+  "temporal_latent_image": {
+    "semantic_object": "carrier + relational layers + trajectory + temporal integration -> percept",
+    "required_fields": [
+      "carrier",
+      "reveal_transform",
+      "trajectory",
+      "visibility_condition"
+    ],
+    "optional_fields": [
+      "velocity_range",
+      "phase_alignment",
+      "integration_window",
+      "persistence_rule"
+    ]
+  },
+  "invariants": [
+    "NO_STATIC_EQUIVALENCE_ASSUMPTION",
+    "EMERGENT_NOT_OWNED_BY_SINGLE_LAYER",
+    "MOTION_BOUND_VISIBILITY_EXPLICIT",
+    "TEMPORAL_REVEAL_IS_TRAJECTORY_DEPENDENT",
+    "DEPTH_REQUIRES_RELATIONAL_EVIDENCE",
+    "PHASE_IS_RELATIONAL",
+    "LATENT_IS_NOT_ABSENT",
+    "DECAY_IS_NOT_DELETION",
+    "OBSERVATION_CONTRACT_REQUIRED"
+  ],
+  "runtime_support": {
+    "status": "not_yet_complete",
+    "rule": "unsupported operations must be reported explicitly"
+  }
+}

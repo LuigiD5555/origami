@@ -20,6 +20,13 @@
       "introduced": "6.0.0-alpha.2",
       "status": "EXPERIMENTAL_CONTRACT",
       "runtime_support": "PARTIAL_OR_UNIMPLEMENTED_BY_OPERATION"
+    },
+    "reference_engine": {
+      "contract_id": "origami.reference-engine.r0",
+      "document": "docs/EXPERIMENT_PROTOCOL.md",
+      "introduced": "6.0.0-alpha.3",
+      "status": "EXPERIMENTAL_EXECUTABLE",
+      "cycle_reachability": "SUPPORTED_BY_EXP_002"
     }
   },
   "research_tracks": {
@@ -64,5 +71,5 @@
     "UNINSTALL_PRESERVES_AMBIGUOUS_USER_DATA",
     "INSTALLER_NEVER_EDITS_SHELL_PROFILE"
   ],
-  "last_project_change": "CHG-ORIGAMI-0001"
+  "last_project_change": "CHG-ORIGAMI-0003"
 }

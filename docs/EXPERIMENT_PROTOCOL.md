@@ -98,6 +98,18 @@ manifest verification
 
 If a local structural gate fails, external testing is forbidden because the request cannot answer the relevant engineering question.
 
+## Reference-engine transitions
+
+The deterministic relational reference engine applies transition phases in this order:
+
+```text
+requires -> excludes -> couples -> toggles
+```
+
+`requires`, `excludes`, and `couples` retain their R0 behavior. The explicit `toggles` relation adds bounded oscillation: when `from` is `active`, `to` alternates between `active` and `inactive`; a non-binary target becomes `active`. A toggle is not intrinsically contradictory. Contradictions continue to be evaluated before each transition from violated `requires` and `excludes` relations.
+
+Experiments that depend on an observed outcome declare minimum counts in `protocol.required_classifications`. The evidence gate must reject a complete, deterministic run when a required classification is absent.
+
 
 ## Dimensional visual experiments
 

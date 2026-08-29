@@ -1,5 +1,12 @@
 # Origami changelog
 
+## Unreleased
+
+### Added
+
+- added the explicit `toggles` relation to the deterministic reference engine so bounded oscillations can be classified as `CYCLE` without changing existing relation semantics;
+- added EXP-002 hostile-cycle evidence and a gate requiring at least one observed cycle.
+
 ## 6.0.0-alpha.3 — Repository hierarchy and state reconciliation
 
 ### Corrected

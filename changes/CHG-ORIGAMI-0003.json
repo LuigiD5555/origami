@@ -1,0 +1,31 @@
+{
+  "change_id": "CHG-ORIGAMI-0003",
+  "status": "VERIFIED_CANDIDATE",
+  "component": "Origami deterministic reference engine",
+  "what": "Reference-engine step semantics make CYCLE reachable through the explicit toggles relation.",
+  "before": "The engine transition was monotonic, so no initial state could return to a previously observed state after changing.",
+  "after": "An active toggle source alternates its target between active and inactive; EXP-002 observes bounded CYCLE runs while existing relation semantics remain unchanged.",
+  "semantic_impact": "adds one explicit experimental relation and preserves requires, excludes, and couples behavior",
+  "evidence": [
+    "experiments/EXP-002-hostile-cycles/experiment.json",
+    "evidence/EXP-002-final.json"
+  ],
+  "evidence_results": {
+    "runs": 4,
+    "FIXED_POINT": 2,
+    "CYCLE": 2,
+    "CONTRADICTION": 0,
+    "BUDGET_EXHAUSTED": 0
+  },
+  "tests": [
+    "internal/reference/engine_test.go:TestToggleProducesCycle",
+    "internal/reference/engine_test.go:TestEXP002RequiresObservedCycle"
+  ],
+  "required_gates": [
+    "MAKE_CHECK",
+    "GO_TEST_RACE",
+    "EXP_002_REFERENCE_EVIDENCE",
+    "EXP_002_CYCLE_COUNT_GT_ZERO"
+  ],
+  "promotion": "ELIGIBLE_FOR_OWNER_REVIEW_AFTER_PR_CI_PASS"
+}

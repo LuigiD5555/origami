@@ -25,4 +25,18 @@ R0 uses these as Origami semantic operations, not as claims about physical colla
 - `UNFOLD`: construct or expand a set of alternatives under a declared representation rule.
 - `FOLD`: constrain and/or explicitly resolve according to a declared policy.
 
+## Relationship to perceptual channels
+
+Origami `6.0.0-alpha.2` adds a separate perceptual-channel contract in `PERCEPTUAL_CHANNELS_R0.md`.
+
+The two layers are intentionally orthogonal:
+
+```text
+coherent-state kind != perceptual availability condition
+```
+
+For example, a `superposed` state may project to a `motion-bound` Temporal Latent Image, and an `observed` state may still require a stereo/parallax observation mode to expose one of its encoded relations.
+
+Perceptual conditions therefore do not add new coherent-state kinds.
+
 This coherent-state profile is one representation mode that Tlaloc can learn to enforce in a target model.

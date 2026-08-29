@@ -1,0 +1,52 @@
+{
+  "schema": "origami.change-control.r0",
+  "change_id": "CHG-ORIGAMI-0004",
+  "title": "Add self-boot Hybrid Receiver and receiver artifact boundary",
+  "component": "receiver/hybrid-r0",
+  "status": "implemented_pending_model_evidence",
+  "before": {
+    "state": "OHF had Native blind bundles, Glyph Calculus and MicroISA experiments, but no carrier-neutral self-boot receiver contract tying BOOT, local symbol semantics, deterministic receiver rules and accessible-memory navigation together.",
+    "evidence": "Native isolation and low-level deterministic transport existed as separate experimental mechanisms."
+  },
+  "after": {
+    "state": "Experimental origami.hybrid-receiver.r0 defines BOOT -> ROSETTA -> PROGRAM -> INDEX -> MEMORY -> VERIFICATION, deterministic fail-closed reference execution, Hybrid public-bundle isolation and an Origami-owned receiver artifact registry.",
+    "artifacts": [
+      "spec/HYBRID_RECEIVER_R0.json",
+      "internal/receiver/receiver.go",
+      "internal/receiver/artifact.go",
+      "internal/lab/hybridbundle/hybridbundle.go",
+      "generated/MASTER_PROMPT.md",
+      "receiver/registry/r0/manifest.json",
+      "experiments/portable-synthetic-r0.json"
+    ]
+  },
+  "invariants": [
+    "Carrier-local symbols have no assumed global semantic meaning",
+    "BOOT precedes payload interpretation",
+    "ROSETTA precedes carrier-local symbol execution",
+    "Unknown symbols or transitions fail closed",
+    "FALSE_EXACT=0 remains mandatory",
+    "Hybrid model-facing active context is bounded independently from total memory",
+    "Tlaloc may propose receiver candidates but Origami validates and stores promoted receiver artifacts",
+    "Current receiver remains REFERENCE_CANDIDATE until model-facing Hybrid evidence exists"
+  ],
+  "tests": {
+    "command": "go test ./... && go vet ./...",
+    "coverage": [
+      "symbol permutation equivalence",
+      "unknown symbol fail-closed",
+      "receiver artifact promotion gates",
+      "stored prompt registry hash identity",
+      "Hybrid public-bundle isolation"
+    ],
+    "result": "pending_latest_ci"
+  },
+  "impact": {
+    "runtime_semantics": "experimental receiver reference layer added; existing Origami core semantics are not redefined",
+    "ohf": "Glyph Calculus and SAFE_MICRO_ISA are positioned as possible low-level Hybrid execution substrates, not universal symbol semantics",
+    "tlaloc": "new experimental receiver-distillation contract consumed on its own feature branch",
+    "tonal": "composition proposal exists but lock pins remain unchanged until component promotion"
+  },
+  "promotion": "not_promoted",
+  "notes": "The Master Prompt is now a universal bootstrap reference candidate. Carrier-specific decoding semantics belong inside BOOT/ROSETTA/PROGRAM."
+}

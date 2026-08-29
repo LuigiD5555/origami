@@ -1,0 +1,39 @@
+{
+  "schema": "origami.change-control.r0",
+  "change_id": "CHG-ORIGAMI-0004",
+  "title": "Promote ADV-002 through ADV-005 from unsupported markers to executable semantic gates",
+  "component": "formal-core/reference",
+  "status": "implemented_pending_ci",
+  "before": {
+    "ADV-001": "UNSUPPORTED",
+    "ADV-002": "UNSUPPORTED",
+    "ADV-003": "UNSUPPORTED",
+    "ADV-004": "UNSUPPORTED",
+    "ADV-005": "UNSUPPORTED"
+  },
+  "after": {
+    "ADV-001": "UNSUPPORTED",
+    "ADV-002": "EXECUTABLE_GATE",
+    "ADV-003": "EXECUTABLE_GATE",
+    "ADV-004": "EXECUTABLE_GATE",
+    "ADV-005": "EXECUTABLE_GATE"
+  },
+  "evidence": [
+    "same initial state plus different Context produces different deterministic trace",
+    "changing declared Rule data changes behavior without changing engine code",
+    "transition evidence records Context ID and fired Rule IDs",
+    "ABSENT, UNKNOWN, INHIBITED and CANCELLED remain distinct",
+    "Observation Contract reads a trace without changing its SHA-256"
+  ],
+  "regressions_guarded": [
+    "existing R0 exhaustive oracle remains present",
+    "ADV-001 is not promoted from pairwise machinery",
+    "conflicting rule writes are rejected instead of silently becoming priority semantics"
+  ],
+  "tests": {
+    "command": "go test ./...",
+    "result": "pending_ci"
+  },
+  "promotion": "pending_ci",
+  "next_gate": "ADV-001 higher-order participating-set semantics, followed by carrier-neutral Fold/Unfold"
+}

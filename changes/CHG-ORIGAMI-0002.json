@@ -1,0 +1,22 @@
+{
+  "change_id": "CHG-ORIGAMI-0002",
+  "status": "CANDIDATE",
+  "component": "Origami formal semantics and observation contracts",
+  "before": "Perceptual R0 required an observation contract but did not define finite budget exhaustion as a falsifying result.",
+  "after": "Formal Core R0 and Observation Contract R0 define finite, predeclared, decidable PASS/FAIL semantics; Perceptual Channels R0 is bound to that rule; EXP-001 is specified but not yet executed.",
+  "semantic_impact": "strengthens experimental contract; does not claim runtime implementation",
+  "evidence": [
+    "spec/FORMAL_CORE_R0.json",
+    "spec/OBSERVATION_CONTRACT_R0.json",
+    "spec/PERCEPTUAL_CHANNELS_R0.json",
+    "docs/FORMAL_CORE_R0.md",
+    "experiments/EXP-001-relational-state/experiment.json"
+  ],
+  "required_gates": [
+    "JSON_PARSE",
+    "CONTRACT_CROSS_REFERENCE",
+    "NO_RUNTIME_SUPPORT_OVERCLAIM",
+    "EXPERIMENT_REMAINS_NOT_YET_EXECUTED"
+  ],
+  "promotion": "REJECT_OR_KEEP_CANDIDATE_UNTIL_GATES_PASS"
+}

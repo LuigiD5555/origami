@@ -62,18 +62,29 @@ Current project identity and state must be recoverable from the repository:
 VERSION
 README.md
 PROJECT_BOUNDARY.md
+GATEKEEPER.md
+gatekeeper.json
 docs/CURRENT_STATE.md
 docs/ARCHITECTURE.md
 docs/STATE_SEMANTICS_R0.md
 docs/PERCEPTUAL_CHANNELS_R0.md
 spec/PERCEPTUAL_CHANNELS_R0.json
 state/ORIGAMI_STATE.json
-state/components/          # OHF/LAB component state where applicable
-changes/                   # machine-readable change records
+state/components/
+changes/
 CHANGE_CONTROL_*.md
 ```
 
 Historical documents and OHF R2/R3.10 artifacts remain evidence, but they do not override the current project boundary.
+
+## Project Gatekeeper
+
+Origami follows the project-wide Gatekeeper R0 owned by Tonal. The local `gatekeeper.json` is a CI mirror, not a second policy authority.
+
+- owner PR (`LuigiD5555` from this canonical repository): Origami CI and evidence still run; explicit owner promotion override is allowed;
+- external PR: CI/evidence still run and an `APPROVED` review from `LuigiD5555` is mandatory; external override/auto-promotion is denied.
+
+See `GATEKEEPER.md`. The canonical operational `gatekeeper` skill lives in Tonal alongside `repo-flow`.
 
 ## Development
 

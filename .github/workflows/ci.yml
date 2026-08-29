@@ -23,6 +23,8 @@ jobs:
         run: bash tests/test-gatekeeper.sh
       - name: Formal contract coherence
         run: bash tests/test-formal-contracts.sh
+      - name: OHF doctor scope
+        run: bash tests/test-doctor.sh
       - name: Test
         run: go test ./...
       - name: Vet

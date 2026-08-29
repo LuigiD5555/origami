@@ -54,6 +54,8 @@ These implementations are **experimental profile/tooling**, not proof that every
 
 The exact historical `ORIGAMI_SDK_R310_EXPLICIT_CODEBOOK.zip` remains missing; that blocks byte-identical historical R3.10 baseline claims, but it does not block independent Origami 6.x semantic development or OHF-LAB experiments.
 
+Accordingly, `ohf-lab doctor` reports readiness only for the historical OHF R3.10 baseline. `OHF R3.10 READY = NO` with `MISSING_R310_SDK` is an expected scoped block, not a failure of Origami core. Use `make check` to verify the current Go implementation independently.
+
 ## Source of truth and change control
 
 Current project identity and state must be recoverable from the repository:

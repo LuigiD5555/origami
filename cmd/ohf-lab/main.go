@@ -94,8 +94,10 @@ func doctor(root string) {
 	v := baseline.Verify(root)
 	env := environment.Capture(root)
 
-	fmt.Println("OHF LAB DOCTOR")
+	fmt.Println("OHF R3.10 HISTORICAL LAB DOCTOR")
 	fmt.Println()
+	fmt.Println("Scope                Historical OHF R3.10 laboratory")
+	fmt.Println("Origami core         OUT_OF_SCOPE (use make check)")
 	fmt.Printf("Protocol             %s\n", env.ProtocolVersion)
 	fmt.Printf("Baseline             %s\n", env.BaselineVersion)
 	fmt.Printf("Go                   %s\n", env.GoVersion)
@@ -103,15 +105,19 @@ func doctor(root string) {
 	fmt.Printf("Git commit           %s\n", env.GitCommit)
 	fmt.Printf("Git state            %s\n", env.GitState)
 	fmt.Printf("Dirty worktree       %t\n", env.DirtyWorktree)
-	fmt.Printf("Baseline artifact    %s\n", v.Status)
+	if env.DirtyWorktree {
+		fmt.Println("Git state note       Local changes do not imply an Origami runtime failure")
+	}
+	fmt.Printf("OHF baseline         %s\n", v.Status)
 	if len(v.Problems) > 0 {
 		fmt.Printf("Baseline problems    %s\n", strings.Join(v.Problems, ", "))
 	}
+	fmt.Println("Origami core impact  NONE")
 	fmt.Println()
 	if v.Status == "PASS" {
-		fmt.Println("READY = YES")
+		fmt.Println("OHF R3.10 READY = YES")
 	} else {
-		fmt.Println("READY = NO")
+		fmt.Println("OHF R3.10 READY = NO")
 		os.Exit(1)
 	}
 }

@@ -2,6 +2,9 @@
 runs/*
 !runs/.gitkeep
 
+# Locally generated reference evidence; curate explicitly with git add -f
+evidence/*.json
+
 # Historical SDK bytes are staged locally until provenance/freeze is explicit
 baseline/r310/sdk/*
 !baseline/r310/sdk/.gitkeep

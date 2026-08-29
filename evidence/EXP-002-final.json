@@ -1,0 +1,87 @@
+{
+  "schema": "origami.reference-evidence.r0",
+  "experiment_id": "EXP-002-hostile-cycles",
+  "deterministic": true,
+  "runs": [
+    {
+      "initial": {
+        "A": "active",
+        "B": "active"
+      },
+      "trace": [
+        {
+          "A": "active",
+          "B": "active"
+        },
+        {
+          "A": "active",
+          "B": "inactive"
+        },
+        {
+          "A": "active",
+          "B": "active"
+        }
+      ],
+      "classification": "CYCLE"
+    },
+    {
+      "initial": {
+        "A": "active",
+        "B": "inactive"
+      },
+      "trace": [
+        {
+          "A": "active",
+          "B": "inactive"
+        },
+        {
+          "A": "active",
+          "B": "active"
+        },
+        {
+          "A": "active",
+          "B": "inactive"
+        }
+      ],
+      "classification": "CYCLE"
+    },
+    {
+      "initial": {
+        "A": "inactive",
+        "B": "active"
+      },
+      "trace": [
+        {
+          "A": "inactive",
+          "B": "active"
+        },
+        {
+          "A": "inactive",
+          "B": "active"
+        }
+      ],
+      "classification": "FIXED_POINT"
+    },
+    {
+      "initial": {
+        "A": "inactive",
+        "B": "inactive"
+      },
+      "trace": [
+        {
+          "A": "inactive",
+          "B": "inactive"
+        },
+        {
+          "A": "inactive",
+          "B": "inactive"
+        }
+      ],
+      "classification": "FIXED_POINT"
+    }
+  ],
+  "counts": {
+    "CYCLE": 2,
+    "FIXED_POINT": 2
+  }
+}

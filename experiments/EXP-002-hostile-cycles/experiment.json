@@ -1,0 +1,26 @@
+{
+  "experiment_id": "EXP-002-hostile-cycles",
+  "status": "EXECUTED_REFERENCE_EVIDENCE",
+  "question": "Can an explicit deterministic toggle produce a bounded, reproducible cycle without changing requires, excludes, or couples semantics?",
+  "entities": ["A", "B"],
+  "domain": ["active", "inactive"],
+  "relations": [
+    {"type": "toggles", "from": "A", "to": "B"}
+  ],
+  "protocol": {
+    "enumerate_initial_states": true,
+    "transition_order": ["requires", "excludes", "couples", "toggles"],
+    "deterministic": true,
+    "max_steps_per_state": 8,
+    "classifications": ["FIXED_POINT", "CYCLE", "CONTRADICTION", "BUDGET_EXHAUSTED"],
+    "required_classifications": {
+      "CYCLE": 1
+    }
+  },
+  "hypotheses": [
+    "At least one enumerated initial state is classified CYCLE.",
+    "Identical initial state and rules always produce identical traces.",
+    "Every run terminates within the finite budget."
+  ],
+  "promotion_gate": "Reference evidence is complete and deterministic, and the evidence gate observes CYCLE greater than zero."
+}

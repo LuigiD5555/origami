@@ -32,11 +32,13 @@ type SymbolBinding struct {
 
 // MicroRule is a deliberately small deterministic transition. Complex receiver
 // behavior should emerge from many local rules rather than from hidden model
-// reasoning.
+// reasoning. Action is preserved from the distilled swarm behavior even when
+// the reference executor only needs it as declarative semantics/provenance.
 type MicroRule struct {
 	ID        string `json:"id"`
 	State     string `json:"state"`
 	Token     string `json:"token"`
+	Action    string `json:"action,omitempty"`
 	Emit      string `json:"emit,omitempty"`
 	NextState string `json:"next_state"`
 	Halt      bool   `json:"halt,omitempty"`
@@ -57,6 +59,7 @@ type Step struct {
 	Physical  string `json:"physical"`
 	Semantic  string `json:"semantic"`
 	RuleID    string `json:"rule_id"`
+	Action    string `json:"action,omitempty"`
 	FromState string `json:"from_state"`
 	ToState   string `json:"to_state"`
 	Emit      string `json:"emit,omitempty"`
@@ -171,7 +174,7 @@ func Execute(s Spec, physicalInput []string) (Trace, error) {
 			trace.FinalState = state
 			return trace, nil
 		}
-		step := Step{Index: i, Physical: physical, Semantic: semantic, RuleID: rule.ID, FromState: state, ToState: rule.NextState, Emit: rule.Emit}
+		step := Step{Index: i, Physical: physical, Semantic: semantic, RuleID: rule.ID, Action: rule.Action, FromState: state, ToState: rule.NextState, Emit: rule.Emit}
 		trace.Steps = append(trace.Steps, step)
 		if rule.Emit != "" {
 			trace.Outputs = append(trace.Outputs, rule.Emit)

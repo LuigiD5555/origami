@@ -1,6 +1,6 @@
 {
   "schema": "origami.state.v2",
-  "status_date": "2026-08-28",
+  "status_date": "2026-08-29",
   "project": {
     "version": "6.0.0-alpha.3",
     "role": "visual/computational representation and state-machine language",
@@ -20,6 +20,24 @@
       "introduced": "6.0.0-alpha.2",
       "status": "EXPERIMENTAL_CONTRACT",
       "runtime_support": "PARTIAL_OR_UNIMPLEMENTED_BY_OPERATION"
+    },
+    "hybrid_receiver": {
+      "contract_id": "origami.hybrid-receiver.r0",
+      "document": "docs/PORTABLE_MODEL_EXPERIMENT_R0.md",
+      "machine_readable": "spec/HYBRID_RECEIVER_R0.json",
+      "status": "EXPERIMENTAL_NOT_PROMOTED",
+      "primary_mode": "HYBRID",
+      "required_sections": ["BOOT", "ROSETTA", "PROGRAM", "INDEX", "MEMORY", "VERIFICATION"],
+      "reference_runtime": "internal/receiver",
+      "artifact_registry": "receiver/registry",
+      "master_prompt": "generated/MASTER_PROMPT.md",
+      "master_prompt_status": "REFERENCE_CANDIDATE"
+    },
+    "accessible_memory": {
+      "document": "docs/CAPACITY_LAB_R0.md",
+      "status": "EXPERIMENTAL_LAB",
+      "working_window_token_eq": 4000,
+      "window_semantics": "ACTIVE_MODEL_FACING_INTERFACE_NOT_STORAGE_CAP_NOT_CUMULATIVE_TASK_CAP"
     }
   },
   "research_tracks": {
@@ -39,16 +57,24 @@
         "perceptual_state_space",
         "perceptual_orthogonality",
         "bounded_multidimensional_machine",
+        "accessible_memory_lab",
+        "dependency_folding",
+        "hybrid_receiver",
         "installer_lifecycle"
       ],
-      "last_track_change": "CHG-INSTALL-0001"
+      "last_track_change": "CHG-ORIGAMI-0004"
     }
   },
   "project_invariants": [
     "TLALOC_AND_ORIGAMI_HAVE_INDEPENDENT_OWNERSHIP",
     "COHERENT_STATE_NE_PERCEPTUAL_AVAILABILITY",
     "LATENT_IS_NOT_ABSENT",
-    "UNSUPPORTED_OPERATIONS_MUST_BE_EXPLICIT"
+    "UNSUPPORTED_OPERATIONS_MUST_BE_EXPLICIT",
+    "CARRIER_LOCAL_SYMBOLS_HAVE_NO_ASSUMED_GLOBAL_SEMANTICS",
+    "BOOT_PRECEDES_CARRIER_PAYLOAD_INTERPRETATION",
+    "ROSETTA_PRECEDES_LOCAL_SYMBOL_EXECUTION",
+    "ACTIVE_MODEL_INTERFACE_NE_TOTAL_MEMORY",
+    "TLALOC_CANDIDATE_NE_ORIGAMI_PROMOTED_ARTIFACT"
   ],
   "ohf_track_invariants": [
     "FALSE_EXACT=0",
@@ -60,9 +86,10 @@
     "NOMINAL_CAPACITY_NE_SAFE_CAPACITY",
     "PERCEPTUAL_ORTHOGONALITY_REQUIRED_FOR_INDEPENDENT_CAPACITY",
     "PAIRWISE_PASS_NE_HIGHER_ORDER_PROMOTION",
+    "HYBRID_IS_PRIMARY_RECEIVER_TARGET_NATIVE_AND_COMPUTATIONAL_ARE_DIAGNOSTICS",
     "INSTALL_UNINSTALL_RESTORE_PREINSTALL_STATE",
     "UNINSTALL_PRESERVES_AMBIGUOUS_USER_DATA",
     "INSTALLER_NEVER_EDITS_SHELL_PROFILE"
   ],
-  "last_project_change": "CHG-ORIGAMI-0001"
+  "last_project_change": "CHG-ORIGAMI-0004"
 }

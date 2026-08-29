@@ -1,0 +1,51 @@
+{
+  "schema": "origami.portable-experiment.r0",
+  "id": "portable-synthetic-r0",
+  "purpose": "Validate self-boot, carrier-local Rosetta, micro-agent execution and bounded accessible memory before real-source/PDF trials.",
+  "receiver_contract": "origami.hybrid-receiver.r0",
+  "primary_mode": "hybrid",
+  "diagnostic_baselines": ["computational", "native"],
+  "working_window_token_eq": 4000,
+  "memory": {
+    "kind": "synthetic_random_identifiers",
+    "initial_scale": 1000,
+    "checkpoints": [1000, 10000, 100000, 1000000],
+    "questions_after_freeze": true
+  },
+  "carrier": {
+    "required_sections": ["BOOT", "ROSETTA", "PROGRAM", "INDEX", "MEMORY", "VERIFICATION"],
+    "optional_sections": ["RESIDUAL"],
+    "max_bytes": 512000,
+    "plaintext_poster_forbidden": true,
+    "symbol_permutation_pairs": 2
+  },
+  "public_artifacts": ["MASTER_PROMPT.md", "model_packet.json", "carrier.png", "questions.json"],
+  "private_artifacts": ["manifest.json", "oracle.json", "source", "carrier_semantics.json"],
+  "gates": {
+    "boot_found": true,
+    "rosetta_resolved": true,
+    "program_initialized": true,
+    "symbol_permutation_equivalence": true,
+    "answer_correctness": true,
+    "route_integrity": true,
+    "evidence_integrity": true,
+    "peak_active_token_eq_lte": 4000,
+    "no_hidden_global_scan": true,
+    "anti_contamination": true,
+    "unknown_on_absence": true,
+    "false_exact_equals": 0
+  },
+  "hybrid": {
+    "input": "MASTER_PROMPT + ONE carrier image + question + declared Origami tools",
+    "model_role": ["BOOT discovery", "Rosetta interpretation", "high-level navigation", "local ambiguity resolution"],
+    "runtime_role": ["deterministic micro-agent execution", "addressing", "selective unfolding", "computation", "verification"]
+  },
+  "native": {
+    "input": "MASTER_PROMPT + ONE carrier image + question",
+    "external_decoder_allowed": false
+  },
+  "computational": {
+    "input": "MASTER_PROMPT + question + declared Origami tools",
+    "allowed_tools": ["LOOKUP", "FOLLOW", "EXPAND", "UNFOLD", "TRACE", "VERIFY", "BACKTRACK", "STOP", "FILTER", "PROJECT", "COUNT", "AGGREGATE", "COMPARE", "INTERSECT", "RANGE", "RESOLVE", "FOLD"]
+  }
+}

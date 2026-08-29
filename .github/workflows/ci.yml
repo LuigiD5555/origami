@@ -14,28 +14,24 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
           go-version: '1.23.x'
           cache: true
-
+      - name: Gatekeeper policy coherence
+        run: bash tests/test-gatekeeper.sh
       - name: Formal contract coherence
         run: bash tests/test-formal-contracts.sh
-
       - name: Test
         run: go test ./...
-
       - name: Vet
         run: go vet ./...
-
       - name: Build CLIs
         run: |
           go build ./cmd/ohf-lab
           go build ./cmd/ohf-glyphcalc
           go build ./cmd/origami-reference
-
       - name: Run deterministic reference experiment
         run: |
           mkdir -p evidence
@@ -45,7 +41,6 @@ jobs:
           go run ./cmd/origami-evidence-gate \
             --experiment experiments/EXP-001-relational-state/experiment.json \
             --evidence evidence/EXP-001-reference.json
-
       - name: Upload reference evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -54,12 +49,9 @@ jobs:
           path: evidence/EXP-001-reference.json
           if-no-files-found: error
           retention-days: 30
-
       - name: Installer prerequisite check
         run: ./install.sh --check-only
-
       - name: Dimensional DVR/PSS gates
         run: ./scripts/dimensional_inspect.sh
-
       - name: Reversible install/uninstall roundtrip
         run: ./scripts/test_install_uninstall_roundtrip.sh

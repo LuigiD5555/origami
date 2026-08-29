@@ -11,10 +11,10 @@ import (
 )
 
 type StoredCandidate struct {
-	Directory    string `json:"directory"`
-	PromptPath   string `json:"prompt_path"`
+	Directory     string `json:"directory"`
+	PromptPath    string `json:"prompt_path"`
 	CandidatePath string `json:"candidate_path"`
-	ManifestPath string `json:"manifest_path"`
+	ManifestPath  string `json:"manifest_path"`
 }
 
 // StoreImportedCandidate persists an imported Tlaloc proposal under Origami's
@@ -25,6 +25,9 @@ func StoreImportedCandidate(root string, candidate ImportedCandidate) (StoredCan
 	if root == "" {
 		return StoredCandidate{}, fmt.Errorf("storage root is required")
 	}
+	if filepath.IsAbs(root) || strings.Contains(filepath.ToSlash(root), "../") || root == ".." {
+		return StoredCandidate{}, fmt.Errorf("storage root must be repository-relative and non-traversing")
+	}
 	if candidate.CandidateID == "" || candidate.UniversalPrompt == "" || len(candidate.Program) == 0 {
 		return StoredCandidate{}, fmt.Errorf("candidate id, universal prompt and program are required")
 	}
@@ -33,24 +36,9 @@ func StoreImportedCandidate(root string, candidate ImportedCandidate) (StoredCan
 	}
 
 	dir := filepath.Join(root, candidate.CandidateID)
-	if err := os.MkdirAll(dir, 0755); err != nil {
-		return StoredCandidate{}, err
-	}
 	promptPath := filepath.Join(dir, "MASTER_PROMPT.md")
 	candidatePath := filepath.Join(dir, "candidate.json")
 	manifestPath := filepath.Join(dir, "manifest.json")
-
-	if err := os.WriteFile(promptPath, []byte(candidate.UniversalPrompt), 0644); err != nil {
-		return StoredCandidate{}, err
-	}
-	candidateBytes, err := json.MarshalIndent(candidate, "", "  ")
-	if err != nil {
-		return StoredCandidate{}, err
-	}
-	candidateBytes = append(candidateBytes, '\n')
-	if err := os.WriteFile(candidatePath, candidateBytes, 0644); err != nil {
-		return StoredCandidate{}, err
-	}
 
 	sum := sha256.Sum256([]byte(candidate.UniversalPrompt))
 	promptHash := hex.EncodeToString(sum[:])
@@ -69,11 +57,27 @@ func StoreImportedCandidate(root string, candidate ImportedCandidate) (StoredCan
 	if err := ValidateArtifactManifest(manifest); err != nil {
 		return StoredCandidate{}, err
 	}
+
+	candidateBytes, err := json.MarshalIndent(candidate, "", "  ")
+	if err != nil {
+		return StoredCandidate{}, err
+	}
+	candidateBytes = append(candidateBytes, '\n')
 	manifestBytes, err := json.MarshalIndent(manifest, "", "  ")
 	if err != nil {
 		return StoredCandidate{}, err
 	}
 	manifestBytes = append(manifestBytes, '\n')
+
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		return StoredCandidate{}, err
+	}
+	if err := os.WriteFile(promptPath, []byte(candidate.UniversalPrompt), 0644); err != nil {
+		return StoredCandidate{}, err
+	}
+	if err := os.WriteFile(candidatePath, candidateBytes, 0644); err != nil {
+		return StoredCandidate{}, err
+	}
 	if err := os.WriteFile(manifestPath, manifestBytes, 0644); err != nil {
 		return StoredCandidate{}, err
 	}

@@ -1,23 +1,30 @@
 {
   "schema": "origami.change-control.r0",
   "change_id": "CHG-ORIGAMI-0004",
-  "title": "Add self-boot Hybrid Receiver and receiver artifact boundary",
+  "title": "Add self-boot Hybrid Receiver, image-backed carrier runtime and artifact boundary",
   "component": "receiver/hybrid-r0",
   "status": "implemented_pending_model_evidence",
   "before": {
-    "state": "OHF had Native blind bundles, Glyph Calculus and MicroISA experiments, but no carrier-neutral self-boot receiver contract tying BOOT, local symbol semantics, deterministic receiver rules and accessible-memory navigation together.",
+    "state": "OHF had Native blind bundles, Glyph Calculus and MicroISA experiments, but no carrier-neutral self-boot receiver contract tying BOOT, local symbol semantics, deterministic receiver rules, an actual self-contained carrier PNG and accessible-memory navigation together.",
     "evidence": "Native isolation and low-level deterministic transport existed as separate experimental mechanisms."
   },
   "after": {
-    "state": "Experimental origami.hybrid-receiver.r0 defines BOOT -> ROSETTA -> PROGRAM -> INDEX -> MEMORY -> VERIFICATION, deterministic fail-closed reference execution, Hybrid public-bundle isolation and an Origami-owned receiver artifact registry.",
+    "state": "Experimental origami.hybrid-receiver.r0 defines BOOT -> ROSETTA -> PROGRAM -> INDEX -> MEMORY -> VERIFICATION; the synthetic Hybrid carrier embeds that logical envelope into carrier.png, the PNG is deterministically self-decodable without a private semantic sidecar, and an image-backed runtime exposes bounded BOOT/LOOKUP/FOLLOW/TRACE/VERIFY/STOP operations.",
     "artifacts": [
       "spec/HYBRID_RECEIVER_R0.json",
       "internal/receiver/receiver.go",
       "internal/receiver/artifact.go",
       "internal/lab/hybridbundle/hybridbundle.go",
+      "internal/lab/hybridcarrier/carrier.go",
+      "internal/lab/glyphcalc/decode_render.go",
+      "internal/lab/hybridruntime/runtime.go",
+      "cmd/origami-hybrid-carrier/main.go",
+      "cmd/origami-hybrid-tool/main.go",
       "generated/MASTER_PROMPT.md",
       "receiver/registry/r0/manifest.json",
-      "experiments/portable-synthetic-r0.json"
+      "experiments/portable-synthetic-r0.json",
+      "experiments/hybrid-carrier-synthetic-r0.json",
+      "docs/HYBRID_RECEIVER_QUICKSTART_R0.md"
     ]
   },
   "invariants": [
@@ -27,26 +34,38 @@
     "Unknown symbols or transitions fail closed",
     "FALSE_EXACT=0 remains mandatory",
     "Hybrid model-facing active context is bounded independently from total memory",
+    "The public carrier PNG is the runtime source; private source/envelope files are evaluator/debug evidence only",
+    "Carrier PNG identity is checked against model_packet.json before tool execution",
+    "PNG transport round-trip and model perceptual readability are separate claims",
+    "Carrier target <=500 KB is enforced at generation time",
+    "Preprocessing/index-build touched cost is recorded separately from selective per-query touched/exposed cost",
     "Tlaloc may propose receiver candidates but Origami validates and stores promoted receiver artifacts",
     "Current receiver remains REFERENCE_CANDIDATE until model-facing Hybrid evidence exists"
   ],
   "tests": {
-    "command": "go test ./... && go vet ./...",
+    "command": "go test ./... && go vet ./... && make build",
     "coverage": [
       "symbol permutation equivalence",
       "unknown symbol fail-closed",
       "receiver artifact promotion gates",
       "stored prompt registry hash identity",
-      "Hybrid public-bundle isolation"
+      "Hybrid public-bundle isolation",
+      "logical carrier payload exact round-trip",
+      "carrier memory mutation detection",
+      "PNG -> glyph -> byte -> logical envelope self-decode",
+      "PNG size target enforcement",
+      "image-backed BOOT/LOOKUP/FOLLOW/VERIFY runtime",
+      "missing-key UNKNOWN without semantic global-scan fallback",
+      "Hybrid carrier/tool CLI compilation"
     ],
-    "result": "pending_latest_ci"
+    "result": "pending_latest_ci_after_final_sync"
   },
   "impact": {
-    "runtime_semantics": "experimental receiver reference layer added; existing Origami core semantics are not redefined",
-    "ohf": "Glyph Calculus and SAFE_MICRO_ISA are positioned as possible low-level Hybrid execution substrates, not universal symbol semantics",
-    "tlaloc": "new experimental receiver-distillation contract consumed on its own feature branch",
+    "runtime_semantics": "experimental receiver reference and image-backed Hybrid runtime added; existing Origami core semantics are not redefined",
+    "ohf": "Glyph Calculus and SAFE_MICRO_ISA are positioned as low-level Hybrid execution/transport substrates, not universal symbol semantics",
+    "tlaloc": "experimental receiver-distillation and OpenAI-compatible model/tool runner consume only the declared public Origami boundary/process interface",
     "tonal": "composition proposal exists but lock pins remain unchanged until component promotion"
   },
   "promotion": "not_promoted",
-  "notes": "The Master Prompt is now a universal bootstrap reference candidate. Carrier-specific decoding semantics belong inside BOOT/ROSETTA/PROGRAM."
+  "notes": "The Master Prompt is a universal bootstrap reference candidate. Carrier-specific decoding semantics belong inside BOOT/ROSETTA/PROGRAM. Deterministic PNG recovery is now implemented, but VLM BOOT/Rosetta readability and cross-model Hybrid correctness still require held-out external evidence."
 }

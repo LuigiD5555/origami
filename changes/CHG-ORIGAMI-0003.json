@@ -1,0 +1,40 @@
+{
+  "schema": "origami.change-control.r0",
+  "change_id": "CHG-ORIGAMI-0003",
+  "title": "Materialize adversarial semantic-core Phase A baseline",
+  "component": "reference/adversarial-core",
+  "status": "implemented_pending_ci",
+  "before": {
+    "state": "ADV-001 through ADV-005 existed only as a failure-first design document",
+    "evidence": "No executable tests recorded the current engine's unsupported semantic capabilities"
+  },
+  "after": {
+    "state": "ADV-001 through ADV-005 are executable Go tests that explicitly record UNSUPPORTED without weakening the existing R0 oracle tests",
+    "expected": [
+      "ADV-001 higher-order interaction: UNSUPPORTED",
+      "ADV-002 context-dependent evolution: UNSUPPORTED",
+      "ADV-003 declarative rules with provenance: UNSUPPORTED",
+      "ADV-004 distinct semantic statuses: UNSUPPORTED",
+      "ADV-005 observation runtime separated from transition: UNSUPPORTED"
+    ]
+  },
+  "invariants": [
+    "Existing reference-engine tests remain unchanged",
+    "Unsupported capability is not reported as PASS",
+    "No semantic implementation is added in Phase A",
+    "No expected final semantic answer is smuggled into fixtures",
+    "Phase B may replace an UNSUPPORTED gate only with an executable semantic assertion"
+  ],
+  "tests": {
+    "file": "internal/reference/adversarial_phase_a_test.go",
+    "command": "go test ./...",
+    "result": "pending_ci"
+  },
+  "impact": {
+    "runtime_semantics": "none",
+    "reference_oracle": "unchanged",
+    "downstream": "Phase B is now gated by executable unsupported baselines"
+  },
+  "promotion": "not_promoted",
+  "notes": "This change intentionally makes missing capabilities visible without making CI fail merely because restoration has not happened yet. A future implementation must convert each gate from UNSUPPORTED to a real semantic PASS with provenance."
+}

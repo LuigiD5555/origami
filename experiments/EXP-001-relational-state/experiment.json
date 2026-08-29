@@ -1,0 +1,27 @@
+{
+  "experiment_id": "EXP-001-relational-state",
+  "status": "SPECIFIED_NOT_YET_EXECUTED",
+  "question": "Can a minimal deterministic Origami relational machine expose valid, invalid, cyclic, and convergent configurations under predeclared rules and finite budgets?",
+  "entities": ["A", "B", "C", "D"],
+  "domain": ["active", "inactive", "latent", "indeterminate"],
+  "relations": [
+    {"type": "requires", "from": "A", "to": "B"},
+    {"type": "excludes", "from": "B", "to": "C"},
+    {"type": "requires", "from": "C", "to": "D"},
+    {"type": "couples", "from": "D", "to": "A"}
+  ],
+  "protocol": {
+    "enumerate_initial_states": true,
+    "transition_order": ["requires", "excludes", "couples"],
+    "deterministic": true,
+    "max_steps_per_state": 32,
+    "classifications": ["FIXED_POINT", "CYCLE", "CONTRADICTION", "BUDGET_EXHAUSTED"]
+  },
+  "hypotheses": [
+    "Identical initial state and rules always produce identical traces.",
+    "Every enumerated run terminates in a declared classification within the finite budget.",
+    "At least one deliberately contradictory fixture is classified CONTRADICTION.",
+    "A minimized counterexample can be retained when an invariant is violated."
+  ],
+  "promotion_gate": "No hypothesis is promoted as supported until an executable reference engine produces machine-readable evidence."
+}

@@ -21,6 +21,9 @@ jobs:
           go-version: '1.23.x'
           cache: true
 
+      - name: Formal contract coherence
+        run: bash tests/test-formal-contracts.sh
+
       - name: Test
         run: go test ./...
 

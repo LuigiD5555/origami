@@ -1,0 +1,47 @@
+{
+  "contract_id": "origami.observation-contract.r0",
+  "status": "experimental_contract",
+  "rule": "Every non-directly-observable claim must declare a finite authorized observation procedure and a condition under which the claim fails.",
+  "required_fields": [
+    "claim_id",
+    "subject",
+    "preconditions",
+    "observer",
+    "trajectory",
+    "budget",
+    "expected",
+    "failure"
+  ],
+  "budget": {
+    "rule": "At least one finite exhaustion bound is mandatory.",
+    "allowed_bounds": [
+      "max_steps",
+      "max_frames",
+      "max_logical_time",
+      "max_observations"
+    ]
+  },
+  "expected": {
+    "rule": "Must be decidable by a declared predicate or bounded metric threshold.",
+    "examples": [
+      "predicate == true",
+      "distance <= epsilon",
+      "similarity >= threshold",
+      "state belongs_to accepted_set"
+    ]
+  },
+  "outcomes": {
+    "PASS": "expected predicate becomes true within the valid budget",
+    "FAIL": "valid preconditions hold and the finite budget is exhausted without satisfying expected",
+    "INVALID_CONTRACT": "required fields, preconditions, trajectory, budget, or expected predicate are invalid",
+    "UNSUPPORTED": "the requested observation operation is not implemented by the selected runtime"
+  },
+  "invariants": [
+    "LATENT_IS_NOT_ABSENT_BEFORE_AUTHORIZED_OBSERVATION",
+    "LATENT_IS_NOT_IMMUNE_TO_FAILURE_AFTER_BUDGET_EXHAUSTION",
+    "TRAJECTORY_MUST_BE_DECLARED_BEFORE_EXECUTION",
+    "BUDGET_MUST_BE_FINITE",
+    "EXPECTED_MUST_BE_DECIDABLE",
+    "FAILURE_SEMANTICS_MUST_NOT_BE_INFERRED_AFTER_THE_EXPERIMENT"
+  ]
+}

@@ -39,6 +39,9 @@ func TestExactRepeatFoldUnfoldHash(t *testing.T) {
 	if stats.BytesMaterialized != uint64(len(source)) {
 		t.Fatalf("materialized bytes = %d, want %d", stats.BytesMaterialized, len(source))
 	}
+	if stats.NodesVisited != 100001 {
+		t.Fatalf("nodes visited = %d, want 100001", stats.NodesVisited)
+	}
 }
 
 func TestExactRepeatRejectsNonRepeatingSource(t *testing.T) {
@@ -54,5 +57,15 @@ func TestUnfoldRequiresFiniteBudget(t *testing.T) {
 	}
 	if _, _, err := machine.UnfoldExact(rep, machine.Budget{}); err == nil {
 		t.Fatal("expected zero budget to be rejected")
+	}
+}
+
+func TestUnfoldRejectsInsufficientByteBudget(t *testing.T) {
+	rep, err := fold.ExactRepeat([]byte("ABCABC"), []byte("ABC"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, _, err := machine.UnfoldExact(rep, machine.Budget{MaxBytes: 5, MaxNodes: 3, MaxDepth: 2}); err == nil {
+		t.Fatal("expected byte budget exhaustion")
 	}
 }

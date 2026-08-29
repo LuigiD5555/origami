@@ -1,0 +1,59 @@
+{
+  "schema": "origami.portable-experiment.r0",
+  "id": "portable-synthetic-r0",
+  "purpose": "Validate the portable receiver contract before real-source/PDF trials.",
+  "working_window_token_eq": 4000,
+  "modes": ["native", "computational", "hybrid"],
+  "memory": {
+    "kind": "synthetic_random_identifiers",
+    "initial_scale": 1000,
+    "checkpoints": [1000, 10000, 100000, 1000000],
+    "questions_after_freeze": true
+  },
+  "public_artifacts": [
+    "MASTER_PROMPT.md",
+    "model_packet.json",
+    "carrier.png",
+    "questions.json"
+  ],
+  "private_artifacts": [
+    "manifest.json",
+    "oracle.json",
+    "source"
+  ],
+  "gates": {
+    "answer_correctness": true,
+    "route_integrity": true,
+    "evidence_integrity": true,
+    "peak_active_token_eq_lte": 4000,
+    "no_global_scan": true,
+    "anti_contamination": true,
+    "unknown_on_absence": true
+  },
+  "native": {
+    "input": "MASTER_PROMPT + ONE carrier image + question",
+    "carrier_max_bytes": 512000,
+    "external_decoder_allowed": false
+  },
+  "computational": {
+    "allowed_tools": [
+      "LOOKUP",
+      "FOLLOW",
+      "EXPAND",
+      "UNFOLD",
+      "TRACE",
+      "VERIFY",
+      "BACKTRACK",
+      "STOP",
+      "FILTER",
+      "PROJECT",
+      "COUNT",
+      "AGGREGATE",
+      "COMPARE",
+      "INTERSECT",
+      "RANGE",
+      "RESOLVE",
+      "FOLD"
+    ]
+  }
+}

@@ -48,6 +48,9 @@ func ImportTlalocCandidate(in TlalocHybridArtifactSet) (ImportedCandidate, error
 	if in.CandidateID == "" || in.UniversalPrompt == "" || in.SourceTraceSHA256 == "" {
 		return ImportedCandidate{}, fmt.Errorf("candidate id, universal prompt and source trace hash are required")
 	}
+	if len(in.SourceTraceSHA256) != 64 {
+		return ImportedCandidate{}, fmt.Errorf("source trace SHA-256 must be 64 hex characters")
+	}
 	if in.WorkingWindow <= 0 {
 		return ImportedCandidate{}, fmt.Errorf("working window must be positive")
 	}

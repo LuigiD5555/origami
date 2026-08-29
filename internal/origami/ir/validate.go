@@ -40,18 +40,18 @@ func (r Representation) Validate() error {
 				return fmt.Errorf("origami ir: literal %q has invalid operands", id)
 			}
 		case KindRef:
-			if n.Target == "" {
-				return fmt.Errorf("origami ir: ref %q has empty target", id)
+			if n.Target == "" || len(n.Literal) != 0 || len(n.Children) != 0 || n.Count != 0 {
+				return fmt.Errorf("origami ir: ref %q requires only a target", id)
 			}
 			deps = []string{n.Target}
 		case KindConcat:
-			if len(n.Children) == 0 {
-				return fmt.Errorf("origami ir: concat %q has no children", id)
+			if len(n.Children) == 0 || len(n.Literal) != 0 || n.Target != "" || n.Count != 0 {
+				return fmt.Errorf("origami ir: concat %q requires only children", id)
 			}
 			deps = n.Children
 		case KindRepeat:
-			if n.Target == "" || n.Count == 0 {
-				return fmt.Errorf("origami ir: repeat %q requires target and positive count", id)
+			if n.Target == "" || n.Count == 0 || len(n.Literal) != 0 || len(n.Children) != 0 {
+				return fmt.Errorf("origami ir: repeat %q requires only target and positive count", id)
 			}
 			deps = []string{n.Target}
 		}

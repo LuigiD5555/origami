@@ -1,41 +1,68 @@
 {
-  "schema": "ohf.origami-state.v1",
-  "status_date": "2026-08-27",
-  "production": {
-    "version": "R3.10",
-    "historical_baseline_bytes": "MISSING_R310_SDK"
+  "schema": "origami.state.v2",
+  "status_date": "2026-08-28",
+  "project": {
+    "version": "6.0.0-alpha.3",
+    "role": "visual/computational representation and state-machine language",
+    "work_system": "Tlaloc is external and optional",
+    "status": "EXPERIMENTAL"
   },
-  "lab": {
-    "version": "R3.10-LAB",
-    "foundation": "F1.15_PASS",
-    "active_components": [
-      "glyph_calculus",
-      "glyph_microisa",
-      "context_simd",
-      "macro_gestalt",
-      "evolution_control",
-      "dimensional_visual_register",
-      "perceptual_state_space",
-      "perceptual_orthogonality",
-      "bounded_multidimensional_machine",
-      "installer_lifecycle"
-    ]
+  "semantic_contracts": {
+    "coherent_state": {
+      "document": "docs/STATE_SEMANTICS_R0.md",
+      "introduced": "6.0.0-alpha.1",
+      "status": "EXPERIMENTAL_CONTRACT"
+    },
+    "perceptual_channels": {
+      "contract_id": "origami.perceptual-channels.r0",
+      "document": "docs/PERCEPTUAL_CHANNELS_R0.md",
+      "machine_readable": "spec/PERCEPTUAL_CHANNELS_R0.json",
+      "introduced": "6.0.0-alpha.2",
+      "status": "EXPERIMENTAL_CONTRACT",
+      "runtime_support": "PARTIAL_OR_UNIMPLEMENTED_BY_OPERATION"
+    }
   },
-  "invariants": [
+  "research_tracks": {
+    "ohf": {
+      "role": "carrier/protocol and executable laboratory track within Origami",
+      "protocol_reference": "R3.10",
+      "historical_baseline_bytes": "MISSING_R310_SDK",
+      "lab_version": "R3.10-LAB",
+      "foundation": "F1.15_PASS",
+      "active_components": [
+        "glyph_calculus",
+        "glyph_microisa",
+        "context_simd",
+        "macro_gestalt",
+        "evolution_control",
+        "dimensional_visual_register",
+        "perceptual_state_space",
+        "perceptual_orthogonality",
+        "bounded_multidimensional_machine",
+        "installer_lifecycle"
+      ],
+      "last_track_change": "CHG-INSTALL-0001"
+    }
+  },
+  "project_invariants": [
+    "TLALOC_AND_ORIGAMI_HAVE_INDEPENDENT_OWNERSHIP",
+    "COHERENT_STATE_NE_PERCEPTUAL_AVAILABILITY",
+    "LATENT_IS_NOT_ABSENT",
+    "UNSUPPORTED_OPERATIONS_MUST_BE_EXPLICIT"
+  ],
+  "ohf_track_invariants": [
     "FALSE_EXACT=0",
-    "NATIVE_INPUT=MASTER_PROMPT+ONE_IMAGE+QUERY",
-    "GO_CANONICAL_RUNTIME",
-    "CARRIER_TARGET_LE_500KB",
     "UNKNOWN_OVER_INVENTED_EXACTNESS",
+    "GO_CANONICAL_RUNTIME_FOR_OHF_LAB",
+    "CARRIER_TARGET_LE_500KB",
     "PERCEPTION_NE_RESOLUTION_NE_EXECUTION_NE_VERIFICATION",
     "EXTERNAL_TESTS_PROGRESSIVE_CACHED_RATE_LIMITED",
     "NOMINAL_CAPACITY_NE_SAFE_CAPACITY",
     "PERCEPTUAL_ORTHOGONALITY_REQUIRED_FOR_INDEPENDENT_CAPACITY",
-    "MICRO_MESO_MACRO_CAPACITY_RESPECTS_VISUAL_SCOPE",
     "PAIRWISE_PASS_NE_HIGHER_ORDER_PROMOTION",
     "INSTALL_UNINSTALL_RESTORE_PREINSTALL_STATE",
     "UNINSTALL_PRESERVES_AMBIGUOUS_USER_DATA",
     "INSTALLER_NEVER_EDITS_SHELL_PROFILE"
   ],
-  "last_change": "CHG-INSTALL-0001"
+  "last_project_change": "CHG-ORIGAMI-0001"
 }

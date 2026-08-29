@@ -1,17 +1,20 @@
-# Contributing to Origami HyperFold
+# Contributing to Origami
 
-OHF is experimental protocol research. A change is useful only if its effect can be identified and replayed.
+Origami is experimental representation/state-machine research. The repository also contains the OHF carrier/laboratory track.
 
-Before opening a pull request:
+Before opening a pull request, identify the ownership scope of the change:
+
+- **core Origami** — state semantics, perceptual channels, machine/dynamics, general projection contracts;
+- **OHF track** — R3.10-LAB carrier tooling, DVR/PSS, Glyph Calculus, SAFE_MICRO_ISA, Context SIMD and related experiments.
+
+Run the smallest relevant verification closure. For current Go changes, start with:
 
 ```bash
 make check
 ```
 
-For changes affecting Glyph Calculus or Native evaluation, also run the relevant reproducibility scripts documented in `docs/EXPERIMENT_PROTOCOL.md`.
+For OHF visual/Glyph/Native work, also run the relevant reproducibility scripts documented in `docs/`.
 
-Please keep generated `runs/` and raw external-model responses out of commits unless they have been curated into a minimal reproducible regression.
+Every material change should record before/after state, evidence, affected downstream components, regressions and promotion status. Root changes update `state/ORIGAMI_STATE.json`; track/component changes update the corresponding `state/components/*.json` and `changes/*.json` records.
 
-Every material protocol/lab change should update or add a record under `changes/` and update the corresponding `state/components/*.json` file.
-
-Do not describe an experimental capability as promoted unless its component state says so.
+Do not describe an experimental capability as promoted unless its evidence and state record support that claim.

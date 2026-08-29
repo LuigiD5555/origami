@@ -40,7 +40,10 @@ func TestEnvelopeRoundTripAndMemoryVerification(t *testing.T) {
 	envelope, err := BuildEnvelope(
 		receiverSpec(),
 		[]IndexEntry{{Key: "K7F91", Address: "mem:1"}},
-		[]MemoryEntry{{Address: "mem:1", Value: "AMBER-10593", Links: map[string][]string{"depends": {"mem:2"}}}, {Address: "mem:2", Value: "DELTA-77102"}},
+		[]MemoryEntry{
+			{Address: "mem:1", Value: "AMBER-10593", Links: map[string][]string{"depends": []string{"mem:2"}}},
+			{Address: "mem:2", Value: "DELTA-77102"},
+		},
 	)
 	if err != nil { t.Fatal(err) }
 	payload, err := EncodePayload(envelope)

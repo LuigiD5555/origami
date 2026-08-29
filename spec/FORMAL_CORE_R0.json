@@ -1,0 +1,36 @@
+{
+  "contract_id": "origami.formal-core.r0",
+  "status": "experimental_contract",
+  "purpose": "Minimal falsifiable computational core for relational state, deterministic evolution, observation, and verification.",
+  "objects": {
+    "state": "S_t: finite machine-readable state at logical time t",
+    "context": "C_t: declared external inputs authorized for one transition",
+    "rules": "R: declared transition rules",
+    "transition": "S_(t+1) = F(S_t, C_t, R)",
+    "observer": "O: declared procedure or actor that obtains observations without redefining state semantics",
+    "trajectory": "tau: finite ordered sequence of authorized observation actions or viewpoints",
+    "percept": "P = G(S_[0:n], O, tau)",
+    "observation_contract": "finite preconditions + trajectory + budget + expected predicate + explicit failure condition"
+  },
+  "laws": [
+    "DECLARED_INPUTS_ONLY",
+    "DETERMINISTIC_TRANSITION_UNLESS_CONTRACT_EXPLICITLY_STATES_OTHERWISE",
+    "OBSERVATION_DOES_NOT_RETROACTIVELY_REDEFINE_PRIOR_STATE",
+    "EMERGENT_PROPERTY_REQUIRES_RELATIONAL_EVIDENCE",
+    "NON_DIRECT_PROPERTY_REQUIRES_FINITE_OBSERVATION_CONTRACT",
+    "EXHAUSTED_VALID_OBSERVATION_BUDGET_WITHOUT_EXPECTED_PREDICATE_IS_FAIL",
+    "UNSUPPORTED_OPERATION_MUST_BE_EXPLICIT"
+  ],
+  "result_states": [
+    "PASS",
+    "FAIL",
+    "INVALID_CONTRACT",
+    "UNSUPPORTED"
+  ],
+  "non_goals": [
+    "claim physical quantum computation",
+    "make visual rendering mandatory",
+    "replace general-purpose programming languages",
+    "treat absence in one unauthorized/static observation as proof of semantic absence"
+  ]
+}

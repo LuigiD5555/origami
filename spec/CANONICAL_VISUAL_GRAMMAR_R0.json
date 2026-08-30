@@ -17,17 +17,17 @@
     "primary_palette": "HIGH_CONTRAST_MONOCHROME",
     "text_role": "BOOTSTRAP_AND_SMALL_DECLARATIVE_LABELS_ONLY",
     "geometry_role": "SEMANTIC_CLASS_AND_NAVIGATION",
-    "topology_role": "RELATION_AND_DEPENDENCY",
-    "position_role": "HIERARCHY_AND_ROUTE",
-    "enclosure_role": "SPACE_AND_SCOPE",
+    "topology_role": "RELATION_DEPENDENCY_AND_AUTOMATON_GRAPH",
+    "position_role": "HIERARCHY_ROUTE_AND_DECLARED_TEMPORAL_ORDER",
+    "enclosure_role": "SPACE_SCOPE_OR_TEMPORAL_REGION",
     "scale_role": "MACRO_MESO_MICRO_LEVEL",
-    "repetition_role": "REDUNDANCY_AND_VERIFICATION",
-    "density_role": "DATA_VS_CONTROL_STRUCTURE",
+    "repetition_role": "REDUNDANCY_VERIFICATION_AND_REPEATED_RULE_HINT",
+    "density_role": "DATA_VS_CONTROL_STRUCTURE_AND_FOLDED_MICROSTEP_HINT",
     "color_role": "RESERVED_EXPERIMENTAL_REDUNDANT_CHANNEL_NOT_PRIMARY_AUTHORITY",
     "numeric_structure_role": "RESERVED_EXPERIMENTAL_CHANNEL_FAMILY_NOT_PRIMARY_AUTHORITY",
     "interference_role": "EXPERIMENTAL_MOIRE_PHASE_RELATIONAL_CHANNEL",
     "depth_role": "EXPERIMENTAL_STEREO_PARALLAX_RELATIONAL_CHANNEL",
-    "temporal_role": "EXPERIMENTAL_TRAJECTORY_AND_INTEGRATION_CHANNEL",
+    "temporal_role": "EXPERIMENTAL_TRAJECTORY_AUTOMATON_PHASE_EVENT_ORDER_CHECKPOINT_AND_INTEGRATION_CHANNEL",
     "emergent_role": "EXPERIMENTAL_MULTI_LAYER_OR_MULTI_INSTANT_PERCEPT_CHANNEL"
   },
   "canonical_primitives": [
@@ -35,10 +35,10 @@
     {"id":"PAGE_NODE","shape":"SQUARE","fill":"BLACK_CENTER","intent":"PAGE_OR_MAJOR_CONTAINER"},
     {"id":"CONCEPT_NODE","shape":"SQUARE","fill":"WHITE","intent":"CONCEPT"},
     {"id":"SOURCE_NODE","shape":"DIAMOND","fill":"WHITE","intent":"SOURCE_OR_EVIDENCE_ORIGIN"},
-    {"id":"GRAPH_NODE","shape":"SMALL_SQUARE","fill":"BLACK","intent":"GRAPH_OR_RELATION_CLUSTER"},
-    {"id":"VERIFY_NODE","shape":"RINGED_SQUARE","fill":"BLACK_WHITE_NESTED","intent":"VERIFY_OR_PROOF_ANCHOR"},
-    {"id":"RELATION_EDGE","shape":"LINE_OR_ARROW","intent":"DECLARED_RELATION"},
-    {"id":"SPACE_BOX","shape":"ENCLOSURE","intent":"SPACE_SCOPE_OR_ADDRESS_REGION"},
+    {"id":"GRAPH_NODE","shape":"SMALL_SQUARE","fill":"BLACK","intent":"GRAPH_RELATION_OR_AUTOMATON_CELL_CLUSTER"},
+    {"id":"VERIFY_NODE","shape":"RINGED_SQUARE","fill":"BLACK_WHITE_NESTED","intent":"VERIFY_PROOF_OR_CHECKPOINT_ANCHOR"},
+    {"id":"RELATION_EDGE","shape":"LINE_OR_ARROW","intent":"DECLARED_RELATION_DEPENDENCY_OR_TRANSITION"},
+    {"id":"SPACE_BOX","shape":"ENCLOSURE","intent":"SPACE_SCOPE_ADDRESS_OR_TEMPORAL_REGION"},
     {"id":"PROBE_ONE","shape":"CELL","fill":"BLACK","intent":"VISUAL_BIT_1"},
     {"id":"PROBE_ZERO","shape":"CELL","fill":"WHITE","intent":"VISUAL_BIT_0"}
   ],
@@ -46,15 +46,15 @@
     {"id":"D01_GEOMETRY","status":"CANONICAL","uses":["class","role","anchor"]},
     {"id":"D02_FILL_CONTRAST","status":"CANONICAL","uses":["bit","role","state_redundancy"]},
     {"id":"D03_POSITION","status":"CANONICAL","uses":["hierarchy","route","ordering"]},
-    {"id":"D04_TOPOLOGY","status":"CANONICAL","uses":["relation","dependency","graph"]},
-    {"id":"D05_ENCLOSURE","status":"CANONICAL","uses":["scope","space","address_region"]},
+    {"id":"D04_TOPOLOGY","status":"CANONICAL","uses":["relation","dependency","graph","automaton_neighborhood"]},
+    {"id":"D05_ENCLOSURE","status":"CANONICAL","uses":["scope","space","address_region","temporal_region"]},
     {"id":"D06_SCALE","status":"CANONICAL","uses":["macro","meso","micro"]},
-    {"id":"D07_REPETITION","status":"CANONICAL","uses":["redundancy","agreement","verification"]},
-    {"id":"D08_DENSITY","status":"CANONICAL","uses":["data_plane","control_plane","importance_hint"]},
+    {"id":"D07_REPETITION","status":"CANONICAL","uses":["redundancy","agreement","verification","repeated_rule_hint"]},
+    {"id":"D08_DENSITY","status":"CANONICAL","uses":["data_plane","control_plane","importance_hint","folded_microstep_hint"]},
     {"id":"D09_TEXT","status":"CANONICAL_LIMITED","uses":["boot","rosetta","small_labels"]},
     {"id":"D10_COLOR","status":"EXPERIMENTAL_REDUNDANT_ONLY","uses":["future_intent","future_state","future_routing"]},
     {"id":"D11_NUMERIC_STRUCTURE","status":"EXPERIMENTAL","uses":["periodicity","prime_structure","modular_pattern","factorization_structure"]},
-    {"id":"D12_TEMPORAL","status":"EXPERIMENTAL","uses":["trajectory","motion","temporal_latent","integration"]},
+    {"id":"D12_TEMPORAL","status":"EXPERIMENTAL","uses":["trajectory","motion","temporal_latent","integration","automaton_phase","event_order","checkpoint_route"]},
     {"id":"D13_INTERFERENCE","status":"EXPERIMENTAL","uses":["moire","phase_shift","relative_alignment","interference_field"]},
     {"id":"D14_DEPTH","status":"EXPERIMENTAL","uses":["stereo_bind","parallax","viewpoint_relation","depth_signal"]},
     {"id":"D15_EMERGENT","status":"EXPERIMENTAL","uses":["multi_layer_reveal","multi_instant_reveal","relational_percept"]}
@@ -72,6 +72,7 @@
     "must_declare_encoder_registry": true,
     "must_declare_capability_requirements": true,
     "semantic_binding_must_declare": ["SEMANTIC_ROLE","DECODER_ID","ENCODER_ID","FAILURE_STATE"],
+    "temporal_automaton_binding_must_declare": ["AUTOMATON_ROLE","TEMPORAL_DECODER_ID","TEMPORAL_ENCODER_ID","UPDATE_MODE","TEMPORAL_ORDER_OR_SCHEDULE","CHECKPOINT_SEMANTICS","CAPABILITY_REQUIREMENTS","FAILURE_STATE"],
     "promoted_perceptual_channel_must_declare": [
       "SEMANTIC_ROLE",
       "DECODER_ID",
@@ -90,6 +91,7 @@
     "required_path": [
       "SOURCE_OR_DOCUMENT_IR",
       "SEMANTIC_IR",
+      "OPTIONAL_AUTOMATON_OR_TEMPORAL_IR",
       "VISUAL_INTENT_PLAN",
       "CANONICAL_PROFILE_BINDING",
       "ROSETTA",
@@ -100,8 +102,9 @@
     ]
   },
   "reader_rule": {
-    "required_path": ["BOOT","ROSETTA","DECODER_REGISTRY_SELECTION","SMALLEST_SUFFICIENT_SEMANTIC_REGION","VERIFY_WHEN_REQUIRED"],
-    "semantic_query_exact_escalation_without_need": false
+    "required_path": ["BOOT","ROSETTA","DECODER_REGISTRY_SELECTION","SMALLEST_SUFFICIENT_SEMANTIC_OR_TEMPORAL_REGION","VERIFY_WHEN_REQUIRED"],
+    "semantic_query_exact_escalation_without_need": false,
+    "temporal_query_global_replay_without_need": false
   },
   "evolution": {
     "primary_search_tool": "TLALOC",
@@ -109,15 +112,16 @@
     "canonical_authority": "ORIGAMI",
     "profile_promotion_owner": "ORIGAMI",
     "optional_toolchain_composition": "TONAL",
-    "candidate_changes": ["PROMPT","CHANNEL_ROLE","PRIMITIVE","LAYOUT","REDUNDANCY","DECODER_PROCEDURE","ENCODER_PROCEDURE","FALLBACK","COLOR_USAGE","NUMERIC_STRUCTURE","INTERFERENCE_STRUCTURE","DEPTH_STRUCTURE","TEMPORAL_STRUCTURE","EMERGENT_STRUCTURE"],
-    "optimization_objectives": ["MAXIMIZE_RECOVERABLE_SEMANTIC_CAPACITY_PER_BYTE","MAXIMIZE_CROSS_MODEL_READ_WRITE_PORTABILITY","MAXIMIZE_CODEC_ROUNDTRIP_STABILITY","MINIMIZE_CARRIER_BYTES","MINIMIZE_RECOGNITION_TIME","MINIMIZE_BOOTSTRAP_STEPS","MINIMIZE_DECODE_STEPS","MINIMIZE_ENCODE_STEPS","MAXIMIZE_TRANSPORT_ROBUSTNESS","PRESERVE_SEMANTIC_ROUNDTRIP_AND_FALSE_EXACT_ZERO"],
-    "promotion_requires": ["SEMANTIC_ROUNDTRIP_NON_REGRESSION","READABILITY_EVIDENCE","WRITABILITY_EVIDENCE","CROSS_MODEL_EVIDENCE_WHEN_INTEROPERABILITY_IS_CLAIMED","PERCEPTUAL_REVEAL_EVIDENCE_FOR_NONSTATIC_CHANNELS","TRANSPORT_ROBUSTNESS","BOUNDED_CONTEXT_NON_REGRESSION","FALSE_EXACT_0","CARRIER_SIZE_INVARIANT_OR_EXPLICIT_PROFILE_CHANGE"]
+    "candidate_changes": ["PROMPT","CHANNEL_ROLE","PRIMITIVE","LAYOUT","REDUNDANCY","DECODER_PROCEDURE","ENCODER_PROCEDURE","FALLBACK","AUTOMATON_STRUCTURE","TEMPORAL_STRUCTURE","CHECKPOINT_STRATEGY","COLOR_USAGE","NUMERIC_STRUCTURE","INTERFERENCE_STRUCTURE","DEPTH_STRUCTURE","EMERGENT_STRUCTURE"],
+    "optimization_objectives": ["MAXIMIZE_RECOVERABLE_SEMANTIC_CAPACITY_PER_BYTE","MAXIMIZE_CROSS_MODEL_READ_WRITE_PORTABILITY","MAXIMIZE_CODEC_ROUNDTRIP_STABILITY","MAXIMIZE_TEMPORAL_REPLAY_FIDELITY","MINIMIZE_TEMPORAL_RANDOM_ACCESS_COST","MINIMIZE_CARRIER_BYTES","MINIMIZE_RECOGNITION_TIME","MINIMIZE_BOOTSTRAP_STEPS","MINIMIZE_DECODE_STEPS","MINIMIZE_ENCODE_STEPS","MAXIMIZE_TRANSPORT_ROBUSTNESS","PRESERVE_SEMANTIC_ROUNDTRIP_AND_FALSE_EXACT_ZERO"],
+    "promotion_requires": ["SEMANTIC_ROUNDTRIP_NON_REGRESSION","TEMPORAL_REPLAY_NON_REGRESSION_WHEN_TEMPORAL_IS_CLAIMED","READABILITY_EVIDENCE","WRITABILITY_EVIDENCE","CROSS_MODEL_EVIDENCE_WHEN_INTEROPERABILITY_IS_CLAIMED","PERCEPTUAL_REVEAL_EVIDENCE_FOR_NONSTATIC_CHANNELS","TRANSPORT_ROBUSTNESS","BOUNDED_CONTEXT_NON_REGRESSION","FALSE_EXACT_0","CARRIER_SIZE_INVARIANT_OR_EXPLICIT_PROFILE_CHANGE"]
   },
   "hard_invariants": [
     "ONE_CANONICAL_AESTHETIC_PER_PROFILE_VERSION",
     "ROSETTA_ALWAYS_PRESENT",
     "ROSETTA_DECLARES_DECODING_SEMANTICS",
     "ROSETTA_DECLARES_ENCODING_SEMANTICS",
+    "ROSETTA_DECLARES_TEMPORAL_AUTOMATON_SEMANTICS_WHEN_PRESENT",
     "ROSETTA_DOES_NOT_LICENSE_ARBITRARY_AESTHETIC_DRIFT",
     "PROMOTED_PERCEPTUAL_CHANNEL_HAS_DECLARED_REVEAL_PROCEDURE",
     "UNAVAILABLE_REVEAL_CONDITION_RETURNS_UNKNOWN",
@@ -128,6 +132,7 @@
     "TONAL_COMPOSITION_NE_ORIGAMI_PROFILE_AUTHORITY",
     "OLD_PROFILE_REMAINS_DECODABLE_BY_EMBEDDED_PROFILE_AND_ROSETTA",
     "SEMANTIC_CODEC_NE_EXACT_CODEC",
+    "TEMPORAL_SEMANTIC_CODEC_NE_EXACT_TRACE_CODEC",
     "FALSE_EXACT=0"
   ]
 }

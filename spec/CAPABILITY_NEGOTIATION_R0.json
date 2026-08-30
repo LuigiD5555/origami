@@ -1,0 +1,34 @@
+{
+  "contract_id": "origami.capability-negotiation.r0",
+  "status": "EXPERIMENTAL_REFERENCE_IMPLEMENTED",
+  "purpose": "Allow Origami readers/writers with different capabilities to select supported codecs, declared fallbacks and honest failure states without inventing unavailable execution.",
+  "capability_classes": ["SEMANTIC_READ","SEMANTIC_WRITE","EXACT_READ","EXACT_WRITE","PERCEPTUAL_CHANNEL","COMPILER","VERIFIER"],
+  "core_profile": {
+    "required": ["T0_BOOT","T1_ROSETTA","S0","E0","S1","E1","S2","E2","UNKNOWN","NOT_VERIFIED"],
+    "exact_plane_required": false,
+    "advanced_perceptual_channels_required": false
+  },
+  "negotiation_sequence": ["DISCOVER_CODEC","CHECK_REQUIRED_CAPABILITIES","EXECUTE_IF_SUPPORTED","TRY_DECLARED_FALLBACK","RETURN_DECLARED_FAILURE_STATE"],
+  "failure_behavior": {
+    "SEMANTIC_READ": "UNKNOWN",
+    "EXACT_READ": "NOT_VERIFIED",
+    "SEMANTIC_WRITE": "CONSTRUCTION_SPEC_ONLY_OR_UNKNOWN",
+    "COMPILER": "CONSTRUCTION_SPEC_ONLY",
+    "VERIFIER": "NOT_VERIFIED"
+  },
+  "fallback_rules": {
+    "must_be_declared": true,
+    "must_preserve_claimed_semantic_class": true,
+    "fidelity_loss_must_be_declared": true,
+    "undeclared_external_runtime_forbidden": true
+  },
+  "hard_invariants": [
+    "CAPABILITY_IS_DECLARED_OR_OBSERVED_NOT_ASSUMED",
+    "UNSUPPORTED_CAPABILITY_NE_INVENTION",
+    "FALLBACK_IS_EXPLICIT",
+    "FALLBACK_FIDELITY_IS_DECLARED",
+    "CORE_COMPATIBILITY_DOES_NOT_REQUIRE_EXACT_PLANE",
+    "TOOL_ASSISTED_NE_NATIVE_CAPABILITY",
+    "FALSE_EXACT=0"
+  ]
+}

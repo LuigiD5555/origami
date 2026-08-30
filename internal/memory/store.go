@@ -40,8 +40,10 @@ func BuildStore(carrierID string, nodes []Node) (*Store, error) {
 		if n.CarrierID == "" { n.CarrierID = carrierID }
 		if n.CID == "" { n.CID = n.DerivedCID() }
 		store.byAddress[n.Address] = n
-		if old, exists := store.byCID[n.CID]; exists && old != n.Address { return nil, fmt.Errorf("duplicate CID %q at %q and %q", n.CID, old, n.Address) }
-		store.byCID[n.CID] = n
+		// A CID identifies content, not location. Multiple addresses may legally
+		// expose the same content; keep the lexicographically first address as the
+		// deterministic reverse lookup and let Context Manager deduplicate by CID.
+		if old, exists := store.byCID[n.CID]; !exists || n.Address < old { store.byCID[n.CID] = n.Address }
 		store.indexNode(n)
 	}
 	store.signature = store.buildSignature()

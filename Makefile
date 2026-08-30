@@ -14,6 +14,7 @@ build:
 	go build -trimpath -o bin/ohf-glyphcalc ./cmd/ohf-glyphcalc
 	go build -trimpath -o bin/origami-hybrid-carrier ./cmd/origami-hybrid-carrier
 	go build -trimpath -o bin/origami-hybrid-tool ./cmd/origami-hybrid-tool
+	go build -trimpath -o bin/origami-memory ./cmd/origami-memory
 
 install:
 	./install.sh

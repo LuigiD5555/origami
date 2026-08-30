@@ -5,6 +5,7 @@ import (
 	"crypto/sha256"
 	"encoding/binary"
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"hash/crc32"
 	"image"
@@ -12,27 +13,38 @@ import (
 	"image/png"
 	"io"
 	"os"
+	"strings"
 )
 
 const (
-	Schema        = "origami.fixed-carrier.r2"
-	ToolProtocol  = "tlaloc.origami-tools.r2"
-	AddressABI    = "ohf-address.r2"
-	ProfileID     = "origami.fixed-carrier.r2.profile-1"
-	Width         = 640
-	Height        = 640
-	GridBits      = 64
-	RecordBytes   = GridBits * GridBits / 8
-	Cell          = 3
-	GridX         = 224
-	GridY         = 316
-	MaxPNGBytes   = 512000
-	FixedPNGBytes = 8192
+	Schema           = "origami.fixed-carrier.r2"
+	ToolProtocol     = "tlaloc.origami-tools.r2"
+	AddressABI       = "ohf-address.r2"
+	ProfileID        = "origami.fixed-carrier.r2.profile-2"
+	LegacyProfileID  = "origami.fixed-carrier.r2.profile-1"
+	Width            = 640
+	Height           = 640
+	GridBits         = 64
+	RecordBytes      = GridBits * GridBits / 8
+	Cell             = 3
+	GridX            = 224
+	GridY            = 316
+	MaxPNGBytes      = 512000
+	FixedPNGBytes    = 8192
 )
 
 var magic = [8]byte{'O', 'F', 'C', 'R', '2', 0, 0, 1}
 
 var bootText = []string{
+	"ORIGAMI FIXED CARRIER R2",
+	"THIS IMAGE IS A COMPUTATIONAL CARRIER",
+	"BOOT: TEXT > PROBE > ROSETTA > T2",
+	"SEMANTIC: READ T2. DO NOT DECODE BINARY",
+	"EXACT: QUERY EXPAND VERIFY IF TOOLS EXIST",
+	"UNKNOWN > INVENTION. FALSE_EXACT=0",
+}
+
+var legacyBootText = []string{
 	"ORIGAMI FIXED CARRIER R2",
 	"THIS IMAGE IS A COMPUTATIONAL CARRIER",
 	"BOOT: TEXT > PROBE > ROSETTA > INDEX > TOOLS",
@@ -78,7 +90,7 @@ func Render(meta Metadata) ([]byte, Decoded, error) {
 	drawFrame(img)
 	drawT0(img)
 	drawT1(img, decoded.VisualProbe)
-	drawT2(img)
+	drawT2(img, decoded.GraphSignature)
 	drawT3(img, rec)
 	drawVerify(img, decoded.VisualProbe)
 	var buf bytes.Buffer
@@ -180,7 +192,7 @@ func encodeRecord(meta Metadata) ([]byte, Decoded, error) {
 	copy(rec[122:138], tool[:16])
 	profile := sha256.Sum256([]byte(ProfileID))
 	copy(rec[138:154], profile[:16])
-	boot := sha256.Sum256([]byte(joinBootText()))
+	boot := sha256.Sum256([]byte(joinBootText(bootText)))
 	copy(rec[154:170], boot[:16])
 	sig := meta.GraphSignature
 	if len(sig) == 0 {
@@ -213,11 +225,11 @@ func decodeRecord(rec []byte) (Decoded, error) {
 	if !bytes.Equal(rec[122:138], tool[:16]) {
 		return Decoded{}, fmt.Errorf("tool protocol mismatch")
 	}
-	profile := sha256.Sum256([]byte(ProfileID))
-	if !bytes.Equal(rec[138:154], profile[:16]) {
-		return Decoded{}, fmt.Errorf("profile mismatch")
+	profileID, profileBoot, err := detectProfile(rec[138:154])
+	if err != nil {
+		return Decoded{}, err
 	}
-	boot := sha256.Sum256([]byte(joinBootText()))
+	boot := sha256.Sum256([]byte(joinBootText(profileBoot)))
 	if !bytes.Equal(rec[154:170], boot[:16]) {
 		return Decoded{}, fmt.Errorf("T0 boot-text binding mismatch")
 	}
@@ -229,9 +241,21 @@ func decodeRecord(rec []byte) (Decoded, error) {
 	digest := sha256.Sum256(rec)
 	sig := make([]byte, 256)
 	copy(sig, rec[170:426])
-	return Decoded{Schema: Schema, Profile: ProfileID, ToolProtocol: ToolProtocol, AddressABI: AddressABI, Metadata: Metadata{
+	return Decoded{Schema: Schema, Profile: profileID, ToolProtocol: ToolProtocol, AddressABI: AddressABI, Metadata: Metadata{
 		CarrierID: hex.EncodeToString(rec[26:58]), StoreRoot: hex.EncodeToString(rec[58:90]), SourceSHA256: hex.EncodeToString(rec[90:122]), PageCount: binary.BigEndian.Uint32(rec[10:14]), BlockCount: binary.BigEndian.Uint32(rec[14:18]), DocumentCount: binary.BigEndian.Uint32(rec[18:22]), ObjectCount: binary.BigEndian.Uint32(rec[22:26]), GraphSignature: sig, Flags: binary.BigEndian.Uint16(rec[8:10]),
-	}, CarrierDigest: hex.EncodeToString(digest[:]), VisualProbe: probeBits(digest[0]), BootText: append([]string(nil), bootText...), Zones: append([]Zone(nil), profileR2.Zones...)}, nil
+	}, CarrierDigest: hex.EncodeToString(digest[:]), VisualProbe: probeBits(digest[0]), BootText: append([]string(nil), profileBoot...), Zones: append([]Zone(nil), profileR2.Zones...)}, nil
+}
+
+func detectProfile(digest []byte) (string, []string, error) {
+	current := sha256.Sum256([]byte(ProfileID))
+	if bytes.Equal(digest, current[:16]) {
+		return ProfileID, bootText, nil
+	}
+	legacy := sha256.Sum256([]byte(LegacyProfileID))
+	if bytes.Equal(digest, legacy[:16]) {
+		return LegacyProfileID, legacyBootText, nil
+	}
+	return "", nil, fmt.Errorf("profile mismatch")
 }
 
 func drawT0(img *image.Gray) {
@@ -252,28 +276,69 @@ func drawT0(img *image.Gray) {
 }
 
 func drawT1(img *image.Gray, probe string) {
-	drawText(img, 24, 132, 1, "T1 ROSETTA: BLACK=1 WHITE=0  -> RELATION  BOX=SPACE", 0)
+	drawText(img, 24, 132, 1, "T1 ROSETTA: NODE=ENTRY LINK=RELATION BOX=SCOPE TEXT=SEMANTIC LABEL", 0)
 	drawProbeRow(img, 154, probe)
-	drawText(img, 24, 190, 1, "READ BOTH PROBE ROWS. THEY MUST AGREE BEFORE BOOT.", 0)
+	drawText(img, 24, 190, 1, "READ BOTH PROBE ROWS. THEY MUST AGREE BEFORE SEMANTIC NAVIGATION.", 0)
 }
 
-func drawT2(img *image.Gray) {
+func drawT2(img *image.Gray, signature []byte) {
 	box(img, 14, 214, 612, 82, 0)
-	drawText(img, 24, 222, 1, "T2 ROOT INDEX: PAGE | CONCEPT | SOURCE | GRAPH | VERIFY", 0)
-	drawText(img, 24, 234, 1, "QUERY FINDS ADDRESSES. EXPAND OPENS ONE ADDRESS. VERIFY PROVES ROOT.", 0)
-	xs := []int{74, 190, 306, 422, 538}
-	labels := []string{"PAGE", "CONCEPT", "SOURCE", "GRAPH", "VERIFY"}
-	for i, x := range xs {
-		drawNode(img, x, 270, i)
-		drawText(img, x-textWidth(labels[i], 1)/2, 282, 1, labels[i], 0)
-		if i > 0 {
-			line(img, xs[i-1]+9, 270, x-9, 270, 0)
-		}
+	drawText(img, 24, 220, 1, "T2 SEMANTIC SUPERINDEX", 0)
+	entries := semanticIndexFromSignature(signature)
+	if len(entries) == 0 {
+		drawText(img, 42, 238, 1, "INDEX UNKNOWN: NO SEMANTIC HINT", 0)
+		drawText(img, 42, 254, 1, "DO NOT DECODE T3 TO INVENT A SEMANTIC ANSWER", 0)
+		drawText(img, 24, 280, 1, "T3 IS CONTROL/EXACT; SEMANTIC NAVIGATION STAYS SEPARATE", 0)
+		return
 	}
+	for i, label := range entries {
+		if i >= 4 { break }
+		y := 236 + i*12
+		fill(img, 26, y+1, 7, 7, 0)
+		drawText(img, 42, y, 1, fmt.Sprintf("%d %s", i+1, label), 0)
+		if i > 0 { line(img, 29, y-3, 29, y+1, 0) }
+	}
+	drawText(img, 310, 280, 1, "SEMANTIC FIRST | EXACT OPTIONAL", 0)
+}
+
+func semanticIndexFromSignature(signature []byte) []string {
+	type hint struct {
+		Index   []string `json:"i"`
+		Roots   []string `json:"r"`
+		Groups  []string `json:"g"`
+		Classes []string `json:"k"`
+	}
+	trimmed := bytes.TrimRight(signature, "\x00")
+	if len(trimmed) == 0 { return nil }
+	var h hint
+	if err := json.Unmarshal(trimmed, &h); err != nil { return nil }
+	for _, values := range [][]string{h.Index, h.Roots, h.Groups, h.Classes} {
+		if len(values) == 0 { continue }
+		out := make([]string, 0, 4)
+		for _, value := range values {
+			value = sanitizeIndexLabel(value, 30)
+			if value == "" { continue }
+			out = append(out, value)
+			if len(out) == 4 { break }
+		}
+		if len(out) > 0 { return out }
+	}
+	return nil
+}
+
+func sanitizeIndexLabel(value string, width int) string {
+	value = strings.ToUpper(strings.Join(strings.Fields(value), " "))
+	var b strings.Builder
+	for _, r := range value {
+		ok := (r >= 'A' && r <= 'Z') || (r >= '0' && r <= '9') || r == ' ' || r == '-' || r == '_' || r == '/' || r == ':' || r == '.'
+		if ok { b.WriteRune(r) } else { b.WriteByte(' ') }
+		if width > 0 && b.Len() >= width { break }
+	}
+	return strings.Join(strings.Fields(b.String()), " ")
 }
 
 func drawT3(img *image.Gray, rec []byte) {
-	drawText(img, 24, 302, 1, "T3 ORIGAMI MACHINE", 0)
+	drawText(img, 24, 302, 1, "T3 CONTROL / EXACT RECORD", 0)
 	drawText(img, 28, 320, 1, "MACRO", 0)
 	drawNode(img, 92, 344, 0)
 	drawNode(img, 58, 382, 1)
@@ -402,9 +467,9 @@ func max1(v uint32) uint32 {
 	}
 	return v
 }
-func joinBootText() string {
+func joinBootText(lines []string) string {
 	var b bytes.Buffer
-	for _, s := range bootText {
+	for _, s := range lines {
 		b.WriteString(s)
 		b.WriteByte('\n')
 	}
@@ -428,9 +493,6 @@ func padPNG(data []byte, target int) ([]byte, error) {
 		return nil, fmt.Errorf("padding gap too small")
 	}
 	payload := make([]byte, gap-12)
-	for i := range payload {
-		payload[i] = 0
-	}
 	chunk := pngChunk("oPAD", payload)
 	out := make([]byte, 0, target)
 	out = append(out, data[:chunkStart]...)
@@ -467,7 +529,6 @@ func fill(img *image.Gray, x, y, w, h int, v uint8) {
 				img.SetGray(xx, yy, c)
 			}
 		}
-	}
 }
 func line(img *image.Gray, x0, y0, x1, y1 int, v uint8) {
 	dx := abs(x1 - x0)

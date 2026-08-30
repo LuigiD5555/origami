@@ -1,5 +1,49 @@
 # Origami changelog
 
+## 6.0.0-alpha.13 — Self-Describing Read/Write Protocol R0 + profile-3 renderer
+
+### Added
+
+- formalizes `origami.protocol.r0`: Origami is a bidirectional, self-describing communication protocol rather than only a visual memory representation;
+- adds `origami.codec-registry.r0` with semantic decoder family `S0..S6`, semantic encoder family `E0..E6`, exact decoder family `X0..X5` and exact encoder family `Q0..Q5`;
+- adds `origami.capability-negotiation.r0` so receivers may declare supported codecs/channels and fail with `UNKNOWN` / `NOT_VERIFIED` instead of invention;
+- makes ROSETTA declare decoding semantics **and** encoding semantics;
+- adds deterministic reference Go registry under `internal/codec` and `origami-codec` CLI;
+- implements the first paired semantic roundtrip gate `S2(E2(INDEX)) ~= INDEX`;
+- upgrades Master Prompt to R4 protocol/codec-aware handshake, SHA-256 `78cbcee8d0f71e1b06e2902c9b9600779e3cd0148251ad9d50623d07969c2a56`;
+- adds `origami.fixed-carrier.r2.profile-3` as a parallel rendered candidate with visible T0 protocol boot, T1 ROSETTA + codec entry points, T2 semantic superindex, PROGRAM codec hints, separate T3 exact/control and VERIFY;
+- adds `origami-profile3-carrier` build/decode CLI;
+- profile-3 deterministic CI preserves the 640x640 canvas, exactly 8192 PNG bytes and profile-1/profile-2 decode compatibility.
+
+### Corrected interpretation
+
+- decoder use itself is not a failure;
+- a self-declared semantic decoder such as `S2` is part of Origami and may be used natively;
+- undeclared external decoder/file/binary dependency remains forbidden for Native semantic navigation;
+- a semantic query must not unnecessarily escalate to exact/binary codecs;
+- encoder instructions are first-class so a compatible model can construct a new Origami Construction IR even when no deterministic image compiler is available.
+
+### Evidence boundary
+
+Profile-3 renderer/roundtrip/size compatibility is deterministically implemented and green. Held-out Native S2 index recovery, held-out E2 write behavior and real A -> B -> C cross-model interoperability remain external-model evidence pending. Profile-2 remains the default renderer and profile-3 is not promoted.
+
+## 6.0.0-alpha.12 — Native Semantic Navigation R0
+
+### Failure-driven correction
+
+- preserves `FAILED_TRIAL_001`, where a real multimodal model read BOOT but failed the index question, requested binary/file decoding and emitted corrupted/unverified mechanical claims;
+- changes the Native path from binary-first to semantic-first;
+- makes Fixed Carrier profile-2 T2 render actual bounded semantic entry labels from canonical memory instead of generic PAGE/CONCEPT/SOURCE/GRAPH/VERIFY categories;
+- keeps T3 as deterministic exact/control plane rather than a prerequisite for semantic index/overview questions;
+- adds `origami.native-semantic-navigation.r0` and the first hard Native benchmark `What is the index?`;
+- updates the integration layer so the compact GraphSignature remains structurally valid JSON instead of blindly truncating JSON at byte 256;
+- adds Master Prompt R3 semantic-first behavior and blocks invented byte counts, compression algorithms, hidden hashes/archive claims when exact verification was not executed;
+- preserves profile-1 deterministic decode compatibility and the 640x640 / 8192-byte envelope.
+
+### Evidence boundary
+
+Alpha.12 corrects the architecture and deterministic regression harness. It does not by itself prove that held-out VLMs now recover T2 natively.
+
 ## 6.0.0-alpha.11 — Portable Development-Tool Boundary R0
 
 ### Added / corrected

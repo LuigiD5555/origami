@@ -1,5 +1,47 @@
 # Origami changelog
 
+## 6.0.0-alpha.4 — Virtual Memory R0
+
+### Added
+
+- model-agnostic `origami.virtual-memory.r0` contract;
+- canonical address ABI with address/CID separation;
+- multi-resolution node fidelity: `label -> abstract -> summary -> detail -> evidence -> exact`;
+- explicit `ContextBudget` and portable `ContextPacket`;
+- metadata-only semantic indexing that avoids implicit exact-payload scans;
+- query-intent routing for causal, evidence, contradiction and exact-access needs;
+- utility-per-token selection and fidelity downgrade before budget violation;
+- bounded token-aware working-set cache;
+- compact per-carrier `GraphSignature` and multi-carrier federation;
+- `origami-memory` model-agnostic CLI;
+- Hybrid runtime `QUERY`, `EXPAND` and `SIGNATURE` operations while preserving legacy `LOOKUP/FOLLOW/TRACE`;
+- experimental macro/meso/micro visual memory navigation projection;
+- one-PNG memory carrier combining a redundant navigation band with the unchanged exact self-decodable transport;
+- machine-readable `origami.visual-memory-profile.r0` mapping all F01–F42 families to memory/navigation roles without promoting them as independent reliable channels;
+- `origami.virtual-memory-nav-eval.r0` for carrier/cluster selection, graph following, address reopening, distractor rejection, resize robustness and fixed-context scale tests.
+
+### Compatibility
+
+- `origami.hybrid-carrier.r0` remains the carrier schema;
+- legacy `Address/Value/Links` memory remains readable and queryable;
+- legacy `Render/DecodePNG` remains available;
+- rich virtual-memory carriers use optional memory-profile metadata and `RenderMemory/DecodeMemoryPNG`;
+- the Master Prompt was not manually changed.
+
+### Invariants
+
+- `FALSE_EXACT=0` remains mandatory;
+- active model-facing context is not total Origami memory;
+- address is not content identity;
+- no missing query/relation may fall back to an undeclared global exact scan;
+- visual navigation is redundant and never exactness authority;
+- the 42 visual families remain evidence-gated generator-tree candidates;
+- model specialization is optional: any model can consume a `ContextPacket`.
+
+### Evidence boundary
+
+Deterministic runtime, PNG round-trip and budget tests are part of this release candidate. Native VLM navigation of the macro/meso/micro projection is **not promoted** until held-out cross-model Perception Lab evidence exists.
+
 ## 6.0.0-alpha.3 — Repository hierarchy and state reconciliation
 
 ### Corrected
@@ -77,7 +119,7 @@ Behavior compilation, PromptIR, Tlaloque coordination/training, target-model orc
 ### 2026-08-27 — R3.10-LAB repository modernization
 
 - moved the public OHF research track from R2 documentation-only status to an executable Go laboratory;
-- added reproducible experiment infrastructure, Native isolation, observations/scoring and failure-regression plumbing;
+- added reproducible experiment infrastructure, Native isolation, observations/scoring and failure-to-regression plumbing;
 - added Glyph Calculus, SAFE_MICRO_ISA and Context SIMD experiments;
 - added conservative external-execution policy, installer, Makefile and CI;
 - changed the Go module path to `github.com/LuigiD5555/origami`;

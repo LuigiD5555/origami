@@ -1,0 +1,67 @@
+{
+  "contract_id": "origami.virtual-memory.r0",
+  "version": "0.1.0",
+  "status": "EXPERIMENTAL_REFERENCE",
+  "purpose": "Expose Origami knowledge through bounded, model-agnostic, graph-addressed selective unfolding rather than requiring total memory to fit in model context.",
+  "address_abi": {
+    "id": "ohf-address.r0",
+    "canonical_form": "ohf://<carrier>/<cluster>/<node>",
+    "legacy_addresses": "accepted inside one carrier and qualified when federated",
+    "content_identity": "CID is separate from address; multiple addresses may share one CID"
+  },
+  "node": {
+    "required": ["address"],
+    "compatibility": ["value", "links"],
+    "metadata": ["cid", "carrier_id", "cluster_id", "kind", "semantic_class", "label", "parent", "children", "importance", "costs", "provenance", "verification_ref"],
+    "fidelity_order": ["label", "abstract", "summary", "detail", "evidence", "exact"]
+  },
+  "graphs": {
+    "local": "declared links/typed edges between addressable nodes",
+    "global": "derived from compact per-carrier graph signatures before local search",
+    "allowed_behavior": "traverse declared edges from relevant candidates",
+    "forbidden_behavior": "silently scan all exact payload when a relation or address is missing"
+  },
+  "index": {
+    "searchable": ["label", "kind", "semantic_class", "cluster_id", "abstract", "summary"],
+    "legacy_value_prefix_bytes": 512,
+    "not_implicitly_indexed": ["detail", "evidence", "exact"],
+    "reason": "metadata lookup must not disguise a global exact-payload scan"
+  },
+  "context_budget": {
+    "default_token_equivalent": 4000,
+    "semantics": "ACTIVE_MODEL_FACING_INTERFACE_NOT_STORAGE_CAP_NOT_CUMULATIVE_TASK_CAP",
+    "selection_objective": "maximize expected utility per exposed token subject to budget",
+    "fallback_policy": "degrade requested fidelity before exceeding active budget"
+  },
+  "operations": {
+    "QUERY": "analyze information need, rank metadata candidates, follow only useful declared graph edges and build a ContextPacket",
+    "EXPAND": "open one exact address at the highest requested fidelity that fits budget",
+    "SIGNATURE": "expose compact carrier-level graph metadata for federation",
+    "LOOKUP": "legacy deterministic key/address lookup",
+    "FOLLOW": "legacy deterministic relation traversal"
+  },
+  "context_packet": {
+    "fields": ["query", "plan", "items", "relations", "contradictions", "uncertainties", "provenance", "expandable_refs", "budget", "metrics", "unknown"],
+    "portable": true,
+    "model_requirement": "consumer only needs to understand structured/text context; Origami visual decoding is not required"
+  },
+  "working_set": {
+    "policy": "bounded token-aware LRU reference cache",
+    "deduplication": "CID first, address second"
+  },
+  "federation": {
+    "pipeline": ["query", "rank graph signatures", "select carriers", "qualify addresses", "local metadata search", "graph traversal", "selective unfold", "ContextPacket"],
+    "goal": "memory scale may grow independently from active model context"
+  },
+  "invariants": [
+    "ADDRESS_NE_CONTENT_ID",
+    "ACTIVE_CONTEXT_NE_TOTAL_MEMORY",
+    "NO_IMPLICIT_GLOBAL_EXACT_SCAN",
+    "UNKNOWN_OVER_INVENTED_RESULT",
+    "FIDELITY_DEGRADES_BEFORE_BUDGET_VIOLATION",
+    "SUMMARY_MUST_RETAIN_EXPANSION_PATH",
+    "EXACTNESS_REQUIRES_VERIFICATION_AUTHORITY",
+    "MODEL_SPECIALIZATION_IS_OPTIONAL",
+    "PERCEPTION_NE_RESOLUTION_NE_EXECUTION_NE_VERIFICATION"
+  ]
+}

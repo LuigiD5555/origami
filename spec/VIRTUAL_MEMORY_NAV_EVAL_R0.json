@@ -1,0 +1,42 @@
+{
+  "contract_id": "origami.virtual-memory-nav-eval.r0",
+  "status": "SPECIFIED_NOT_YET_MODEL_PROMOTED",
+  "memory_contract": "origami.virtual-memory.r0",
+  "visual_profile": "origami.visual-memory-profile.r0",
+  "active_context_token_eq": 4000,
+  "scales": ["MACRO", "MESO", "MICRO"],
+  "tasks": [
+    {"id":"NAV-01","name":"carrier_select","goal":"select relevant carrier from graph signatures without opening all payloads"},
+    {"id":"NAV-02","name":"cluster_select","goal":"select relevant meso cluster and reject distractor clusters"},
+    {"id":"NAV-03","name":"macro_to_micro","goal":"descend macro -> meso -> micro to an exact address"},
+    {"id":"NAV-04","name":"edge_follow","goal":"follow typed/directed relation for bounded depth"},
+    {"id":"NAV-05","name":"random_reopen","goal":"reopen a previously returned address without semantic search"},
+    {"id":"NAV-06","name":"budgeted_unfold","goal":"choose useful fidelity under a fixed active-context budget"},
+    {"id":"NAV-07","name":"evidence_reopen","goal":"trace summary -> evidence -> source/proof reference"},
+    {"id":"NAV-08","name":"contradiction_route","goal":"retrieve contradictory evidence as a distinct relation class"},
+    {"id":"NAV-09","name":"resize_robustness","goal":"preserve visual navigation under declared resizing/degradation"},
+    {"id":"NAV-10","name":"distractor_robustness","goal":"avoid high-global-importance but query-irrelevant regions"},
+    {"id":"NAV-11","name":"multi_carrier_scale","goal":"increase carrier count while holding active context constant"},
+    {"id":"NAV-12","name":"symbol_permutation","goal":"preserve semantics when carrier-local physical assignments are permuted through Rosetta"}
+  ],
+  "metrics": [
+    "answer_accuracy",
+    "evidence_accuracy",
+    "carrier_selection_accuracy",
+    "cluster_selection_accuracy",
+    "address_reopen_accuracy",
+    "graph_hops",
+    "nodes_touched",
+    "nodes_unfolded",
+    "tokens_exposed",
+    "irrelevant_tokens_exposed",
+    "useful_context_efficiency",
+    "knowledge_scale_degradation",
+    "false_exact"
+  ],
+  "promotion": {
+    "deterministic_runtime": "may pass independently",
+    "native_visual": "requires held-out cross-model perceptual evidence",
+    "false_exact_required": 0
+  }
+}

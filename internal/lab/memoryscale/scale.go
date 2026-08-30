@@ -62,70 +62,71 @@ type Report struct {
 }
 
 type Definitions struct {
-	UsefulContextEfficiency  string `json:"useful_context_efficiency"`
+	UsefulContextEfficiency   string `json:"useful_context_efficiency"`
 	KnowledgeScaleDegradation string `json:"knowledge_scale_degradation"`
-	RoutingSelectivity       string `json:"routing_selectivity"`
-	ExposureFraction         string `json:"exposure_fraction"`
+	RoutingSelectivity        string `json:"routing_selectivity"`
+	ExposureFraction          string `json:"exposure_fraction"`
 }
 
 type ScaleResult struct {
-	CarrierCount             int     `json:"carrier_count"`
-	NodesPerCarrier          int     `json:"nodes_per_carrier"`
-	TotalNodes               int     `json:"total_nodes"`
-	ActiveBudgetTokens       int     `json:"active_budget_tokens"`
-	PositiveQueries          int     `json:"positive_queries"`
-	NegativeQueries          int     `json:"negative_queries"`
-	CarrierTop1Accuracy      float64 `json:"carrier_top1_accuracy"`
-	CarrierRecallAtK         float64 `json:"carrier_recall_at_k"`
-	TargetHitAccuracy        float64 `json:"target_hit_accuracy"`
-	EvidenceHitAccuracy      float64 `json:"evidence_hit_accuracy"`
-	NegativeUnknownAccuracy float64 `json:"negative_unknown_accuracy"`
-	BudgetViolations         int     `json:"budget_violations"`
-	FalseExact               int     `json:"false_exact"`
-	AvgSignaturesScanned     float64 `json:"avg_signatures_scanned"`
-	AvgCandidateCarriers     float64 `json:"avg_candidate_carriers"`
-	AvgSelectedCarriers      float64 `json:"avg_selected_carriers"`
-	AvgMetadataNodesLoaded   float64 `json:"avg_metadata_nodes_loaded"`
-	AvgNodesTouched          float64 `json:"avg_nodes_touched"`
-	AvgGraphHops             float64 `json:"avg_graph_hops"`
-	AvgNodesUnfolded         float64 `json:"avg_nodes_unfolded"`
-	AvgTokensExposed         float64 `json:"avg_tokens_exposed"`
-	AvgIrrelevantTokens      float64 `json:"avg_irrelevant_tokens"`
-	UsefulContextEfficiency  float64 `json:"useful_context_efficiency"`
+	CarrierCount              int     `json:"carrier_count"`
+	NodesPerCarrier           int     `json:"nodes_per_carrier"`
+	TotalNodes                int     `json:"total_nodes"`
+	ActiveBudgetTokens        int     `json:"active_budget_tokens"`
+	PositiveQueries           int     `json:"positive_queries"`
+	NegativeQueries           int     `json:"negative_queries"`
+	CarrierTop1Accuracy       float64 `json:"carrier_top1_accuracy"`
+	CarrierRecallAtK          float64 `json:"carrier_recall_at_k"`
+	TargetHitAccuracy         float64 `json:"target_hit_accuracy"`
+	EvidenceHitAccuracy       float64 `json:"evidence_hit_accuracy"`
+	NegativeUnknownAccuracy  float64 `json:"negative_unknown_accuracy"`
+	BudgetViolations          int     `json:"budget_violations"`
+	FalseExact                int     `json:"false_exact"`
+	AvgSignaturesScanned      float64 `json:"avg_signatures_scanned"`
+	AvgCandidateCarriers      float64 `json:"avg_candidate_carriers"`
+	AvgSelectedCarriers       float64 `json:"avg_selected_carriers"`
+	AvgMetadataNodesLoaded    float64 `json:"avg_metadata_nodes_loaded"`
+	AvgNodesTouched           float64 `json:"avg_nodes_touched"`
+	AvgGraphHops              float64 `json:"avg_graph_hops"`
+	AvgNodesUnfolded          float64 `json:"avg_nodes_unfolded"`
+	AvgTokensExposed          float64 `json:"avg_tokens_exposed"`
+	AvgIrrelevantTokens       float64 `json:"avg_irrelevant_tokens"`
+	UsefulContextEfficiency   float64 `json:"useful_context_efficiency"`
 	KnowledgeScaleDegradation float64 `json:"knowledge_scale_degradation"`
-	RoutingSelectivity       float64 `json:"routing_selectivity"`
-	ExposureFraction         float64 `json:"exposure_fraction"`
-	NodesPerActiveToken      float64 `json:"nodes_per_active_token"`
+	RoutingSelectivity        float64 `json:"routing_selectivity"`
+	ExposureFraction          float64 `json:"exposure_fraction"`
+	NodesPerActiveToken       float64 `json:"nodes_per_active_token"`
 }
 
 type TraceRecord struct {
-	Schema              string                    `json:"schema"`
-	CarrierCount        int                       `json:"carrier_count"`
-	QueryIndex          int                       `json:"query_index"`
-	Kind                string                    `json:"kind"`
-	Query               string                    `json:"query"`
-	TargetCarrier       string                    `json:"target_carrier,omitempty"`
-	Ranked              []memory.CarrierCandidate `json:"ranked,omitempty"`
-	Federation          memory.FederationMetrics  `json:"federation"`
-	PacketMetrics       memory.ContextMetrics     `json:"packet_metrics"`
-	Budget              memory.ContextBudget      `json:"budget"`
-	Top1Correct         bool                      `json:"top1_correct,omitempty"`
-	RecallAtK           bool                      `json:"recall_at_k,omitempty"`
-	TargetHit           bool                      `json:"target_hit,omitempty"`
-	EvidenceHit         bool                      `json:"evidence_hit,omitempty"`
-	UsefulTokens        int                       `json:"useful_tokens"`
-	IrrelevantTokens    int                       `json:"irrelevant_tokens"`
-	FalseExact          int                       `json:"false_exact"`
-	Unknown             bool                      `json:"unknown"`
-	Reason              string                    `json:"reason,omitempty"`
+	Schema           string                    `json:"schema"`
+	CarrierCount     int                       `json:"carrier_count"`
+	QueryIndex       int                       `json:"query_index"`
+	Kind             string                    `json:"kind"`
+	Query            string                    `json:"query"`
+	TargetCarrier    string                    `json:"target_carrier,omitempty"`
+	Ranked           []memory.CarrierCandidate `json:"ranked,omitempty"`
+	Federation       memory.FederationMetrics  `json:"federation"`
+	PacketMetrics    memory.ContextMetrics     `json:"packet_metrics"`
+	Budget           memory.ContextBudget      `json:"budget"`
+	Top1Correct      bool                      `json:"top1_correct,omitempty"`
+	RecallAtK        bool                      `json:"recall_at_k,omitempty"`
+	TargetHit        bool                      `json:"target_hit,omitempty"`
+	EvidenceHit      bool                      `json:"evidence_hit,omitempty"`
+	UsefulTokens     int                       `json:"useful_tokens"`
+	IrrelevantTokens int                       `json:"irrelevant_tokens"`
+	FalseExact       int                       `json:"false_exact"`
+	Unknown          bool                      `json:"unknown"`
+	Reason           string                    `json:"reason,omitempty"`
 }
 
 type accum struct {
-	top1, recall, targetHit, evidenceHit int
-	negativeUnknown int
-	budgetViolations, falseExact int
-	signatures, candidates, selected, metadataLoaded int
-	touched, hops, unfolded, exposed, useful, irrelevant int
+	top1, recall, targetHit, evidenceHit     int
+	negativeUnknown                         int
+	budgetViolations, falseExact            int
+	signatures, candidates, selected         int
+	metadataLoaded, touched, hops, unfolded int
+	exposed, useful, irrelevant              int
 }
 
 func Run(cfg Config, trace io.Writer) (Report, error) {
@@ -134,10 +135,10 @@ func Run(cfg Config, trace io.Writer) (Report, error) {
 		Schema: SchemaR0,
 		Config: cfg,
 		Definitions: Definitions{
-			UsefulContextEfficiency: "useful target-carrier tokens / all exposed tokens; higher is better",
+			UsefulContextEfficiency:   "useful target-carrier tokens / all exposed tokens; higher is better",
 			KnowledgeScaleDegradation: "max(0, 1 - target_hit_accuracy_at_scale / baseline_target_hit_accuracy); lower is better",
-			RoutingSelectivity: "average selected carriers / total carriers; lower is better when accuracy is preserved",
-			ExposureFraction: "average unfolded nodes / total available nodes; lower is better when accuracy is preserved",
+			RoutingSelectivity:        "average selected carriers / total carriers; lower is better when accuracy is preserved",
+			ExposureFraction:          "average unfolded nodes / total available nodes; lower is better when accuracy is preserved",
 		},
 	}
 	var encoder *json.Encoder
@@ -190,9 +191,7 @@ func Run(cfg Config, trace io.Writer) (Report, error) {
 			NodesPerActiveToken:ratioFloat(float64(totalNodes),float64(cfg.BudgetTokens-cfg.ReserveTokens)),
 		}
 		if scaleIndex == 0 { baselineAccuracy = result.TargetHitAccuracy }
-		if baselineAccuracy > 0 {
-			result.KnowledgeScaleDegradation = max0(1 - result.TargetHitAccuracy/baselineAccuracy)
-		}
+		if baselineAccuracy > 0 { result.KnowledgeScaleDegradation = max0(1 - result.TargetHitAccuracy/baselineAccuracy) }
 		report.Scales = append(report.Scales, result)
 	}
 	return report,nil
@@ -216,10 +215,7 @@ func scorePositive(carrierCount, queryIndex int, query, targetCarrier string, re
 	if len(result.Ranked)>0 && result.Ranked[0].ID==targetCarrier { tr.Top1Correct=true }
 	for _,candidate:=range result.Ranked{if candidate.ID==targetCarrier{tr.RecallAtK=true;break}}
 	for _,item:=range result.Packet.Items{
-		if item.CarrierID==targetCarrier {
-			tr.TargetHit=true;tr.UsefulTokens+=item.TokenCost
-			if item.Kind=="evidence"{tr.EvidenceHit=true}
-		} else { tr.IrrelevantTokens+=item.TokenCost }
+		if item.CarrierID==targetCarrier { tr.TargetHit=true;tr.UsefulTokens+=item.TokenCost;if item.Kind=="evidence"{tr.EvidenceHit=true} } else { tr.IrrelevantTokens+=item.TokenCost }
 		if item.Fidelity==memory.FidelityExact && !item.Verified { tr.FalseExact++ }
 	}
 	return tr
@@ -250,7 +246,7 @@ func buildFederation(carrierCount, nodesPerCarrier int) (*memory.Federation,erro
 		},Importance:memory.ImportanceProfile{Global:.7,Local:.95,Confidence:1},Provenance:memory.Provenance{SourceID:"synthetic:"+id,SourceRef:"synthetic:"+id+"#evidence"}})
 		for n:=2;n<nodesPerCarrier;n++{
 			address:=memory.CanonicalAddress(id,cluster,fmt.Sprintf("filler-%04d",n))
-			nodes=append(nodes,memory.Node{Address:address,CarrierID:id,ClusterID:cluster,Kind:"context",SemanticClass:"archive",Label:fmt.Sprintf("systems archive %s filler-%04d",id,n),Levels:map[memory.Fidelity]memory.ContentLevel{memory.FidelitySummary:{Text:fmt.Sprintf("Shared systems-domain distractor material from %s node %d.",id,n)}},Importance:memory.ImportanceProfile{Global:.2,Local:.2,Confidence:.8}})
+			nodes=append(nodes,memory.Node{Address:address,CarrierID:id,ClusterID:cluster,Parent:root,Kind:"context",SemanticClass:"archive",Label:fmt.Sprintf("systems archive %s filler-%04d",id,n),Levels:map[memory.Fidelity]memory.ContentLevel{memory.FidelitySummary:{Text:fmt.Sprintf("Shared systems-domain distractor material from %s node %d.",id,n)}},Importance:memory.ImportanceProfile{Global:.2,Local:.2,Confidence:.8}})
 		}
 		store,err:=memory.BuildStore(id,nodes);if err!=nil{return nil,err}
 		if err:=fed.Mount(id,store);err!=nil{return nil,err}

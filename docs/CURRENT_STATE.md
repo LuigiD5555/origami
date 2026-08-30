@@ -1,7 +1,7 @@
 # Current Origami state
 
 **Status date:** 2026-08-30  
-**Project version:** 6.0.0-alpha.6  
+**Project version:** 6.0.0-alpha.7  
 **Status:** experimental
 
 ## Root project state
@@ -13,7 +13,7 @@ Origami is the visual/computational representation, state-machine language and m
 | coherent-state semantics | EXPERIMENTAL_CONTRACT — alpha.1 |
 | perceptual channels / TLI | EXPERIMENTAL_CONTRACT — alpha.2 |
 | complete perceptual runtime for all alpha.2 operations | NOT IMPLEMENTED |
-| Dependency Folding R0 | EXPERIMENTAL / reference implementation |
+| Dependency Folding R0 | EXPERIMENTAL / historical reference implementation |
 | Hybrid Receiver R0 | EXPERIMENTAL_REFERENCE / model evidence pending |
 | Virtual Memory R0 | EXPERIMENTAL_REFERENCE_IMPLEMENTED — alpha.4 |
 | multi-carrier GraphSignature federation | IMPLEMENTED / deterministic reference |
@@ -22,14 +22,107 @@ Origami is the visual/computational representation, state-machine language and m
 | visual macro/meso/micro memory projection | IMPLEMENTED / Native perception NOT PROMOTED |
 | Fixed Carrier R2 | EXPERIMENTAL_REFERENCE_IMPLEMENTED — alpha.5 |
 | Evidence Reduction R0 | EXPERIMENTAL_REFERENCE_IMPLEMENTED — alpha.6 |
+| Semantic Spine R1 | EXPERIMENTAL_REFERENCE_IMPLEMENTED — alpha.7 |
 | receiver Master Prompt | REFERENCE_CANDIDATE / unchanged |
-| OHF R3.10-LAB | EXPERIMENTAL / executable |
+| OHF R3.10-LAB / Perception Lab | EXPERIMENTAL / executable / promotion evidence gated |
 
 The machine-readable root state is `state/ORIGAMI_STATE.json`.
 
-## Virtual Memory R0
+## Semantic Spine R1
 
-The implemented reference contract is `origami.virtual-memory.r0`.
+`origami.semantic-spine.r1` reconnects the semantic intent that had remained fragmented across early contracts, reference code, Virtual Memory and OHF experiments.
+
+The canonical path is now:
+
+```text
+exact source / canonical observations
+  -> addressable source memory
+  -> S_t + C_t + declared R
+  -> deterministic semantic transition
+  -> semantic Fold
+  -> selective Unfold / Virtual Memory
+  -> bounded ContextPacket
+  -> external model/Tlaloc swarm when interpretation is needed
+  -> evidence-backed proposals
+  -> deterministic Evidence Reduction
+  -> canonical semantic memory
+  -> optional visual/Fixed Carrier projection
+```
+
+The executable semantic core implements:
+
+```text
+S_(t+1) = F(S_t, C_t, R)
+```
+
+with declarative rules carrying stable IDs and transition provenance. It preserves distinct semantic statuses:
+
+```text
+PRESENT
+ABSENT
+UNKNOWN
+INHIBITED
+CANCELLED
+```
+
+Context is a first-class transition input. Contradictions are declarative and terminate before ordinary mutation. Signed contributions retain cancellation provenance. Higher-order participant sets can be required directly; pairwise evidence does not promote a three-way interaction.
+
+The exhaustive finite state enumerator remains the small reference oracle. Optimized exploration is not promoted unless it can be checked against that oracle.
+
+## Observation and temporal state
+
+Observation is separate from transition. `internal/core/observation.go` evaluates finite contracts over an already committed trajectory.
+
+Implemented reference observation kinds are:
+
+```text
+state_predicate
+temporal_sequence
+rule_fired
+participant_set
+```
+
+A temporal property may exist only over an ordered trajectory. Reordering the same frames can invalidate it. The observer does not mutate the trajectory or smuggle a temporal answer into one frame.
+
+The complete alpha.2 perceptual operation family is still not implemented. Moire/phase/stereo and other perceptual-channel promotion remain explicit future evidence/runtime work.
+
+## Semantic Fold / Unfold
+
+Semantic Fold is no longer equivalent to compressing literal bytes or collapsing a dependency chain.
+
+`internal/core/fold.go` produces a commitment plus an address index that preserves:
+
+```text
+semantic node identity
+dependencies
+unresolved alternatives
+relations
+evidence references
+```
+
+Selective Unfold reads only the requested address plus its declared dependency/alternative closure. The reference store records touched addresses so an implementation cannot load the full graph and merely return a small answer while claiming selective access.
+
+Fold does not resolve an unresolved alternative without an explicit later decision/observation path.
+
+## Exact source plane
+
+`origami.document.r0` is a neutral exact-source representation/diagnostic path. It is deliberately separate from semantic authority.
+
+Raw blocks may expose:
+
+```text
+abstract  deterministic routing metadata
+evidence  extracted source block
+exact     extracted source block
+```
+
+They do **not** receive a semantic `summary` merely because text was extracted.
+
+`origami-ingest` can ingest plain text or a digitally extractable PDF through `pdftotext`. A textless/scanned PDF fails rather than falling back to a raster screenshot and calling it semantic Origami. Canonical layout JSON is accepted for external OCR/VLM adapters.
+
+This does not replace Tlaloc's existing R2 document pipeline. Tlaloc 6.0.0-alpha.11 remains the external Canonical Document IR/OCR, Tlaloque orchestration, Merkle exact-plane, CanonicalState, ERA H0-H5 and `tlaloc.origami-tools.r2` provider. Origami alpha.7 defines the representation/evidence semantics that such a composition must respect.
+
+## Virtual Memory R0
 
 The active model-facing working window defaults to:
 
@@ -49,9 +142,7 @@ large/multi-carrier memory
   -> ContextPacket <= active budget
 ```
 
-Memory nodes preserve Hybrid R0 compatibility (`Address`, `Value`, `Links`) while optionally adding CID, carrier/cluster identity, semantic type, multi-resolution levels, parent/children, typed edges, importance/cost, provenance and verification references.
-
-Fidelity order is:
+Fidelity order remains:
 
 ```text
 label -> abstract -> summary -> detail -> evidence -> exact
@@ -59,9 +150,7 @@ label -> abstract -> summary -> detail -> evidence -> exact
 
 The runtime degrades fidelity rather than exceed budget. Search never silently indexes/opens the complete exact payload.
 
-## Address and federation state
-
-Canonical federated address form:
+Canonical federated address form remains:
 
 ```text
 ohf://<carrier>/<cluster>/<node>
@@ -69,7 +158,7 @@ ohf://<carrier>/<cluster>/<node>
 
 Address identifies location; CID identifies content. Multiple addresses may share one CID.
 
-Each rich carrier exposes a compact `GraphSignature`. Federation ranks signatures before mounting/searching local nodes. Federation reports global routing and local metadata preparation separately through:
+Federation reports global routing and local preparation separately through:
 
 ```text
 signatures_scanned
@@ -78,64 +167,29 @@ selected_carriers
 metadata_nodes_loaded
 ```
 
-This prevents a bounded ContextPacket from hiding an uncontrolled preparation scan.
+so a small ContextPacket cannot hide an uncontrolled preparation scan.
 
-## Memory Scale Lab R0
+## Core/trajectory projection into memory
 
-`origami.memory-scale-lab.r0` is the deterministic scale campaign for Virtual Memory.
+Semantic graphs and deterministic trajectories can now be projected directly into Virtual Memory without requiring an LLM to reconstruct machine state from prose.
 
-Canonical configuration:
+Projection preserves semantic state, relations, alternatives, Fold commitment, logical time, context IDs, fired rules, transition evidence and trajectory hashes.
 
-```text
-carriers: 1 -> 10 -> 100 -> 1,000
-nodes per carrier: 64
-active model-facing budget: 4,000 token-equivalent
-selected carrier limit: 4
-```
-
-It measures:
-
-```text
-Carrier Top-1 Accuracy
-Carrier Recall@K
-Target Hit Accuracy
-Evidence Hit Accuracy
-Negative UNKNOWN Accuracy
-Useful Context Efficiency (UCE)
-Knowledge Scale Degradation (KSD)
-Routing Selectivity
-Exposure Fraction
-```
-
-and keeps routing/metadata work separate from model-facing unfolding work.
-
-`cmd/origami-memory-scale` writes:
-
-```text
-runs/memory-scale-r0/report.json
-runs/memory-scale-r0/trace.jsonl
-```
-
-The deterministic lab does **not** establish LLM answer quality or visual readability by itself.
+Evidence Reduction results can also be promoted as `canonical-claim` memory nodes with reopenable support/opposition links.
 
 ## Evidence Reduction R0
 
-`origami.evidence-reduction.r0` closes the authority gap between probabilistic model/swarm reasoning and deterministic Origami state.
-
-The boundary is:
+External agents emit structured proposals using:
 
 ```text
-Origami ContextPacket
-  -> Tlaloc/external swarm proposals
-  -> Origami evidence address resolution
-  -> CID/hash/fidelity/Verified checks
-  -> deterministic deduplication
-  -> canonical reduction
+SUPPORT
+OPPOSE
+UNKNOWN
 ```
 
-External agents emit structured proposals with a `claim_key`, one of `SUPPORT`, `OPPOSE`, `UNKNOWN`, and zero or more addressable evidence references. Agent confidence is diagnostic only and is never truth authority.
+with addressable evidence references. Agent confidence is diagnostic only.
 
-Accepted evidence must exist at the requested address/fidelity, match declared CID/source hash when present, and have `Verified=true`. Repeated agents citing the same evidence do not manufacture additional support.
+Origami accepts evidence only when the requested address/fidelity exists, declared CID/source hash matches when supplied and the content level is verified. Duplicate agents citing the same evidence do not manufacture additional support.
 
 Canonical states are:
 
@@ -146,17 +200,13 @@ CONFLICT
 UNKNOWN
 ```
 
-`CONFLICT` preserves verified disagreement instead of hiding it through majority voting. `UNKNOWN` is preferred when neither side reaches the evidence policy.
+`CONFLICT` preserves verified disagreement. `UNKNOWN` is preferred when neither side reaches the evidence policy.
 
-Exactness is separate from claim verification. Only accepted verified `exact` fidelity on a `VERIFIED` claim can produce `VERIFIED_EXACT`; all other outcomes use `NOT_CLAIMED`.
-
-`cmd/origami-reduce` exposes this contract to Tlaloc, local models or other agent systems without embedding swarm orchestration inside Origami.
+Exactness is stricter in alpha.7: opening or citing an `exact` block is not enough. `VERIFIED_EXACT` requires the selected canonical proposition to be byte-for-byte equal to accepted verified exact-fidelity evidence. A supported paraphrase may be `VERIFIED` while exactness remains `NOT_CLAIMED`.
 
 ## Fixed Carrier R2
 
-`origami.fixed-carrier.r2` is the frozen visual control plane introduced in alpha.5.
-
-Canonical physical profile:
+Fixed Carrier remains the frozen visual control plane:
 
 ```text
 canvas: 640 x 640
@@ -164,7 +214,7 @@ frozen PNG bytes: 8192
 hard maximum: 512000 bytes
 ```
 
-Bootstrap:
+Bootstrap remains:
 
 ```text
 T0 plaintext BOOT
@@ -174,103 +224,103 @@ T3 deterministic machine record
 VERIFY
 ```
 
-Corpus growth occurs in the canonical memory plane and does not grow the fixed canvas. OCR is not BOOT and Native visual readability remains unpromoted without held-out evidence.
+Alpha.7 binds the fixed control plane to the external canonical memory root rather than treating the pixels as the corpus. Corpus growth occurs outside the frozen canvas. OCR is not BOOT and Native visual readability remains unpromoted without held-out evidence.
 
-## Model-facing interface
+Existing Hybrid/glyph exact transport remains useful as a transport experiment but literal recovery alone is not semantic Fold authority.
 
-`ContextPacket` is model neutral. A model receives selected context plus relations, contradictions, provenance, expandable addresses, budget and access metrics. A model does not need Native Origami vision to use this interface.
+## Perception boundary
 
-`cmd/origami-memory` exposes:
-
-```text
-QUERY
-EXPAND
-SIGNATURE
-VERIFY
-LOOKUP
-```
-
-The Hybrid runtime/model packet also preserves:
+Existing OHF/native perception observations may enter the shared addressable plane, but they remain:
 
 ```text
-BOOT
-LOOKUP
-FOLLOW
-TRACE
-VERIFY
-STOP
+PERCEPTION_ONLY
+Verified = false
 ```
 
-and adds `QUERY`, `EXPAND`, `SIGNATURE` for new carriers.
+until a separate resolution/verification path promotes them. A well-formed VLM observation therefore cannot directly satisfy semantic Evidence Reduction.
 
-The new deterministic answer boundary is intentionally separate:
+The governing invariant remains:
 
 ```text
-model/swarm proposes -> cmd/origami-reduce -> canonical claim state
+PERCEPTION != RESOLUTION != EXECUTION != VERIFICATION
 ```
 
-## Visual Memory Layout R0
+Perception Lab P0-P6 and visual-family experiments are preserved. Native model promotion remains evidence gated; the strict Native setup continues to mean a universal Master Prompt plus one carrier image plus the user query, without leaking private evaluator manifests/registries to the model.
 
-A memory carrier can be one PNG containing:
+## Memory Scale Lab R0
+
+The deterministic scale ladder remains:
 
 ```text
-experimental redundant MACRO/MESO/MICRO navigation band
-+
-verified exact self-decodable Hybrid/Glyph transport
+carriers: 1 -> 10 -> 100 -> 1,000
+nodes per carrier: 64
+active model-facing budget: 4,000 token-equivalent
+selected carrier limit: 4
 ```
 
-Deterministic `DecodeMemoryPNG` removes only the declared navigation band and recovers the exact logical carrier. That proves transport separation, not VLM readability.
+It measures carrier routing, target/evidence accuracy, negative UNKNOWN, Useful Context Efficiency, Knowledge Scale Degradation, routing selectivity and exposure fraction while separating routing/metadata work from model-facing unfolding.
 
-The reference band uses structural navigation cues derived from F01, F21, F22, F24, F25, F29, F32, F34, F39, F40, F41 and F42. `spec/VISUAL_MEMORY_PROFILE_R0.json` records possible memory roles for all F01–F42 families, but they remain evidence-gated generator-tree candidates.
+The deterministic lab does **not** establish LLM answer quality or Native visual readability by itself.
 
-Native visual navigation is **not promoted**. Required tests are specified in `spec/VIRTUAL_MEMORY_NAV_EVAL_R0.json` and include carrier/cluster selection, macro→meso→micro descent, relation following, random address reopening, distractor rejection, resize/degradation and symbol permutation.
+## Model-facing interfaces
 
-## Hybrid receiver state
-
-`origami.hybrid-receiver.r0` remains:
+Current core CLIs include:
 
 ```text
-BOOT -> ROSETTA -> PROGRAM -> INDEX -> MEMORY -> VERIFICATION
+origami-memory       QUERY / EXPAND / SIGNATURE / VERIFY / LOOKUP
+origami-reduce       deterministic proposal/evidence reduction
+origami-ingest       neutral source-plane ingest
+origami-system       QUERY / EXPAND / LOOKUP / SIGNATURE / VERIFY / REDUCE / PROMOTE
+origami-fixed-carrier frozen R2 control plane
 ```
 
-Carrier-local physical symbols still have no global semantic meaning. The Master Prompt remains `REFERENCE_CANDIDATE` and was not manually modified by alpha.6.
-
-Hybrid remains the preferred receiver target; Native and Computational remain diagnostic baselines.
+The Hybrid receiver packet also preserves BOOT/LOOKUP/FOLLOW/TRACE/VERIFY/STOP semantics where declared.
 
 ## Evidence boundary
 
-Alpha.6 implements deterministic evidence reduction over the existing Virtual Memory authority. It does **not** establish that a model can find the right address, that OCR/VLM perception of arbitrary documents is correct, or that Native visual navigation is ready for promotion.
+Alpha.7 establishes an executable connected semantic reference. It does **not** claim:
 
-Important invariants:
+- built-in OCR for arbitrary scans/images inside Origami;
+- complete runtime support for every alpha.2 perceptual operation;
+- held-out Native visual navigation;
+- cross-model perceptual promotion;
+- universal Hybrid support;
+- large optimized combinatorial exploration without equivalence to the exhaustive oracle.
+
+Those remain experimental promotion work, not missing semantic authority.
+
+## Hard invariants
 
 ```text
 FALSE_EXACT = 0
 UNKNOWN > invented exactness
+source plane != semantic plane
+literal transport != semantic Fold
+screenshot != Origami semantic representation
+S_(t+1) = F(S_t,C_t,R)
+observation != transition
+ABSENT != UNKNOWN != INHIBITED != CANCELLED
+Fold preserves unresolved alternatives
+Selective Unfold touches declared closure only
 address != CID
 active model interface != total memory
 no implicit global exact scan
 routing work must be reported
 metadata loading must be reported
-fidelity fallback before budget violation
 visual navigation != exactness authority
 swarm proposal != canonical state
 agent confidence != evidence authority
 duplicate evidence counts once
-canonical reduction is order-deterministic
+exact claim requires byte-equal exact evidence
 perception != resolution != execution != verification
+Fixed Carrier != corpus
 carrier target <= 500 KB
 model specialization is optional
 ```
 
-Direct PDF extraction, OCR/image perception and Tlaloc swarm search remain separate ingestion/orchestration concerns. Their outputs can be converted into addressable Origami memory and passed through Evidence Reduction R0 without weakening the verification boundary.
-
 ## OHF track
 
-OHF remains a nested carrier/protocol laboratory. The historical R3.10 SDK/codebook artifact is still missing, so byte-identical historical baseline claims remain blocked. That does not block independent Origami 6.x contracts or current deterministic laboratory work.
-
-Implemented/experimental OHF assets include Accessible Memory/SuperIndex evidence, Dependency Folding, Hybrid image-backed receiver, Virtual Memory runtime/federation, Memory Scale Lab, visual memory map, Glyph Calculus, SAFE_MICRO_ISA, Context SIMD, DVR/PSS and reversible lab-tool installation.
-
-Evidence Reduction R0 is a generalized Origami core contract rather than an OHF-only mechanism.
+OHF remains a nested carrier/protocol and perceptual laboratory. Glyph Calculus, SAFE_MICRO_ISA, Context SIMD, DVR/PSS, visual memory projection, Perception Lab and Hybrid receiver assets are retained. They no longer stand in for the semantic core merely because they can transport or display information.
 
 ## Source of truth
 
@@ -280,15 +330,17 @@ state/ORIGAMI_STATE.json
 README.md
 PROJECT_BOUNDARY.md
 docs/CURRENT_STATE.md
+docs/SEMANTIC_SPINE_R1.md
 docs/ARCHITECTURE.md
 docs/VIRTUAL_MEMORY_R0.md
 docs/EVIDENCE_REDUCTION_R0.md
 docs/FIXED_CARRIER_R2.md
+spec/SEMANTIC_SPINE_R1.json
 spec/VIRTUAL_MEMORY_R0.json
 spec/EVIDENCE_REDUCTION_R0.json
 spec/FIXED_CARRIER_R2.json
 spec/VISUAL_MEMORY_PROFILE_R0.json
 spec/VIRTUAL_MEMORY_NAV_EVAL_R0.json
 spec/MEMORY_SCALE_LAB_R0.json
-changes/CHG-ORIGAMI-0008.json
+changes/CHG-ORIGAMI-0009.json
 ```

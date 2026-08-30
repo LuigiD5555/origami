@@ -2,6 +2,9 @@
   "contract_id": "origami.canonical-visual-grammar.r0",
   "status": "EXPERIMENTAL_REFERENCE_PROFILE",
   "purpose": "Define the single canonical visual aesthetic used by Origami carriers while keeping the carrier self-describing through ROSETTA and allowing controlled future profile evolution from development-tool evidence.",
+  "protocol_contract": "origami.protocol.r0",
+  "codec_contract": "origami.codec-registry.r0",
+  "capability_contract": "origami.capability-negotiation.r0",
   "aesthetic": {
     "id": "origami.canonical-aesthetic.r0",
     "scope": "GLOBAL_FOR_THIS_PROFILE_VERSION",
@@ -58,20 +61,27 @@
   ],
   "rosetta": {
     "required": true,
-    "role": "SELF_DESCRIBE_THE_ACTIVE_CANONICAL_PROFILE_AND_CONCRETE_CARRIER_BINDINGS",
+    "role": "SELF_DESCRIBE_ACTIVE_PROFILE_SEMANTICS_AND_READ_WRITE_PROCEDURES",
     "may_restate_canonical_bindings": true,
     "may_declare_profile_approved_local_parameters": true,
     "may_create_arbitrary_new_aesthetic": false,
     "must_declare_profile_id": true,
     "must_declare_active_dimensions": true,
     "must_declare_any_extension": true,
+    "must_declare_decoder_registry": true,
+    "must_declare_encoder_registry": true,
+    "must_declare_capability_requirements": true,
+    "semantic_binding_must_declare": ["SEMANTIC_ROLE","DECODER_ID","ENCODER_ID","FAILURE_STATE"],
     "promoted_perceptual_channel_must_declare": [
       "SEMANTIC_ROLE",
+      "DECODER_ID",
+      "ENCODER_ID",
       "REVEAL_OPERATION",
       "REQUIRED_INPUTS_OR_LAYERS",
       "OBSERVATION_CONDITION",
       "TRAJECTORY_OR_PHASE_IF_APPLICABLE",
       "INTEGRATION_WINDOW_IF_APPLICABLE",
+      "FALLBACK_IF_ANY",
       "FAILURE_STATE_UNKNOWN"
     ]
   },
@@ -83,10 +93,15 @@
       "VISUAL_INTENT_PLAN",
       "CANONICAL_PROFILE_BINDING",
       "ROSETTA",
+      "ENCODER_REGISTRY_SELECTION",
       "PROGRAM_INDEX_MEMORY_VERIFICATION",
       "DETERMINISTIC_COMPILATION",
       "SELF_VERIFY"
     ]
+  },
+  "reader_rule": {
+    "required_path": ["BOOT","ROSETTA","DECODER_REGISTRY_SELECTION","SMALLEST_SUFFICIENT_SEMANTIC_REGION","VERIFY_WHEN_REQUIRED"],
+    "semantic_query_exact_escalation_without_need": false
   },
   "evolution": {
     "primary_search_tool": "TLALOC",
@@ -94,42 +109,15 @@
     "canonical_authority": "ORIGAMI",
     "profile_promotion_owner": "ORIGAMI",
     "optional_toolchain_composition": "TONAL",
-    "candidate_changes": [
-      "PROMPT",
-      "CHANNEL_ROLE",
-      "PRIMITIVE",
-      "LAYOUT",
-      "REDUNDANCY",
-      "COLOR_USAGE",
-      "NUMERIC_STRUCTURE",
-      "INTERFERENCE_STRUCTURE",
-      "DEPTH_STRUCTURE",
-      "TEMPORAL_STRUCTURE",
-      "EMERGENT_STRUCTURE"
-    ],
-    "optimization_objectives": [
-      "MAXIMIZE_RECOVERABLE_SEMANTIC_CAPACITY_PER_BYTE",
-      "MINIMIZE_CARRIER_BYTES",
-      "MINIMIZE_RECOGNITION_TIME",
-      "MINIMIZE_BOOTSTRAP_STEPS",
-      "MINIMIZE_DECODE_STEPS",
-      "MAXIMIZE_TRANSPORT_ROBUSTNESS",
-      "PRESERVE_SEMANTIC_ROUNDTRIP_AND_FALSE_EXACT_ZERO"
-    ],
-    "promotion_requires": [
-      "SEMANTIC_ROUNDTRIP_NON_REGRESSION",
-      "READABILITY_EVIDENCE",
-      "PERCEPTUAL_REVEAL_EVIDENCE_FOR_NONSTATIC_CHANNELS",
-      "TRANSPORT_ROBUSTNESS",
-      "BOUNDED_CONTEXT_NON_REGRESSION",
-      "FALSE_EXACT_0",
-      "CARRIER_SIZE_INVARIANT_OR_EXPLICIT_PROFILE_CHANGE",
-      "CROSS_MODEL_EVIDENCE_WHEN_MODEL_PERCEPTION_IS_CLAIMED"
-    ]
+    "candidate_changes": ["PROMPT","CHANNEL_ROLE","PRIMITIVE","LAYOUT","REDUNDANCY","DECODER_PROCEDURE","ENCODER_PROCEDURE","FALLBACK","COLOR_USAGE","NUMERIC_STRUCTURE","INTERFERENCE_STRUCTURE","DEPTH_STRUCTURE","TEMPORAL_STRUCTURE","EMERGENT_STRUCTURE"],
+    "optimization_objectives": ["MAXIMIZE_RECOVERABLE_SEMANTIC_CAPACITY_PER_BYTE","MAXIMIZE_CROSS_MODEL_READ_WRITE_PORTABILITY","MAXIMIZE_CODEC_ROUNDTRIP_STABILITY","MINIMIZE_CARRIER_BYTES","MINIMIZE_RECOGNITION_TIME","MINIMIZE_BOOTSTRAP_STEPS","MINIMIZE_DECODE_STEPS","MINIMIZE_ENCODE_STEPS","MAXIMIZE_TRANSPORT_ROBUSTNESS","PRESERVE_SEMANTIC_ROUNDTRIP_AND_FALSE_EXACT_ZERO"],
+    "promotion_requires": ["SEMANTIC_ROUNDTRIP_NON_REGRESSION","READABILITY_EVIDENCE","WRITABILITY_EVIDENCE","CROSS_MODEL_EVIDENCE_WHEN_INTEROPERABILITY_IS_CLAIMED","PERCEPTUAL_REVEAL_EVIDENCE_FOR_NONSTATIC_CHANNELS","TRANSPORT_ROBUSTNESS","BOUNDED_CONTEXT_NON_REGRESSION","FALSE_EXACT_0","CARRIER_SIZE_INVARIANT_OR_EXPLICIT_PROFILE_CHANGE"]
   },
   "hard_invariants": [
     "ONE_CANONICAL_AESTHETIC_PER_PROFILE_VERSION",
     "ROSETTA_ALWAYS_PRESENT",
+    "ROSETTA_DECLARES_DECODING_SEMANTICS",
+    "ROSETTA_DECLARES_ENCODING_SEMANTICS",
     "ROSETTA_DOES_NOT_LICENSE_ARBITRARY_AESTHETIC_DRIFT",
     "PROMOTED_PERCEPTUAL_CHANNEL_HAS_DECLARED_REVEAL_PROCEDURE",
     "UNAVAILABLE_REVEAL_CONDITION_RETURNS_UNKNOWN",
@@ -139,6 +127,7 @@
     "DEVELOPMENT_TOOL_PROPOSES_ORIGAMI_PROMOTES",
     "TONAL_COMPOSITION_NE_ORIGAMI_PROFILE_AUTHORITY",
     "OLD_PROFILE_REMAINS_DECODABLE_BY_EMBEDDED_PROFILE_AND_ROSETTA",
+    "SEMANTIC_CODEC_NE_EXACT_CODEC",
     "FALSE_EXACT=0"
   ]
 }

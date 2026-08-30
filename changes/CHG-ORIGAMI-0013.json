@@ -1,0 +1,43 @@
+{
+  "schema": "origami.change-control.r0",
+  "change_id": "CHG-ORIGAMI-0013",
+  "title": "Make the Origami Master Prompt the portable baseline and development tools optional",
+  "component": "architecture/development-tool-boundary-r0",
+  "status": "implemented_reference_model_evidence_pending",
+  "before": {
+    "version": "6.0.0-alpha.10",
+    "state": "Origami owned its own canonical profile and perceptual reveal semantics, but active documentation and integration contracts still over-emphasized Tlaloc/Hybrid tooling and did not make prompt-only no-sandbox/no-tool compatibility a first-class boundary."
+  },
+  "after": {
+    "version": "6.0.0-alpha.11",
+    "state": "Origami explicitly owns its semantics, Master Prompt, visual profile and releases. Tlaloc, Blueprint Framework and future systems are optional development tools; Tonal is optional composition. Master Prompt R2 is the portable compatibility baseline and assumes no tools/sandbox/runtime unless explicitly provided.",
+    "artifacts": [
+      "spec/DEVELOPMENT_TOOL_BOUNDARY_R0.json",
+      "docs/DEVELOPMENT_TOOL_BOUNDARY_R0.md",
+      "generated/MASTER_PROMPT.md",
+      "PROJECT_BOUNDARY.md",
+      "state/ORIGAMI_STATE.json"
+    ]
+  },
+  "preserved_work": [
+    "SEMANTIC_SPINE_R1",
+    "VIRTUAL_MEMORY_R0",
+    "EVIDENCE_REDUCTION_R0",
+    "FIXED_CARRIER_R2",
+    "PERCEPTION_PROMOTION_R1",
+    "CANONICAL_VISUAL_GRAMMAR_R0",
+    "WRITER_R0",
+    "PERCEPTUAL_PROFILE_REVEAL_SEMANTICS",
+    "OPTIONAL_TLALOC_TOOL_ABI"
+  ],
+  "hard_invariants": [
+    "ORIGAMI_OWNS_ORIGAMI_RELEASES",
+    "MASTER_PROMPT_IS_PORTABLE_BASELINE",
+    "TLALOC_IS_OPTIONAL",
+    "TONAL_IS_OPTIONAL",
+    "DEVELOPMENT_TOOL_NE_RUNTIME_REQUIREMENT",
+    "TOOL_ASSISTED_SUCCESS_NE_PROMPT_ONLY_SUCCESS",
+    "NO_TOOL_CLAIM_WHEN_TOOL_NOT_AVAILABLE",
+    "FALSE_EXACT=0"
+  ]
+}

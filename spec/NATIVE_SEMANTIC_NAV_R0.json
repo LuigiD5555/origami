@@ -1,18 +1,32 @@
 {
   "contract_id": "origami.native-semantic-navigation.r0",
   "status": "EXPERIMENTAL_REFERENCE_IMPLEMENTED_EVIDENCE_PENDING",
-  "purpose": "Make prompt-only/native semantic questions answerable from the semantic visual plane without requiring byte extraction, decompression, filesystem access or an external decoder.",
+  "protocol_contract": "origami.protocol.r0",
+  "codec_contract": "origami.codec-registry.r0",
+  "capability_contract": "origami.capability-negotiation.r0",
+  "purpose": "Make prompt-only/native semantic questions answerable from the semantic visual plane using self-declared semantic codecs, without requiring byte extraction, decompression, filesystem access or an undeclared external decoder.",
   "failure_regression": "experiments/native-semantic-nav-r0/FAILED_TRIAL_001.json",
   "query_routes": {
-    "IDENTITY": ["T0", "T1"],
-    "INDEX": ["T0", "T1", "T2"],
-    "OVERVIEW": ["T0", "T1", "T2", "SEMANTIC_VISIBLE_STATE"],
-    "LOCATE_TOPIC": ["T2", "SELECTIVE_SEMANTIC_EXPAND_WHEN_AVAILABLE"],
-    "EXPLAIN_TOPIC": ["T2", "SELECTIVE_SEMANTIC_EXPAND_WHEN_AVAILABLE"],
-    "EXACT_QUOTE_OR_HASH": ["EXACT_PLANE_OR_DECLARED_TOOL_IF_AVAILABLE"]
+    "IDENTITY": ["T0", "T1", "S0"],
+    "INDEX": ["T0", "T1", "S2", "T2"],
+    "OVERVIEW": ["T0", "T1", "S2", "T2", "SEMANTIC_VISIBLE_STATE"],
+    "LOCATE_TOPIC": ["T2", "S3", "SELECTIVE_SEMANTIC_EXPAND_WHEN_AVAILABLE"],
+    "EXPLAIN_TOPIC": ["T2", "S3", "S5_OR_S6_WHEN_AVAILABLE"],
+    "EXACT_QUOTE_OR_HASH": ["EXACT_CODEC_OR_DECLARED_TOOL_IF_AVAILABLE"]
+  },
+  "decoder_selection": {
+    "discover_from_rosetta": true,
+    "smallest_sufficient_codec": true,
+    "semantic_before_exact": true,
+    "semantic_codec_may_require_exact_codec": false,
+    "undeclared_external_decoder_forbidden": true,
+    "unsupported_semantic_decoder": "UNKNOWN",
+    "unsupported_exact_decoder": "NOT_VERIFIED"
   },
   "t2": {
     "role": "VLM_READABLE_SEMANTIC_SUPERINDEX",
+    "decoder": "S2",
+    "encoder_pair": "E2",
     "must_render_actual_semantic_entries": true,
     "generic_category_only_index_forbidden": true,
     "source": "BOUNDED_CANONICAL_GRAPH_HINT",
@@ -30,21 +44,26 @@
   "forbidden_native_shortcuts": [
     "REQUIRE_WHOLE_IMAGE_BIT_EXTRACTION_FOR_INDEX",
     "REQUIRE_DECOMPRESSION_FOR_INDEX",
+    "REQUIRE_UNDECLARED_EXTERNAL_DECODER_FOR_SEMANTIC_NAVIGATION",
+    "ESCALATE_SEMANTIC_QUERY_TO_EXACT_CODEC_WITHOUT_NEED",
     "CLAIM_BYTE_LAYOUT_WITHOUT_VERIFICATION",
     "CLAIM_COMPRESSION_ALGORITHM_WITHOUT_VERIFICATION",
     "CLAIM_HASH_WITHOUT_VERIFICATION",
     "INFER_HIDDEN_SOURCE_FROM_BOOTSTRAP_TEXT"
   ],
   "benchmark_questions": [
-    {"id":"NSN-Q1","question":"What is this document?","expected_route":"T0_T1"},
-    {"id":"NSN-Q2","question":"What is the index?","expected_route":"T2","mechanical_decode_allowed":false},
-    {"id":"NSN-Q3","question":"What is it about?","expected_route":"T2_PLUS_VISIBLE_SEMANTIC_STATE","mechanical_decode_allowed":false},
-    {"id":"NSN-Q4","question":"Where does it discuss X?","expected_route":"T2_TO_SELECTIVE_SEMANTIC_EXPAND","mechanical_decode_allowed":false},
-    {"id":"NSN-Q5","question":"Quote the exact paragraph for X.","expected_route":"EXACT_PLANE_OR_TOOL","mechanical_decode_allowed":true,"unknown_allowed_when_unavailable":true}
+    {"id":"NSN-Q1","question":"What is this document?","expected_route":"T0_T1_S0"},
+    {"id":"NSN-Q2","question":"What is the index?","expected_route":"T0_T1_S2_T2","exact_codec_allowed":false},
+    {"id":"NSN-Q3","question":"What is it about?","expected_route":"S2_T2_PLUS_VISIBLE_SEMANTIC_STATE","exact_codec_allowed":false},
+    {"id":"NSN-Q4","question":"Where does it discuss X?","expected_route":"T2_S3_TO_SELECTIVE_SEMANTIC_EXPAND","exact_codec_allowed":false},
+    {"id":"NSN-Q5","question":"Quote the exact paragraph for X.","expected_route":"EXACT_CODEC_OR_TOOL","exact_codec_allowed":true,"unknown_allowed_when_unavailable":true}
   ],
   "promotion_metrics": [
     "T2_INDEX_RECOVERY_RATE",
     "SEMANTIC_ANSWER_RATE_WITHOUT_TOOLS",
+    "SEMANTIC_DECODER_DISCOVERY_RATE",
+    "UNDECLARED_EXTERNAL_DECODER_DEPENDENCY_RATE",
+    "SEMANTIC_TO_EXACT_ESCALATION_VIOLATION_RATE",
     "UNVERIFIED_MECHANICAL_CLAIM_RATE",
     "MEAN_BOOTSTRAP_STEPS",
     "MEAN_RECOGNITION_LATENCY",
@@ -52,11 +71,13 @@
     "UNKNOWN_CORRECTNESS"
   ],
   "hard_invariants": [
-    "SEMANTIC_NAVIGATION_NE_MECHANICAL_DECODE",
+    "SEMANTIC_NAVIGATION_NE_EXACT_MECHANICAL_DECODE",
+    "SELF_DECLARED_SEMANTIC_DECODER_IS_ALLOWED",
+    "NO_UNDECLARED_EXTERNAL_DECODER_DEPENDENCY",
     "T2_CONTAINS_ACTUAL_SEMANTIC_ENTRIES",
     "EXACT_PLANE_OPTIONAL_FOR_SEMANTIC_NAVIGATION",
     "NO_UNVERIFIED_BYTE_HASH_COMPRESSION_CLAIMS",
-    "INDEX_QUERY_ROUTES_TO_T2",
+    "INDEX_QUERY_ROUTES_TO_S2_T2",
     "FAILED_NATIVE_TRIAL_BECOMES_REGRESSION",
     "UNKNOWN_OVER_INVENTION",
     "FALSE_EXACT=0"

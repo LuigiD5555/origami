@@ -1,8 +1,8 @@
-# Origami 6.0.0-alpha.4
+# Origami 6.0.0-alpha.6
 
 Origami is an experimental **visual/computational representation, state-machine language and model-agnostic virtual memory** for expressing complex states, relations, dynamics, selectively accessible knowledge and perceptual emergence.
 
-Origami is independent of **Tlaloc**. Tlaloc is the optional work/orchestration system; Origami defines representation, memory and transformation semantics and can be used by any compatible model/runtime.
+Origami is independent of **Tlaloc**. Tlaloc is the optional work/orchestration system; Origami defines representation, memory, transformation, evidence and verification semantics and can be used by any compatible model/runtime.
 
 ## Project hierarchy
 
@@ -19,6 +19,13 @@ ORIGAMI
 │   └── model-agnostic QUERY / EXPAND / SIGNATURE
 ├── Memory Scale Lab R0
 │   └── fixed-context 1 -> 10 -> 100 -> 1,000 carrier scaling
+├── Evidence Reduction R0
+│   ├── SUPPORT / OPPOSE / UNKNOWN candidate proposals
+│   ├── address + CID + source-hash verification
+│   ├── duplicate-evidence collapse
+│   └── VERIFIED / REJECTED / CONFLICT / UNKNOWN canonical states
+├── Fixed Carrier R2
+│   └── frozen 640x640 / 8192-byte self-boot control plane
 ├── Machine / dynamics / visual projection
 ├── Experimental self-boot receiver
 │   └── BOOT -> ROSETTA -> PROGRAM -> INDEX -> MEMORY -> VERIFICATION
@@ -79,6 +86,50 @@ The runtime returns a portable `ContextPacket` containing selected items, relati
 
 The future specialized Origami LLM is therefore optional: it may become better at requesting/using memory, but it is not required by the format.
 
+## Evidence Reduction R0
+
+[`docs/EVIDENCE_REDUCTION_R0.md`](docs/EVIDENCE_REDUCTION_R0.md) and [`spec/EVIDENCE_REDUCTION_R0.json`](spec/EVIDENCE_REDUCTION_R0.json) implement the deterministic boundary between probabilistic swarm reasoning and canonical Origami state.
+
+```text
+bounded ContextPacket
+  -> Tlaloc / external swarm
+  -> structured claim proposals
+  -> Origami reopens cited addresses
+  -> CID / source-hash / fidelity / Verified checks
+  -> deterministic deduplication
+  -> canonical claim state
+```
+
+Agents may disagree. That disagreement is useful exploration, but it is not authority. Each proposal uses one of:
+
+```text
+SUPPORT
+OPPOSE
+UNKNOWN
+```
+
+and cites Origami evidence addresses. Agent confidence is diagnostic only.
+
+Origami reduces the verified evidence to:
+
+```text
+VERIFIED   support passes and opposition does not
+REJECTED   opposition passes and support does not
+CONFLICT   both sides have sufficient verified evidence
+UNKNOWN    neither side has sufficient verified evidence
+```
+
+Repeated agents citing the same underlying evidence do **not** manufacture consensus. Evidence is deduplicated by content/fidelity/source identity.
+
+Exactness is earned independently: only accepted verified `exact` fidelity on a `VERIFIED` claim can produce `VERIFIED_EXACT`. `FALSE_EXACT=0` remains mandatory.
+
+This keeps the project boundary clean:
+
+```text
+Tlaloc:  search / prompts / swarm exploration / proposal generation
+Origami: memory identity / evidence authority / deterministic reduction
+```
+
 ## Multi-Origami federation
 
 Every rich carrier exposes a compact `GraphSignature`. Federation first ranks signatures, then opens only selected carriers and performs local graph-aware lookup.
@@ -125,11 +176,33 @@ This prevents a small ContextPacket from hiding an uncontrolled whole-memory sca
 
 The deterministic lab does **not** establish LLM quality or Native visual navigation. Its `trace.jsonl` is the stable query/evidence contract that later model campaigns reuse.
 
+## Fixed Carrier R2
+
+[`docs/FIXED_CARRIER_R2.md`](docs/FIXED_CARRIER_R2.md) and [`spec/FIXED_CARRIER_R2.json`](spec/FIXED_CARRIER_R2.json) freeze Origami's current visual control plane:
+
+```text
+canvas      640 x 640
+PNG bytes   exactly 8192
+hard max    512000
+```
+
+The carrier does not grow with the corpus. It bootstraps a model through:
+
+```text
+T0 plaintext BOOT
+T1 Rosetta + duplicated visual probe
+T2 root index / graph navigation
+T3 deterministic machine record
+VERIFY
+```
+
+The external canonical memory plane carries corpus growth. OCR is optional and is not the BOOT authority.
+
 ## Visual Memory Layout R0
 
 [`docs/VISUAL_MEMORY_LAYOUT_R0.md`](docs/VISUAL_MEMORY_LAYOUT_R0.md) and [`spec/VISUAL_MEMORY_PROFILE_R0.json`](spec/VISUAL_MEMORY_PROFILE_R0.json) define an experimental visual projection.
 
-A new memory carrier remains **one PNG**:
+A memory carrier remains **one PNG**:
 
 ```text
 macro / meso / micro navigation band
@@ -139,7 +212,7 @@ exact self-decodable Hybrid/Glyph payload
 
 The visual band is redundant navigation, not exactness authority. Computational mode strips the declared band and recovers the exact payload. Native/Hybrid perception can use the map only after Perception Lab evidence supports it.
 
-All F01–F42 families now have documented possible memory/navigation roles. They remain generator-tree candidates: **42 registered families do not mean 42 independently reliable channels**. The current renderer uses only a conservative structural subset and does not promote Native perceptual reliability.
+All F01–F42 families have documented possible memory/navigation roles. They remain generator-tree candidates: **42 registered families do not mean 42 independently reliable channels**. The current renderer uses only a conservative structural subset and does not promote Native perceptual reliability.
 
 Navigation evaluation is specified in [`spec/VIRTUAL_MEMORY_NAV_EVAL_R0.json`](spec/VIRTUAL_MEMORY_NAV_EVAL_R0.json).
 
@@ -151,7 +224,7 @@ Navigation evaluation is specified in [`spec/VIRTUAL_MEMORY_NAV_EVAL_R0.json`](s
 BOOT -> ROSETTA -> PROGRAM -> INDEX -> MEMORY -> VERIFICATION
 ```
 
-Physical marks remain carrier-local. The experimental `generated/MASTER_PROMPT.md` is still a `REFERENCE_CANDIDATE`; it was not manually changed by Virtual Memory R0.
+Physical marks remain carrier-local. The experimental `generated/MASTER_PROMPT.md` is still a `REFERENCE_CANDIDATE`; it was not manually changed by alpha.6.
 
 Hybrid remains the preferred end-to-end target:
 
@@ -160,8 +233,12 @@ model perception
   -> bootstrap / choose region
 Origami runtime
   -> address / graph / unfold / compute / verify
+external swarm when needed
+  -> propose evidence-backed claims
+Origami reducer
+  -> canonical VERIFIED / REJECTED / CONFLICT / UNKNOWN state
 model
-  -> integrate compact ContextPacket / request next access / answer
+  -> integrate result / request next bounded access / answer
 ```
 
 Native and Computational remain diagnostic modes.
@@ -195,6 +272,18 @@ Targeted reopen:
   -budget 800
 ```
 
+Deterministic swarm/evidence reduction:
+
+```bash
+./bin/origami-reduce -in proposals.json -out canonical.json
+```
+
+or:
+
+```bash
+cat proposals.json | ./bin/origami-reduce
+```
+
 Canonical fixed-context scaling run:
 
 ```bash
@@ -206,7 +295,7 @@ Canonical fixed-context scaling run:
 
 `origami-hybrid-tool` also supports `QUERY`, `EXPAND` and `SIGNATURE` when those operations are declared in the model packet.
 
-The reversible `install.sh` remains intentionally scoped to OHF laboratory binaries. `origami-memory` and `origami-memory-scale` are currently built through `make build` rather than silently expanding that installer contract.
+The reversible `install.sh` remains intentionally scoped to selected OHF/core laboratory binaries. `origami-memory`, `origami-memory-scale` and `origami-reduce` are built through `make build` rather than silently expanding that installer contract.
 
 ## Semantic and perceptual contracts
 
@@ -226,6 +315,10 @@ no implicit global exact scan
 routing work must be accounted
 metadata loading must be accounted
 visual navigation != exactness authority
+swarm proposal != canonical state
+agent confidence != evidence authority
+duplicate evidence counts once
+canonical reduction is order-deterministic
 nominal visual capacity != SAFE perceptual capacity
 perception != resolution != execution != verification
 carrier target <= 500 KB
@@ -240,7 +333,7 @@ go vet ./...
 make build
 ```
 
-Deterministic tests validate memory selection, fidelity fallback, federation, fixed-context scaling, composite-PNG exact recovery and runtime operations. They **do not** substitute for held-out LLM or Native VLM evidence.
+Deterministic tests validate memory selection, fidelity fallback, federation, fixed-context scaling, evidence reduction, evidence identity rejection, duplicate collapse, conflict preservation, exactness gating, composite-PNG exact recovery and runtime operations. They **do not** substitute for held-out LLM/OCR/Native VLM evidence.
 
 ## Source of truth
 
@@ -251,9 +344,13 @@ PROJECT_BOUNDARY.md
 docs/CURRENT_STATE.md
 docs/ARCHITECTURE.md
 docs/VIRTUAL_MEMORY_R0.md
+docs/EVIDENCE_REDUCTION_R0.md
+docs/FIXED_CARRIER_R2.md
 docs/VISUAL_MEMORY_LAYOUT_R0.md
 docs/MEMORY_SCALE_LAB_R0.md
 spec/VIRTUAL_MEMORY_R0.json
+spec/EVIDENCE_REDUCTION_R0.json
+spec/FIXED_CARRIER_R2.json
 spec/VISUAL_MEMORY_PROFILE_R0.json
 spec/VIRTUAL_MEMORY_NAV_EVAL_R0.json
 spec/MEMORY_SCALE_LAB_R0.json
@@ -265,6 +362,6 @@ receiver/registry/
 
 ## Version
 
-`6.0.0-alpha.4`
+`6.0.0-alpha.6`
 
-Alpha.4 implements the deterministic Virtual Memory R0 reference path and redundant visual memory projection. Memory Scale Lab R0 now tests fixed-context scaling over that architecture. Model-facing quality and Native visual navigation remain experimental and unpromoted pending held-out evidence.
+Alpha.6 adds deterministic Evidence Reduction R0 over the existing Virtual Memory and Fixed Carrier architecture. Probabilistic swarm proposals can now be translated into reproducible evidence-backed claim states without moving swarm orchestration into Origami. Model-facing retrieval quality, direct PDF/OCR ingestion quality and Native visual navigation remain experimental and evidence-gated.

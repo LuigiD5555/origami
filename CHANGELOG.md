@@ -1,5 +1,58 @@
 # Origami changelog
 
+## 6.0.0-alpha.6 — Evidence Reduction R0
+
+### Added
+
+- generalized `origami.evidence-reduction.r0` contract;
+- structured external swarm proposals with `SUPPORT`, `OPPOSE` and `UNKNOWN` positions;
+- Origami-owned evidence resolution against address, CID, source hash and requested fidelity;
+- verified-evidence-only reduction authority;
+- deterministic evidence deduplication so repeated agents cannot manufacture consensus from one source;
+- independent-source thresholds;
+- canonical claim states `VERIFIED`, `REJECTED`, `CONFLICT`, `UNKNOWN`;
+- explicit preservation of verified conflicts instead of majority-vote erasure;
+- order-deterministic canonical claim IDs and whole-reduction digest;
+- separate `VERIFIED_EXACT` gating for accepted verified exact-fidelity evidence;
+- model-neutral `origami-reduce` CLI;
+- deterministic tests for order invariance, duplicate collapse, identity mismatch, unverified evidence, conflict preservation, independent sources and exactness.
+
+### Boundary
+
+- Tlaloc continues to own swarm/Tlaloque search, prompts, exploration and proposal generation;
+- Origami owns addressable evidence identity, verification, deterministic reduction and exactness state;
+- agent confidence is diagnostic and never substitutes for verified evidence.
+
+### Invariants
+
+- `SWARM_PROPOSAL != CANONICAL_STATE`;
+- `AGENT_CONFIDENCE != EVIDENCE_AUTHORITY`;
+- `DUPLICATE_EVIDENCE_COUNTS_ONCE`;
+- `UNKNOWN > unsupported invention`;
+- `FALSE_EXACT=0`;
+- reduction semantics are independent of proposal arrival order.
+
+### Evidence boundary
+
+Alpha.6 implements the deterministic reducer. It does not yet prove model retrieval quality, arbitrary PDF/OCR perception quality or Native visual readability. Those remain evidence-gated external/perceptual phases.
+
+## 6.0.0-alpha.5 — Fixed Carrier R2
+
+### Added
+
+- frozen `origami.fixed-carrier.r2` visual control plane;
+- fixed 640×640 canvas and exactly 8192-byte PNG profile under the existing 500 KB hard ceiling;
+- T0 plaintext BOOT, T1 Rosetta/duplicated visual challenge, T2 root index/graph navigation, T3 deterministic machine record and VERIFY stage;
+- `tlaloc.origami-tools.r2` and address ABI binding;
+- deterministic fixed-carrier encoder/decoder and CLI;
+- reversible installer integration for the fixed-carrier binary.
+
+### Clarified
+
+- corpus growth occurs in the external canonical memory plane rather than by growing the visual canvas;
+- OCR is optional and is not BOOT authority;
+- Native VLM readability remains unpromoted until held-out evidence exists.
+
 ## 6.0.0-alpha.4 — Virtual Memory R0
 
 ### Added

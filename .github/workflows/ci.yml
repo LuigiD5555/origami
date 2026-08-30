@@ -33,6 +33,7 @@ jobs:
           go build ./cmd/ohf-glyphcalc
           go build ./cmd/origami-reference
           go build ./cmd/origami-evidence-gate
+          go build ./cmd/origami-reduce
       - name: Run deterministic reference experiment
         run: |
           mkdir -p evidence

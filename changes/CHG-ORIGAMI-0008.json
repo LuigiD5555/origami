@@ -1,0 +1,35 @@
+{
+  "schema": "origami.change-control.r0",
+  "change_id": "CHG-ORIGAMI-0008",
+  "title": "Add deterministic evidence reduction for probabilistic swarm proposals",
+  "component": "core/evidence-reduction-r0",
+  "status": "implemented_reference_pending_ci_and_model_evidence",
+  "before": {
+    "version": "6.0.0-alpha.5",
+    "state": "Virtual Memory could route and unfold bounded ContextPackets, but probabilistic model/swarm interpretations had no Origami-owned canonical reducer. Agreement could not be distinguished from repeated unsupported guesses by a deterministic contract."
+  },
+  "after": {
+    "version": "6.0.0-alpha.6",
+    "state": "External swarms emit structured SUPPORT/OPPOSE/UNKNOWN proposals tied to Origami evidence addresses. Origami resolves address/CID/source-hash/fidelity identity, rejects unverified or mismatched evidence, deduplicates repeated evidence, preserves verified conflicts, returns UNKNOWN when support is insufficient, and emits order-deterministic canonical claim IDs and a reduction digest.",
+    "artifacts": [
+      "internal/evidence/",
+      "cmd/origami-reduce/",
+      "spec/EVIDENCE_REDUCTION_R0.json",
+      "docs/EVIDENCE_REDUCTION_R0.md"
+    ]
+  },
+  "boundary": {
+    "tlaloc": "swarm search, agent prompts, exploration and proposal generation",
+    "origami": "addressable evidence authority, identity checks, deterministic reduction and exactness state"
+  },
+  "invariants": [
+    "VERIFIED_EVIDENCE_ONLY",
+    "CID_MISMATCH_REJECTED",
+    "SOURCE_HASH_MISMATCH_REJECTED",
+    "DUPLICATE_EVIDENCE_COUNTS_ONCE",
+    "AGENT_CONFIDENCE_IS_NOT_AUTHORITY",
+    "UNKNOWN_OVER_UNSUPPORTED_CLAIM",
+    "ORIGAMI_REDUCTION_IS_ORDER_DETERMINISTIC",
+    "FALSE_EXACT=0"
+  ]
+}

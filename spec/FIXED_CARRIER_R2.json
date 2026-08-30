@@ -1,0 +1,73 @@
+{
+  "contract_id": "origami.fixed-carrier.r2",
+  "version": "2.0.0-experimental",
+  "status": "EXPERIMENTAL_REFERENCE_IMPLEMENTED",
+  "purpose": "Freeze a self-booting visual control plane while routing arbitrarily growing canonical memory through a verified Tlaloc data plane.",
+  "physical_profile": {
+    "profile_id": "origami.fixed-carrier.r2.profile-1",
+    "width_px": 640,
+    "height_px": 640,
+    "max_png_bytes": 512000,
+    "frozen_png_bytes": 8192,
+    "canvas_growth_with_corpus": "FORBIDDEN",
+    "pixel_model": "monochrome control marks plus plaintext bootstrap"
+  },
+  "bootstrap": {
+    "T0": "plaintext bootloader readable by generic VLMs",
+    "T1": "Rosetta plus duplicated visual-presence challenge",
+    "T2": "root index / canonical graph signature",
+    "T3": "dense Origami machine control record",
+    "VERIFY": "root binding, duplicate visual challenge and exactness invariants"
+  },
+  "boot_text": [
+    "ORIGAMI FIXED CARRIER R2",
+    "THIS IMAGE IS A COMPUTATIONAL CARRIER",
+    "BOOT: TEXT > PROBE > ROSETTA > INDEX > TOOLS",
+    "TOOLS: BOOT QUERY EXPAND VERIFY",
+    "ADDRESS: OHF://<CARRIER>/<SPACE>/<ID>",
+    "OCR OPTIONAL. NEVER INVENT."
+  ],
+  "control_record": {
+    "magic": "OFCR2",
+    "record_bytes": 512,
+    "fields": [
+      "flags",
+      "page_count",
+      "block_count",
+      "document_count",
+      "object_count",
+      "carrier_id_sha256",
+      "store_root_sha256",
+      "source_sha256",
+      "tool_protocol_digest",
+      "profile_digest",
+      "T0_boot_digest",
+      "graph_signature_256_bytes",
+      "deterministic_redundancy",
+      "crc32"
+    ]
+  },
+  "tool_binding": {
+    "protocol": "tlaloc.origami-tools.r2",
+    "address_abi": "ohf-address.r2",
+    "required_for_external_exact_corpus": true,
+    "ocr_required": false,
+    "binding_authority": "carrier_id + store_root_sha256 + source_sha256"
+  },
+  "family_roles": ["F01","F05","F09","F21","F22","F24","F25","F29","F32","F34","F39","F40","F41","F42"],
+  "hard_invariants": [
+    "PNG_BYTES_LE_512000",
+    "PNG_BYTES_EQ_8192",
+    "CANVAS_IS_640x640",
+    "CANVAS_DOES_NOT_GROW_WITH_CORPUS",
+    "T0_PLAINTEXT_BOOT_PRESENT",
+    "DUPLICATED_VISUAL_PROBE_REQUIRED",
+    "OCR_IS_OPTIONAL_NOT_BOOT",
+    "CONTROL_PLANE_NE_DATA_PLANE",
+    "ADDRESS_NE_CONTENT_ID",
+    "ACTIVE_CONTEXT_NE_TOTAL_MEMORY",
+    "FALSE_EXACT=0",
+    "UNKNOWN_OVER_INVENTION",
+    "NATIVE_VISUAL_READABILITY_NE_DETERMINISTIC_DECODE"
+  ]
+}

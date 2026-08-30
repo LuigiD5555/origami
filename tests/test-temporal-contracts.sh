@@ -13,6 +13,7 @@ a=load('spec/AUTOMATON_MODEL_R0.json')
 t=load('spec/TEMPORAL_PROGRAM_R0.json')
 g=load('spec/TEMPORAL_GRAPH_R0.json')
 c=load('spec/TEMPORAL_CODEC_R0.json')
+carrier=load('spec/TEMPORAL_CARRIER_R0.json')
 p=load('spec/ORIGAMI_PROTOCOL_R0.json')
 r=load('spec/CODEC_REGISTRY_R0.json')
 caps=load('spec/CAPABILITY_NEGOTIATION_R0.json')
@@ -41,6 +42,16 @@ assert c['encoder_family'][0]=='ET0_ENCODE_AUTOMATON'
 assert c['encoder_family'][2]=='ET2_ENCODE_TIMELINE'
 assert c['capability_behavior']['unsupported_semantic_temporal']=='UNKNOWN'
 assert 'SIMULATE_STEP_USES_ONLY_DECLARED_STATE_RULES_GRAPH_AND_CONTEXT' in c['hard_invariants']
+
+assert carrier['contract_id']=='origami.temporal-carrier.r0'
+assert carrier['envelope']['width']==640 and carrier['envelope']['height']==640
+assert carrier['envelope']['png_bytes']==8192
+assert carrier['envelope']['compressed_program_capacity_bytes']==462
+assert carrier['envelope']['oversize_behavior']=='FAIL_BUILD'
+assert carrier['exact_plane']['self_contained'] is True
+assert carrier['exact_plane']['external_sidecar_allowed'] is False
+assert carrier['claims']['arbitrary_program_guaranteed_to_fit'] is False
+assert 'OVERSIZE_PROGRAM_FAILS_INSTEAD_OF_EXTERNALIZING' in carrier['hard_invariants']
 
 assert p['temporal_extension']['automaton_contract']==a['contract_id']
 assert p['temporal_extension']['program_contract']==t['contract_id']

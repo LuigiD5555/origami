@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -22,7 +23,7 @@ func main() {
 	body, err := os.ReadFile(*observation)
 	die(err)
 	var obs promotion.Observation
-	dec := json.NewDecoder(bytesReader(body))
+	dec := json.NewDecoder(bytes.NewReader(body))
 	dec.DisallowUnknownFields()
 	die(dec.Decode(&obs))
 	report, err := promotion.Evaluate(png, obs)
@@ -37,10 +38,6 @@ func main() {
 	}
 	die(os.WriteFile(*out, encoded, 0o644))
 }
-
-type byteReader struct { data []byte; off int }
-func bytesReader(data []byte) *byteReader { return &byteReader{data:data} }
-func (r *byteReader) Read(p []byte) (int,error) { if r.off>=len(r.data){return 0,os.ErrClosed}; n:=copy(p,r.data[r.off:]);r.off+=n;return n,nil }
 
 func die(err error) {
 	if err != nil {

@@ -1,0 +1,21 @@
+{
+  "contract_id": "origami.temporal-graph.r0",
+  "status": "EXPERIMENTAL_REFERENCE_IMPLEMENTATION",
+  "purpose": "Extend T2 from a semantic superindex into an addressable semantic-temporal supergraph without requiring linear replay.",
+  "roots": ["CONTENT", "CONCEPTS", "AGENTS", "RULES", "TIMELINE", "EVENTS", "CHECKPOINTS", "EVIDENCE", "VERIFY"],
+  "addressable_objects": ["CELL", "RULE", "EVENT", "PHASE", "CHECKPOINT", "CAUSAL_CHAIN"],
+  "query_routes": {
+    "what_agents_exist": "T2/AGENTS",
+    "what_does_agent_do": "T2/AGENTS/<id> -> RULES",
+    "when_did_event_happen": "T2/EVENTS -> TIMELINE",
+    "why_did_event_happen": "T2/EVENTS -> RULES -> INPUTS",
+    "replay_phase": "T2/TIMELINE -> CHECKPOINT -> SELECTIVE_TEMPORAL_UNFOLD"
+  },
+  "hard_invariants": [
+    "T2_REMAINS_SEMANTIC_FIRST",
+    "TEMPORAL_NAVIGATION_NE_GLOBAL_REPLAY",
+    "GRAPH_NODE_ADDRESS_NE_CONTENT_ID",
+    "CAUSAL_ROUTE_MUST_BE_DECLARED",
+    "UNKNOWN_OVER_INVENTION"
+  ]
+}

@@ -1,29 +1,57 @@
 # Current Origami state
 
 **Status date:** 2026-08-30  
-**Project version:** 6.0.0-alpha.10  
+**Project version:** 6.0.0-alpha.11  
 **Status:** experimental
 
 ## Project role
 
 Origami is the visual/computational representation, state-machine language and model-agnostic virtual-memory system.
 
-The surrounding tools are separate:
+Origami owns its own semantics, canonical visual grammar, ROSETTA, Writer/Reader contracts, Master Prompt and version/profile releases.
+
+External systems may help develop it:
 
 ```text
-                           TONAL
-          optional multi-tool composition layer
-        /                 |                    \
-   TLALOC          Blueprint Framework      other tools
- development kit      development tool      future tools
-        |
-        | may improve / test / build
-        v
-                           ORIGAMI
-          owns its own canonical versions/profiles
+Tlaloc
+Blueprint Framework
+future development tools
 ```
 
-Tlaloc is the primary current development kit for Origami, but Origami does not depend conceptually on Tlaloc. Tlaloc may also be used to develop other tools. Tonal exists only when several independent tools/components need a reproducible composition; Tonal does not promote Origami semantics or visual profiles.
+Tonal may optionally compose/pin several of those tools and exact target revisions. None is required for Origami's portable baseline.
+
+## Portable compatibility baseline — alpha.11
+
+The universal Master Prompt R2 is now explicitly designed for a compatible target model that may have only:
+
+```text
+Master Prompt
++ explicit user input
++ Origami image/carrier when image input exists
+```
+
+It does not assume:
+
+```text
+Tlaloc
+Tonal
+sandbox
+Go / Python
+external tools
+hidden file access
+```
+
+When richer capabilities exist, they are explicit enhancements:
+
+```text
+prompt + declarative context/IR
+prompt + Origami tools
+prompt + ingestion adapter
+prompt + compiler/runtime
+specialized model
+```
+
+Tool-assisted behavior and prompt-only/native behavior are separate capability claims.
 
 ## Current capability state
 
@@ -41,10 +69,48 @@ Tlaloc is the primary current development kit for Origami, but Origami does not 
 | Canonical Visual Grammar R0 | EXPERIMENTAL_REFERENCE_PROFILE — alpha.9 |
 | Writer R0 | EXPERIMENTAL_REFERENCE_IMPLEMENTED — alpha.9 |
 | perceptual profile evolution / reveal semantics | EXPERIMENTAL_CONTRACT_EXTENSION — alpha.10 |
-| Master Prompt | READ/WRITE REFERENCE_CANDIDATE |
+| Development Tool Boundary R0 | EXPERIMENTAL_REFERENCE_CONTRACT — alpha.11 |
+| Master Prompt | R2 PORTABLE READ/WRITE REFERENCE_CANDIDATE |
 | generic Writer plan -> fully profile-generic renderer | PARTIAL |
 
-The machine-readable source is `state/ORIGAMI_STATE.json`.
+Machine-readable state: `state/ORIGAMI_STATE.json`.
+
+## READ without tools
+
+Prompt-only/native READ can bootstrap BOOT/ROSETTA/profile information and interpret visual structure that is genuinely available to the model.
+
+If an exact lookup, hash check, query operation or deterministic execution is required but no such capability is available, the correct result is:
+
+```text
+UNKNOWN
+```
+
+or, when semantic support exists but requested verification cannot be executed:
+
+```text
+NOT_VERIFIED
+```
+
+Tool absence is a capability boundary, not evidence of semantic absence.
+
+## WRITE without compiler
+
+The prompt may still produce:
+
+```text
+Semantic IR
+Visual Intent Plan
+ROSETTA
+PROGRAM / INDEX / MEMORY / VERIFICATION specification
+```
+
+If no deterministic compiler or equivalent verifiable image-generation path exists, it must not claim a compiled carrier.
+
+Correct status:
+
+```text
+WRITE_STATUS: CONSTRUCTION_SPEC_ONLY
+```
 
 ## Canonical visual rule
 
@@ -62,19 +128,17 @@ reveal procedure for promoted non-static perceptual channels
 
 ROSETTA does not license a private aesthetic per PDF/model.
 
-## Perceptual depth is semantic, not decoration
+## Perceptual channels
 
-Origami's alpha.2 perceptual contract already defines interference, depth, temporal and emergent channels. Alpha.10 connects those ideas to Writer/profile evolution.
-
-Experimental dimensions now include:
+Experimental dimensions include:
 
 ```text
-D10 COLOR
-D11 NUMERIC_STRUCTURE
-D12 TEMPORAL
-D13 INTERFERENCE
-D14 DEPTH
-D15 EMERGENT
+COLOR
+NUMERIC_STRUCTURE
+INTERFERENCE
+DEPTH
+TEMPORAL
+EMERGENT
 ```
 
 Candidate operations include:
@@ -89,102 +153,50 @@ TEMPORAL_INTEGRATE
 TEMPORAL_DECAY
 ```
 
-If a future Origami profile promotes one of these channels, ROSETTA must declare both:
-
-```text
-what it means
-+
-how to reveal/observe it
-```
-
-For example, a moiré relation may require two patterns and a declared relative alignment; a stereo channel may require compatible views; a temporal latent percept may require a trajectory and integration window.
-
-If the receiver cannot satisfy the reveal condition:
-
-```text
-UNKNOWN
-```
-
-not `ABSENT` and not an invented interpretation.
+A promoted non-static channel must declare both its meaning and its reveal procedure. Failure to satisfy the reveal condition returns `UNKNOWN`, not `ABSENT`.
 
 ## Writer R0
-
-Origami supports formal READ and WRITE directions.
 
 ```text
 READ
 carrier -> BOOT -> ROSETTA -> semantic interpretation
 
 WRITE
-source / Document IR
+source
  -> Semantic IR
  -> visual intents
  -> canonical profile
  -> ROSETTA
  -> PROGRAM / INDEX / MEMORY / VERIFICATION
- -> deterministic compiler
+ -> deterministic compiler when available
  -> carrier
  -> roundtrip verification
 ```
 
-`internal/writer` produces a deterministic construction plan. Alpha.10 extends each ROSETTA entry so promoted non-static visual channels can include a `RevealProcedure` containing operation, required inputs, observation condition, trajectory/phase, integration window and failure state.
+The model may construct semantic/visual intent. A verified compiler/rendering path remains carrier authority for `COMPILED_VERIFIED` status.
 
-The model may produce Semantic IR or construction intent; the compiler remains carrier authority.
+## Development lifecycle
 
-## Visual-profile evolution
+Tlaloc is currently the strongest behavior-experiment kit around Origami, but it is external.
 
-A new Origami version should not win because it is prettier. It should demonstrably improve useful representation.
+It may use bounded Tlaloque swarms to discover a working READ/WRITE/representation procedure, distill that behavior into a prompt candidate and test it on clean target models.
 
-Tlaloc or another development tool may search candidates over:
+Other tools may contribute different kinds of development evidence.
 
-```text
-prompt
-geometry / primitives
-layout
-redundancy
-color
-numeric / prime / modular structure
-moire / phase / interference
-stereo / parallax / depth
-temporal / motion-bound structure
-emergent multi-layer percepts
-```
-
-The optimization direction is:
+Lifecycle:
 
 ```text
-maximize:
-  recoverable semantic capacity per byte
-  semantic roundtrip
-  readability / perceptual reveal
-  routing accuracy
-  verified-evidence accuracy
-  transport robustness
-
-minimize:
-  carrier bytes
-  recognition latency
-  BOOT steps
-  decode/unfold steps
-  model-facing context
-```
-
-Hard semantic/evidence invariants cannot be traded away for score.
-
-The lifecycle is:
-
-```text
-Origami profile N
+Origami profile/version N
      ↓
-development-tool search (Tlaloc today; alternatives allowed)
+external development experiment
      ↓
-candidate + measured evidence
+candidate + evidence
      ↓
 Origami validation
      ↓
-Origami promotes profile N+1
+Origami decides N+1
      ↓
-optional Tonal composition with chosen development toolchain
+optional Tonal composition/pin
 ```
 
 ## Semantic core and memory
@@ -205,11 +217,11 @@ INHIBITED
 CANCELLED
 ```
 
-Semantic Fold preserves dependencies/alternatives and Selective Unfold opens only declared closure.
+Semantic Fold preserves dependencies/alternatives. Selective Unfold opens only declared closure.
 
 Virtual Memory keeps the active model-facing window around 4000 token-equivalent while total external memory may be much larger.
 
-Evidence Reduction accepts external candidate claims but Origami itself verifies addresses/CIDs/source hashes/fidelity and reduces to:
+Evidence Reduction accepts external proposals but Origami itself verifies evidence identity/fidelity and reduces to:
 
 ```text
 VERIFIED
@@ -220,40 +232,83 @@ UNKNOWN
 
 `VERIFIED_EXACT` requires byte-equal accepted exact evidence.
 
-## Fixed Carrier and perception
+## Fixed Carrier and optional tools
 
-The current reference Fixed Carrier remains:
+Current reference Fixed Carrier:
 
 ```text
 640 x 640
 8192 PNG bytes exactly
-hard maximum 512000 bytes
+hard current-profile maximum 512000 bytes
 ```
 
 with T0/T1/T2/T3/VERIFY bootstrap.
 
-It is the current concrete R0 aesthetic instance, not a permanent ban on future promoted visual profiles.
+The carrier is not the corpus.
 
-Perception Promotion still keeps Hybrid and Native-T3 claims separate. A mock can validate mechanics but never empirical model capability.
+`tlaloc.origami-tools.r2` remains a useful existing optional tool ABI. It does not make Tlaloc mandatory for Origami or for the Master Prompt.
 
-Cross-model campaign orchestration may be performed by Tlaloc or another development tool. Origami owns its own capability/profile authority. Tonal may record a reproducible composition but is not Origami's semantic authority.
+## Perception Promotion
+
+Hybrid and Native-T3 claims remain separate. MOCK validates mechanics only.
+
+A real campaign may be orchestrated by Tlaloc or another development system. Origami owns the interpretation/promotion of Origami capability/profile evidence.
+
+## Profile-evolution objective
+
+External experiments may search:
+
+```text
+prompt
+geometry / primitives
+layout
+redundancy
+color
+numeric / prime / modular structure
+moire / phase / interference
+stereo / parallax / depth
+temporal / motion-bound structure
+emergent percepts
+```
+
+A newer profile should improve measurable representation while preserving hard semantics.
+
+Typical objectives:
+
+```text
+maximize:
+  recoverable semantic capacity
+  semantic roundtrip
+  readability/reveal reliability
+  routing/evidence accuracy
+  transport robustness
+
+minimize:
+  carrier bytes
+  recognition latency
+  BOOT steps
+  decode/unfold steps
+  model-facing context
+```
 
 ## Hard invariants
 
 ```text
+ORIGAMI_OWNS_ORIGAMI_RELEASES
+MASTER_PROMPT_IS_PORTABLE_BASELINE
+TLALOC_IS_OPTIONAL
+TONAL_IS_OPTIONAL
+DEVELOPMENT_TOOL != RUNTIME_REQUIREMENT
+TOOL_ASSISTED_SUCCESS != PROMPT_ONLY_SUCCESS
 FALSE_EXACT = 0
 UNKNOWN > invented exactness
 ONE_CANONICAL_AESTHETIC_PER_PROFILE_VERSION
 ROSETTA_ALWAYS_PRESENT
-ROSETTA != PER_DOCUMENT_AESTHETIC_DRIFT
 PROMOTED_PERCEPTUAL_CHANNEL_REQUIRES_REVEAL_PROCEDURE
 FAILED_REVEAL != SEMANTIC_ABSENCE
 SOURCE_SCREENSHOT != ORIGAMI
-SEMANTIC_IR_PRECEDES_VISUAL_COMPILATION
-CONSTRUCTION_SPEC_PRECEDES_COMPILATION
+CONSTRUCTION_SPEC != COMPILED_VERIFIED_CARRIER
 ROUNDTRIP_REQUIRED
-DEVELOPMENT_TOOL_PROPOSES / ORIGAMI PROMOTES
-TONAL_COMPOSITION != ORIGAMI_PROFILE_PROMOTION
 source plane != semantic plane
 literal transport != semantic Fold
 observation != transition
@@ -267,4 +322,4 @@ model specialization is optional
 
 ## Evidence boundary
 
-Alpha.10 does not claim that moiré, stereo, temporal, color, prime-derived or other advanced candidates already outperform the current profile. It defines how such a candidate can be represented, revealed, measured and promoted without confusing visual novelty with demonstrated capability.
+Alpha.11 defines the development-tool boundary and portable prompt baseline. It does **not** claim that prompt-only operation already matches Hybrid/tool operation on every task, nor that every model can natively decode/write every Origami channel.

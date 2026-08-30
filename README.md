@@ -1,31 +1,89 @@
-# Origami 6.0.0-alpha.9
+# Origami 6.0.0-alpha.11
 
 Origami is an experimental **visual/computational representation, state-machine language and model-agnostic virtual memory** for complex state, relations, dynamics, selectively accessible knowledge and perceptual emergence.
 
-Origami is independent of **Tlaloc**. Tlaloc owns work/orchestration, document acquisition, swarms, model-facing experiments and candidate search. Origami owns representation semantics, state evolution, Fold/Unfold, memory/evidence authority, canonical visual grammar, carrier semantics and exactness boundaries.
+Origami is independently usable. Development tools can improve it, but they are not hidden runtime requirements.
 
-## What changed in alpha.9
-
-Origami now has an explicit **single canonical visual aesthetic per profile version** and a WRITE path.
-
-The rule is:
+## Ecosystem boundary
 
 ```text
-many documents
-     |
-     v
-one Semantic IR language
-     |
-     v
-one canonical Origami visual profile/version
-     |
-     v
-many carriers that share the same functional aesthetic
+Tlaloc             Blueprint Framework           future tools
+ behavioral dev        structural dev                 ...
+      \                     |                       /
+       \------ candidates / experiments / evidence -/
+                              |
+                              v
+                           ORIGAMI
+          semantic + visual language / machine / memory
+          owns Master Prompt, ROSETTA, profiles and releases
+                              |
+                              v
+                    standalone portable use
+
+Optional: Tonal may pin/compose the exact development toolchain.
 ```
 
-`ROSETTA` remains mandatory, but it self-describes the active canonical profile, dimensions and concrete bindings. It does **not** allow every document/model to invent a private aesthetic.
+Tlaloc is a particularly useful behavioral development kit: it can discover a working procedure through bounded Tlaloque swarms and distill that behavior into prompt candidates. Origami is one possible Tlaloc target, not a Tlaloc subsystem.
 
-Tlaloc may experiment with radically different candidate prompts, colors, shapes, layouts, mathematical structures or perceptual dimensions. A successful candidate changes Origami's aesthetic only through a **versioned profile promotion**.
+See `docs/DEVELOPMENT_TOOL_BOUNDARY_R0.md` and `spec/DEVELOPMENT_TOOL_BOUNDARY_R0.json`.
+
+## Portable Master Prompt baseline
+
+`generated/MASTER_PROMPT.md` is now **Universal Read / Write Bootstrap R2**.
+
+Its minimum compatibility assumption is intentionally small:
+
+```text
+Master Prompt
++ explicit user input
++ Origami image/carrier when image input is available
+```
+
+It does **not** assume:
+
+```text
+Tlaloc
+Tonal
+sandbox
+Go / Python
+external tools
+hidden file access
+```
+
+When tools, declarative IR, ingestion adapters or an Origami compiler exist they are explicit enhancements, not retroactive requirements.
+
+This gives Origami a prompt-first retrocompatibility path for models that have no runtime except their normal text/image interface.
+
+## READ / WRITE
+
+```text
+READ
+carrier/image
+ -> BOOT
+ -> ROSETTA
+ -> PROGRAM / INDEX / MEMORY / VERIFICATION
+ -> semantic answer
+
+WRITE
+source semantics
+ -> Semantic IR
+ -> Visual Intent
+ -> canonical visual profile
+ -> ROSETTA
+ -> PROGRAM / INDEX / MEMORY / VERIFICATION
+ -> compiler when available
+ -> roundtrip verify
+```
+
+Without tools, READ continues from what the model can genuinely perceive/derive. An unavailable exact/mechanical operation returns `UNKNOWN` or `NOT_VERIFIED`; it is never pretended to have run.
+
+Without a compiler, WRITE may produce a construction specification but must report:
+
+```text
+WRITE_STATUS: CONSTRUCTION_SPEC_ONLY
+```
+
+A textual description or screenshot is not a compiled Origami.
 
 ## Canonical architecture
 
@@ -33,67 +91,76 @@ Tlaloc may experiment with radically different candidate prompts, colors, shapes
 PDF / IMAGE / TEXT / CONVERSATION / STATE
                     |
                     v
-        SOURCE / DOCUMENT INGESTION
-     (Tlaloc or another declared adapter)
+       declared source/ingestion adapter
+          (optional external tooling)
                     |
                     v
               SEMANTIC IR
- concepts / relations / hierarchy / state /
- uncertainty / evidence / addresses / time
                     |
-          +---------+----------+
-          |                    |
-          v                    v
- SEMANTIC SPINE R1       WRITER R0
- S_t + C_t + R           visual intents
- Fold / Unfold                 |
- evidence                      v
-          |        CANONICAL VISUAL GRAMMAR R0
-          |                    |
-          |                    v
-          |       ROSETTA + PROGRAM + INDEX +
-          |          MEMORY + VERIFICATION
-          |                    |
-          |                    v
-          |          deterministic compiler
-          |                    |
-          |                    v
-          |               carrier.png
-          |                    |
-          +----------+---------+
-                     |
-                     v
-              VIRTUAL MEMORY
-                     |
-                     v
-         bounded ContextPacket (~4000)
-                     |
-                     v
-             model / Tlaloc
-                     |
-                     v
-        evidence-backed proposals
-                     |
-                     v
-          EVIDENCE REDUCTION R0
-                     |
-                     v
- VERIFIED / REJECTED / CONFLICT / UNKNOWN
+       +------------+-------------+
+       |                          |
+       v                          v
+SEMANTIC SPINE R1             WRITER R0
+S_t + C_t + R                visual intents
+Fold / Unfold                     |
+evidence                          v
+       |              CANONICAL VISUAL GRAMMAR R0
+       |                          |
+       |                          v
+       |              ROSETTA + PROGRAM + INDEX +
+       |                 MEMORY + VERIFICATION
+       |                          |
+       |                          v
+       |                 deterministic compiler
+       |                    when available
+       |                          |
+       +------------+-------------+
+                    |
+                    v
+               VIRTUAL MEMORY
+                    |
+                    v
+          bounded ContextPacket
+                    |
+                    v
+            compatible model
 ```
 
-A source screenshot is not Origami. A text poster is not Origami. Literal recovery is not semantic Fold. The visual carrier is a compiled representation/control surface over canonical semantics and addressable memory.
+External development systems can construct experiments around this path without becoming its semantic authority.
+
+## Semantic Spine R1
+
+The deterministic semantic core uses:
+
+```text
+S_(t+1) = F(S_t, C_t, R)
+```
+
+and preserves distinct:
+
+```text
+PRESENT
+ABSENT
+UNKNOWN
+INHIBITED
+CANCELLED
+```
+
+It implements declarative contradictions, signed cancellation, higher-order participant rules, finite observation contracts, temporal trajectory observations, semantic Fold and selective Unfold.
+
+Observation remains separate from transition.
 
 ## Canonical Visual Grammar R0
 
-[`docs/CANONICAL_VISUAL_GRAMMAR_R0.md`](docs/CANONICAL_VISUAL_GRAMMAR_R0.md) and [`spec/CANONICAL_VISUAL_GRAMMAR_R0.json`](spec/CANONICAL_VISUAL_GRAMMAR_R0.json) define the current aesthetic profile:
+The current reference profile is:
 
 ```text
 origami.canonical-aesthetic.r0
 ```
 
-The aesthetic is functional encoding, not decoration.
+Origami has **one canonical functional aesthetic per profile version**. Many documents may produce different carriers, but they share the same active profile rules.
 
-Current canonical dimensions are:
+Current canonical dimensions include:
 
 ```text
 geometry
@@ -107,195 +174,111 @@ density
 limited declarative text
 ```
 
-The current Fixed Carrier family is intentionally high-contrast and mostly monochrome because those channels currently have the strongest deterministic support.
-
-Experimental candidate dimensions include:
+Experimental profile candidates include:
 
 ```text
 color
-numeric / mathematical structure
-temporal / phase structure
+numeric / prime / modular / factorization structure
+interference / moiré / phase
+stereo / parallax / depth
+temporal / motion-bound structure
+emergent multi-layer or multi-instant percepts
 ```
 
-These may become canonical later if Tlaloc experiments demonstrate measurable gains without semantic/exactness regressions.
+These are potential semantic channels, not decoration. They become authoritative only if a later Origami profile adopts them after evidence.
 
-For example, prime-derived or modular visual organization is a legitimate candidate strategy. It is not automatically useful merely because the resulting image looks complex or interesting.
+## ROSETTA and reveal procedures
 
-## ROSETTA
-
-ROSETTA is still a core invariant.
-
-It declares:
+ROSETTA always declares:
 
 ```text
-profile id
-profile version
+profile ID/version
 active dimensions
 visual primitive -> semantic role mappings
-profile-approved extensions/parameters
+approved local parameters/extensions
 ```
 
-This lets a receiver bootstrap a carrier without hidden repository knowledge and keeps older profile versions readable after the aesthetic evolves.
+For non-static channels it additionally declares a **reveal procedure**: how a receiver should establish the percept.
 
-The rule is:
+Examples of experimental operations already represented by Origami contracts include:
 
 ```text
-ONE CANONICAL PROFILE + SELF-DESCRIBING ROSETTA
+MOIRE
+PHASE_SHIFT
+STEREO_BIND
+PARALLAX_RESOLVE
+KINETIC_REVEAL
+TEMPORAL_INTEGRATE
 ```
 
-not:
+If the declared reveal condition cannot be established:
 
 ```text
-EVERY CARRIER INVENTS A NEW VISUAL LANGUAGE
+UNKNOWN
 ```
 
-## Writer R0 — READ and WRITE
+not `ABSENT`.
 
-[`docs/WRITER_R0.md`](docs/WRITER_R0.md) and [`spec/WRITER_R0.json`](spec/WRITER_R0.json) add the missing write direction.
+## Writer R0
+
+Writer turns semantic intention into a deterministic construction plan before pixels:
 
 ```text
-READ
-carrier -> BOOT -> ROSETTA -> semantic state
-
-WRITE
-source -> Semantic IR -> visual intent -> canonical grammar
-       -> ROSETTA -> construction plan -> compiler -> verify
+Semantic IR
+ -> Visual Intent Plan
+ -> canonical profile binding
+ -> ROSETTA
+ -> carrier sections / verification plan
+ -> compiler
 ```
 
-The universal Master Prompt now teaches both modes.
-
-When asked to convert a PDF into Origami, a compatible model should not paint PDF text into an image. It should preserve/document source structure, construct Semantic IR, declare visual intents and use the canonical compiler path.
-
-The reference planner is:
+Reference planner:
 
 ```bash
 ./bin/origami-write-plan -in request.json -out plan.json
 ```
 
-The planner deterministically maps semantic intents such as:
+Visual intents include identity, hierarchy, relation, dependency, scope, importance, state, uncertainty, evidence, verification, addressability, temporal order, redundancy and routing.
 
-```text
-IDENTITY
-HIERARCHY
-RELATION
-DEPENDENCY
-SCOPE
-IMPORTANCE
-STATE
-UNCERTAINTY
-EVIDENCE
-VERIFICATION
-ADDRESSABILITY
-TEMPORAL_ORDER
-REDUNDANCY
-ROUTING
-```
-
-onto the approved canonical dimensions.
-
-If no compiler is available, a model may emit a construction specification, but it must not claim that an arbitrary image is a valid carrier.
-
-## Roundtrip requirement
-
-A compiled carrier must satisfy:
+The roundtrip rule remains:
 
 ```text
 DECODE(COMPILE(SEMANTIC_IR)) ~= SEMANTIC_IR
 ```
 
-with exact equality for identity, addresses, hashes and verification/proof fields.
-
-Failure means `INVALID_CARRIER`, not “visually close enough.”
-
-## Semantic Spine R1
-
-[`docs/SEMANTIC_SPINE_R1.md`](docs/SEMANTIC_SPINE_R1.md) and [`spec/SEMANTIC_SPINE_R1.json`](spec/SEMANTIC_SPINE_R1.json) implement the connected semantic reference path.
-
-The executable core uses:
-
-```text
-S_(t+1) = F(S_t, C_t, R)
-```
-
-with first-class Context and declarative Rule IDs.
-
-Semantic statuses remain distinct:
-
-```text
-PRESENT
-ABSENT
-UNKNOWN
-INHIBITED
-CANCELLED
-```
-
-The core also preserves contradiction provenance, signed cancellation, higher-order participant rules, finite observation contracts and temporal observations over ordered trajectories.
-
-The exhaustive finite state enumerator remains the reference oracle for small declared state spaces; optimized search cannot silently replace it without equivalence evidence.
-
-## Observation is not transition
-
-Reference observations include:
-
-```text
-state_predicate
-temporal_sequence
-rule_fired
-participant_set
-```
-
-A property may exist only over an ordered trajectory. Reordering the same states can destroy it. Observation does not mutate the committed trajectory.
-
-The complete alpha.2 perceptual operation family is still not universally implemented; moire/phase/stereo/temporal candidates remain evidence-gated research capabilities.
-
-## Semantic Fold / selective Unfold
-
-Semantic Fold commits to the canonical graph while preserving dependencies, relations and unresolved alternatives.
-
-Selective Unfold opens only the requested address plus its declared dependency/alternative closure and records touched addresses.
-
-Therefore loading the entire graph and merely returning a small answer does not count as selective access.
+with exact equality for declared identity/address/hash/proof fields.
 
 ## Virtual Memory R0
 
-[`docs/VIRTUAL_MEMORY_R0.md`](docs/VIRTUAL_MEMORY_R0.md) formalizes memory much larger than the active model context:
+Origami memory can be much larger than active model context.
 
-```text
-large / multi-carrier memory
-  -> GraphSignature routing
-  -> local metadata graph
-  -> selective fidelity unfold
-  -> ContextPacket <= active budget
-  -> model
-```
-
-The default model-facing working window is approximately:
+The model-facing working budget remains approximately:
 
 ```text
 4000 token-equivalent
 ```
 
-This is not total memory capacity and not a cumulative task limit.
+This is an active interface budget, not total storage capacity.
 
-Fidelity order remains:
+```text
+large / multi-carrier memory
+ -> GraphSignature routing
+ -> local metadata graph
+ -> selective fidelity unfold
+ -> ContextPacket
+```
+
+Fidelity order:
 
 ```text
 label -> abstract -> summary -> detail -> evidence -> exact
 ```
 
-Canonical addresses use:
-
-```text
-ohf://<carrier>/<cluster>/<node>
-```
-
-Address is location; CID is content identity.
-
-Deep evidence/exact payload is reopened by address rather than silently globally indexed.
+Address is location; CID is content identity. Deep exact payload is reopened selectively rather than silently scanned globally.
 
 ## Evidence Reduction R0
 
-External models/Tlaloques produce candidates:
+External models/development systems may propose:
 
 ```text
 SUPPORT
@@ -303,11 +286,7 @@ OPPOSE
 UNKNOWN
 ```
 
-Origami reopens cited evidence and verifies address, CID, source hash, fidelity and `Verified` state.
-
-Duplicate agents citing the same evidence do not manufacture consensus.
-
-Canonical states are:
+Origami independently resolves evidence addresses/CIDs/source hashes/fidelity and reduces deterministically to:
 
 ```text
 VERIFIED
@@ -316,201 +295,97 @@ CONFLICT
 UNKNOWN
 ```
 
-Verified disagreement remains `CONFLICT` rather than being hidden by majority vote.
+Agent/model confidence is never evidence authority.
 
-Agent confidence is diagnostic only.
-
-### Strict exactness
-
-`VERIFIED_EXACT` requires the selected canonical proposition to be byte-for-byte equal to accepted verified `exact` evidence.
-
-```text
-exact source + paraphrase -> VERIFIED + NOT_CLAIMED
-byte-equal exact source   -> VERIFIED + VERIFIED_EXACT
-```
-
-`FALSE_EXACT=0` remains mandatory.
+`VERIFIED_EXACT` requires byte-equal accepted exact evidence. A paraphrase that cites exact evidence is not byte-exact.
 
 ## Fixed Carrier R2
 
-Fixed Carrier remains the frozen visual/control profile currently used by experiments:
+Current fixed visual control-plane reference:
 
 ```text
-canvas      640 x 640
-PNG bytes   exactly 8192
-hard max    512000
+640 x 640
+8192 PNG bytes exactly
+hard current-profile ceiling: 512000 bytes
 ```
 
-Bootstrap remains:
+Bootstrap:
 
 ```text
 T0 plaintext BOOT
-T1 Rosetta + duplicated visual probe
+T1 ROSETTA + duplicated visual probe
 T2 root index / graph navigation
 T3 deterministic machine record
 VERIFY
 ```
 
-The carrier binds to external canonical memory through StoreRoot/source identity rather than containing the corpus as a screenshot.
+The carrier is not the corpus. Corpus growth occurs in canonical/addressable memory, not by enlarging the PNG.
 
-The current image therefore already represents the beginning of the canonical aesthetic R0: high contrast, geometry, topology, macro/meso/micro hierarchy, address regions, redundant probes and explicit verification anchors.
+The existing `tlaloc.origami-tools.r2` ABI is an **optional external tool-provider ABI**. Its existence does not make Tlaloc mandatory for Origami.
 
 ## Perception Promotion R1
 
-[`docs/PERCEPTION_PROMOTION_R1.md`](docs/PERCEPTION_PROMOTION_R1.md) supplies the deterministic per-trial evaluator.
-
-It independently checks what a model claims to have seen against the real carrier:
+Origami can deterministically compare a model's claimed carrier perception against actual carrier ground truth for:
 
 ```text
-T0 BOOT
-upper visual probe
-lower visual probe
-probe agreement
+T0
+duplicated visual probes
 Tool Protocol
 Address ABI
-optional T3 machine record
+optional T3
 ```
 
-`MOCK` can exercise the complete mechanical path but can never become promotion evidence.
+MOCK can validate plumbing but cannot provide empirical model promotion evidence. Hybrid and Native-T3 claims remain separate.
 
-Hybrid and Native T3 remain separate claims:
+## How Origami evolves
+
+A development tool may propose changes, but Origami owns adoption:
 
 ```text
-HYBRID trial
-  T0 + probes + protocol/address negotiation
-
-NATIVE T3 trial
-  Hybrid mechanical entry + T3 machine record
+Origami profile N
+ -> external experiment
+ -> candidate prompt/profile + evidence
+ -> Origami semantic/visual validation
+ -> Origami decides profile/version N+1
 ```
 
-Tlaloc owns cross-model campaigns, transport variants and real tool loops. Tonal owns aggregate stack promotion.
+Tlaloc can use its swarm-to-prompt playground to search better Master Prompts and representation behaviors. Blueprint Framework or another tool may contribute different development guarantees. Tonal may optionally record which exact toolchain/revisions were used.
 
-## Tlaloc-driven visual evolution
-
-Origami intentionally does **not** contain an optimizer that changes its own visual language on every run.
-
-Instead:
-
-```text
-current canonical Origami profile
-          |
-          v
-Tlaloc representation experiments
- prompt / shape / layout / color /
- redundancy / mathematical structure /
- temporal channel candidates
-          |
-          v
-candidate profile + evidence
-          |
-          v
-Origami contract validation
-          |
-          v
-Tonal promotion gate
-          |
-          v
-new canonical Origami profile version
-```
-
-This allows Origami's visible aesthetic to evolve as better representations are discovered while preserving one coherent language at each profile version.
-
-## Memory Scale Lab R0
-
-The deterministic scale ladder remains:
-
-```text
-1 -> 10 -> 100 -> 1,000 carriers
-```
-
-under a fixed 4,000 token-equivalent active budget.
-
-It reports routing/metadata work separately from model-facing exposure and measures routing recall, target/evidence accuracy, negative UNKNOWN, Useful Context Efficiency and Knowledge Scale Degradation.
-
-The deterministic lab does not by itself establish VLM quality or Native visual readability.
-
-## Model-facing CLIs
-
-Build everything:
-
-```bash
-make build
-```
-
-Core tools include:
-
-```text
-origami-ingest
-origami-system
-origami-memory
-origami-memory-scale
-origami-reduce
-origami-write-plan
-origami-fixed-carrier
-origami-perception-eval
-origami-hybrid-carrier
-origami-hybrid-tool
-ohf-lab
-ohf-glyphcalc
-```
-
-Example source/semantic flow:
-
-```bash
-./bin/origami-ingest -in paper.pdf -out paper.origami.json
-./bin/origami-system -bundle paper.origami.json -op QUERY -query 'What supports X?' -budget 4000
-./bin/origami-write-plan -in construction-request.json -out construction-plan.json
-```
-
-The current Writer R0 produces the deterministic canonical construction plan. Full integration from that generic plan into a next-generation visual renderer remains an explicit following step; the existing Fixed Carrier renderer remains intact and deterministic.
+None of them replaces Origami's release authority.
 
 ## Hard invariants
 
 ```text
+ORIGAMI OWNS ORIGAMI RELEASES
+MASTER PROMPT IS PORTABLE BASELINE
+TLALOC IS OPTIONAL
+TONAL IS OPTIONAL
+DEVELOPMENT TOOL != RUNTIME REQUIREMENT
+TOOL-ASSISTED SUCCESS != PROMPT-ONLY SUCCESS
+ROSETTA ALWAYS PRESENT
+ONE CANONICAL AESTHETIC PER PROFILE VERSION
+FAILED REVEAL != SEMANTIC ABSENCE
+SCREENSHOT != ORIGAMI SEMANTIC REPRESENTATION
+LITERAL TRANSPORT != SEMANTIC FOLD
+PERCEPTION != RESOLUTION != EXECUTION != VERIFICATION
+CONSTRUCTION SPEC != COMPILED VERIFIED CARRIER
+ACTIVE MODEL INTERFACE != TOTAL MEMORY
+NO IMPLICIT GLOBAL EXACT SCAN
 FALSE_EXACT = 0
-UNKNOWN > invented exactness
-source plane != semantic plane
-literal transport != semantic Fold
-screenshot != Origami semantic representation
-one canonical aesthetic per profile version
-ROSETTA always present
-ROSETTA != permission for per-document style drift
-profile-bound symbols have versioned meaning
-S_(t+1) = F(S_t,C_t,R)
-observation != transition
-ABSENT != UNKNOWN != INHIBITED != CANCELLED
-Fold preserves unresolved alternatives
-Selective Unfold touches declared closure only
-address != CID
-active model interface != total memory
-no implicit global exact scan
-visual navigation != exactness authority
-swarm proposal != canonical state
-agent confidence != evidence authority
-duplicate evidence counts once
-exact claim requires byte-equal exact evidence
-perception != resolution != execution != verification
-Fixed Carrier != corpus
-construction spec precedes visual compilation
-roundtrip required
-Tlaloc proposes / Origami validates / Tonal promotes
-model specialization is optional
-carrier target <= 500 KB
+UNKNOWN > INVENTED EXACTNESS
 ```
 
 ## Evidence still pending
 
-Alpha.9 does not claim:
+Alpha.11 does not claim that:
 
-- built-in arbitrary scan/image OCR inside Origami;
-- implementation of every experimental perceptual channel;
-- held-out Native visual navigation;
-- cross-model Hybrid/Native promotion;
-- that color/prime-derived/numeric/temporal representation candidates improve current R0;
-- a promoted successor visual profile;
-- fully generic rendering of every Writer R0 construction plan into pixels.
+- every model can natively read/write the current carrier;
+- every experimental perceptual channel is reliable;
+- prompt-only mode equals Hybrid/tool mode for every task;
+- generic Writer plans already have a complete profile-generic renderer for all visual channels;
+- any prime/moiré/stereo/temporal candidate is better than R0.
 
-Those are now explicit experimentation/promotion tasks rather than hidden architectural gaps.
+These remain experiments, not assumptions.
 
 ## Source of truth
 
@@ -519,24 +394,17 @@ VERSION
 state/ORIGAMI_STATE.json
 PROJECT_BOUNDARY.md
 generated/MASTER_PROMPT.md
+docs/DEVELOPMENT_TOOL_BOUNDARY_R0.md
 docs/CURRENT_STATE.md
 docs/CANONICAL_VISUAL_GRAMMAR_R0.md
 docs/WRITER_R0.md
 docs/SEMANTIC_SPINE_R1.md
 docs/PERCEPTION_PROMOTION_R1.md
-docs/VIRTUAL_MEMORY_R0.md
-docs/EVIDENCE_REDUCTION_R0.md
-docs/FIXED_CARRIER_R2.md
+spec/DEVELOPMENT_TOOL_BOUNDARY_R0.json
 spec/CANONICAL_VISUAL_GRAMMAR_R0.json
 spec/WRITER_R0.json
-spec/SEMANTIC_SPINE_R1.json
-spec/PERCEPTION_PROMOTION_R1.json
-spec/VIRTUAL_MEMORY_R0.json
-spec/EVIDENCE_REDUCTION_R0.json
-spec/FIXED_CARRIER_R2.json
-changes/
 ```
 
 ## Version
 
-`6.0.0-alpha.9`
+`6.0.0-alpha.11`

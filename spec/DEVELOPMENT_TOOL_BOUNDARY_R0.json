@@ -1,0 +1,56 @@
+{
+  "contract_id": "origami.development-tool-boundary.r0",
+  "status": "EXPERIMENTAL_REFERENCE_CONTRACT",
+  "purpose": "Keep Origami usable and version-authoritative independently of any development kit while allowing Tlaloc, Blueprint Framework or future tools to propose tested improvements.",
+  "origami_authority": [
+    "SEMANTIC_CONTRACTS",
+    "MASTER_PROMPT_RELEASE",
+    "CANONICAL_VISUAL_PROFILE",
+    "ROSETTA_SEMANTICS",
+    "WRITER_AND_READER_CONTRACTS",
+    "PROFILE_AND_PROJECT_VERSION_PROMOTION"
+  ],
+  "development_tools": {
+    "role": "OPTIONAL_EXTERNAL_DEVELOPMENT_AND_EXPERIMENTATION",
+    "examples": ["TLALOC", "BLUEPRINT_FRAMEWORK", "OTHER_FUTURE_TOOLS"],
+    "may": [
+      "PROPOSE_PROMPTS",
+      "PROPOSE_REPRESENTATION_CHANGES",
+      "RUN_SWARM_REFERENCE_EXPERIMENTS",
+      "RUN_REGRESSION_AND_PERCEPTION_CAMPAIGNS",
+      "PRODUCE_EVIDENCE_AND_RECOMMENDATIONS"
+    ],
+    "may_not": [
+      "REDEFINE_ORIGAMI_SEMANTICS",
+      "PROMOTE_AN_ORIGAMI_RELEASE_BY_THEMSELVES",
+      "BECOME_AN_UNDECLARED_RUNTIME_REQUIREMENT"
+    ]
+  },
+  "portable_baseline": {
+    "artifact": "MASTER_PROMPT_PLUS_EXPLICIT_USER_INPUT",
+    "target_assumptions": ["LLM_TEXT_INTERFACE"],
+    "does_not_require": ["TLALOC", "TONAL", "SANDBOX", "GO_RUNTIME", "PYTHON_RUNTIME", "TOOLS"],
+    "visual_read_when_image_available": true,
+    "write_without_compiler": "EMIT_CONSTRUCTION_SPEC_ONLY",
+    "exact_operations_without_verifier": "UNKNOWN_OR_NOT_VERIFIED"
+  },
+  "optional_enhancements": [
+    "DECLARATIVE_CONTEXT_OR_IR",
+    "ORIGAMI_TOOLS",
+    "INGESTION_ADAPTERS",
+    "COMPILER_RUNTIME",
+    "SPECIALIZED_MODEL"
+  ],
+  "tonal_role": "OPTIONAL_MULTI_TOOL_COMPOSITION_AND_REPRODUCIBILITY_NOT_ORIGAMI_AUTHORITY",
+  "hard_invariants": [
+    "ORIGAMI_OWNS_ORIGAMI_RELEASES",
+    "DEVELOPMENT_TOOL_NE_RUNTIME_REQUIREMENT",
+    "MASTER_PROMPT_IS_PORTABLE_BASELINE",
+    "TLALOC_IS_OPTIONAL",
+    "TONAL_IS_OPTIONAL",
+    "TOOLS_ARE_OPTIONAL_ENHANCEMENTS",
+    "NO_TOOL_CLAIM_WHEN_TOOL_NOT_AVAILABLE",
+    "NO_COMPILED_CARRIER_CLAIM_WITHOUT_COMPILER_OR_VERIFIABLE_IMAGE_OUTPUT",
+    "FALSE_EXACT=0"
+  ]
+}

@@ -40,6 +40,19 @@ func TestMetadataLoadingIsBoundedBySelectedCarriers(t *testing.T){
 	if scale.ExposureFraction>=0.1{t.Fatalf("too much of total memory unfolded: %+v",scale)}
 }
 
+func TestThousandCarrierCanonicalDensitySmoke(t *testing.T){
+	cfg:=Config{CarrierCounts:[]int{1000},NodesPerCarrier:64,PositiveQueriesPerScale:4,NegativeQueriesPerScale:1,BudgetTokens:4000,CarrierLimit:4,Seed:20260829}
+	report,err:=Run(cfg,nil);if err!=nil{t.Fatal(err)}
+	s:=report.Scales[0]
+	if s.TotalNodes!=64000{t.Fatalf("unexpected total nodes: %+v",s)}
+	if s.CarrierTop1Accuracy!=1||s.TargetHitAccuracy!=1||s.EvidenceHitAccuracy!=1{t.Fatalf("1000-carrier retrieval failed: %+v",s)}
+	if s.NegativeUnknownAccuracy!=1{t.Fatalf("1000-carrier UNKNOWN failure: %+v",s)}
+	if s.BudgetViolations!=0||s.FalseExact!=0{t.Fatalf("1000-carrier invariant failure: %+v",s)}
+	if s.AvgSignaturesScanned!=1000{t.Fatalf("global routing work must remain visible: %+v",s)}
+	if s.AvgMetadataNodesLoaded>float64(cfg.CarrierLimit*cfg.NodesPerCarrier){t.Fatalf("local metadata loading escaped selected carriers: %+v",s)}
+	if s.ExposureFraction>=0.01{t.Fatalf("too much of 64k-node universe was unfolded: %+v",s)}
+}
+
 func TestConfigRejectsUnsafeOrAmbiguousRanges(t *testing.T){
 	cases:=[]Config{
 		{CarrierCounts:nil,NodesPerCarrier:3,PositiveQueriesPerScale:1,BudgetTokens:10,CarrierLimit:1},

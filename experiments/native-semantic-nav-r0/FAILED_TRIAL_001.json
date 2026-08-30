@@ -1,0 +1,50 @@
+{
+  "schema": "origami.native-semantic-nav.failure.r0",
+  "trial_id": "FAILED_TRIAL_001",
+  "status": "FAILED_EXTERNAL_MODEL_TRIAL",
+  "date": "2026-08-30",
+  "question": "Give me the index of the book represented by this Origami image.",
+  "available_to_model": [
+    "Origami image uploaded through a multimodal chat interface",
+    "visible bootstrap text in the image",
+    "no declared sandbox",
+    "no declared filesystem access",
+    "no declared Origami decoder/runtime"
+  ],
+  "observed_behavior": {
+    "boot_text_perceived": true,
+    "semantic_t2_index_recovered": false,
+    "requested_binary_or_file_access": true,
+    "attempted_whole_payload_decode_as_prerequisite": true,
+    "claimed_compression_and_byte_layout_without_verified_decoder": true,
+    "invented_or_corrupted_exact_fields": true,
+    "returned_actual_requested_index": false
+  },
+  "representative_unverified_claims": [
+    "642888-byte binary payload",
+    "144-byte header",
+    "10981-byte master prompt",
+    "631763-byte bzip2 residual",
+    "page ranges containing a gap between 864 and 885"
+  ],
+  "repository_reference": {
+    "master_prompt_candidate_sha256": "c83b426124250c1e4e533dc0a329f4bbde8060c41c88d51484915ab22eaa914a",
+    "model_reported_sha256": "c838b20124250c1e4a533dc0a329f4bbde0800641c8d851449915ab22aa8914a",
+    "hash_match": false
+  },
+  "diagnosis": [
+    "The model could perceive bootstrap text but could not use the carrier for semantic navigation.",
+    "The previous T2 rendered generic categories instead of the actual semantic superindex.",
+    "The visible black/white binary record encouraged a mechanical-decoder interpretation even for a semantic question.",
+    "Prompt-only/native semantic access therefore depended implicitly on a capability the model did not have."
+  ],
+  "required_regressions": [
+    "INDEX_QUERY_MUST_ROUTE_TO_T2",
+    "T2_MUST_RENDER_ACTUAL_SEMANTIC_ENTRIES",
+    "SEMANTIC_QUERY_MUST_NOT_REQUIRE_BINARY_DECODE",
+    "UNVERIFIED_BYTE_COUNTS_HASHES_COMPRESSION_MUST_NOT_BE_CLAIMED",
+    "MISSING_NATIVE_CAPABILITY_RETURNS_UNKNOWN_OR_PARTIAL_SEMANTIC_RESULT",
+    "EXACT_PLANE_REMAINS_OPTIONAL_FOR_SEMANTIC_NAVIGATION"
+  ],
+  "promotion_effect": "Blocks prompt-only/native semantic-navigation promotion until held-out real-model trials recover T2 without undeclared mechanical decoding."
+}

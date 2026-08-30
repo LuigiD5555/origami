@@ -36,6 +36,7 @@ jobs:
           go build ./cmd/origami-reduce
           go build ./cmd/origami-ingest
           go build ./cmd/origami-system
+          go build ./cmd/origami-perception-eval
       - name: Run deterministic reference experiment
         run: |
           mkdir -p evidence

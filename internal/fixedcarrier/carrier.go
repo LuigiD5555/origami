@@ -17,20 +17,20 @@ import (
 )
 
 const (
-	Schema           = "origami.fixed-carrier.r2"
-	ToolProtocol     = "tlaloc.origami-tools.r2"
-	AddressABI       = "ohf-address.r2"
-	ProfileID        = "origami.fixed-carrier.r2.profile-2"
-	LegacyProfileID  = "origami.fixed-carrier.r2.profile-1"
-	Width            = 640
-	Height           = 640
-	GridBits         = 64
-	RecordBytes      = GridBits * GridBits / 8
-	Cell             = 3
-	GridX            = 224
-	GridY            = 316
-	MaxPNGBytes      = 512000
-	FixedPNGBytes    = 8192
+	Schema          = "origami.fixed-carrier.r2"
+	ToolProtocol    = "tlaloc.origami-tools.r2"
+	AddressABI      = "ohf-address.r2"
+	ProfileID       = "origami.fixed-carrier.r2.profile-2"
+	LegacyProfileID = "origami.fixed-carrier.r2.profile-1"
+	Width           = 640
+	Height          = 640
+	GridBits        = 64
+	RecordBytes     = GridBits * GridBits / 8
+	Cell            = 3
+	GridX           = 224
+	GridY           = 316
+	MaxPNGBytes     = 512000
+	FixedPNGBytes   = 8192
 )
 
 var magic = [8]byte{'O', 'F', 'C', 'R', '2', 0, 0, 1}
@@ -62,7 +62,7 @@ type Metadata struct {
 	DocumentCount  uint32 `json:"document_count,omitempty"`
 	ObjectCount    uint32 `json:"object_count,omitempty"`
 	GraphSignature []byte `json:"graph_signature,omitempty"`
-	GraphSketch    []byte `json:"graph_sketch,omitempty"` // R1 compatibility input only.
+	GraphSketch    []byte `json:"graph_sketch,omitempty"`
 	Flags          uint16 `json:"flags,omitempty"`
 }
 
@@ -292,11 +292,15 @@ func drawT2(img *image.Gray, signature []byte) {
 		return
 	}
 	for i, label := range entries {
-		if i >= 4 { break }
+		if i >= 4 {
+			break
+		}
 		y := 236 + i*12
 		fill(img, 26, y+1, 7, 7, 0)
 		drawText(img, 42, y, 1, fmt.Sprintf("%d %s", i+1, label), 0)
-		if i > 0 { line(img, 29, y-3, 29, y+1, 0) }
+		if i > 0 {
+			line(img, 29, y-3, 29, y+1, 0)
+		}
 	}
 	drawText(img, 310, 280, 1, "SEMANTIC FIRST | EXACT OPTIONAL", 0)
 }
@@ -309,19 +313,31 @@ func semanticIndexFromSignature(signature []byte) []string {
 		Classes []string `json:"k"`
 	}
 	trimmed := bytes.TrimRight(signature, "\x00")
-	if len(trimmed) == 0 { return nil }
+	if len(trimmed) == 0 {
+		return nil
+	}
 	var h hint
-	if err := json.Unmarshal(trimmed, &h); err != nil { return nil }
+	if err := json.Unmarshal(trimmed, &h); err != nil {
+		return nil
+	}
 	for _, values := range [][]string{h.Index, h.Roots, h.Groups, h.Classes} {
-		if len(values) == 0 { continue }
+		if len(values) == 0 {
+			continue
+		}
 		out := make([]string, 0, 4)
 		for _, value := range values {
 			value = sanitizeIndexLabel(value, 30)
-			if value == "" { continue }
+			if value == "" {
+				continue
+			}
 			out = append(out, value)
-			if len(out) == 4 { break }
+			if len(out) == 4 {
+				break
+			}
 		}
-		if len(out) > 0 { return out }
+		if len(out) > 0 {
+			return out
+		}
 	}
 	return nil
 }
@@ -331,8 +347,14 @@ func sanitizeIndexLabel(value string, width int) string {
 	var b strings.Builder
 	for _, r := range value {
 		ok := (r >= 'A' && r <= 'Z') || (r >= '0' && r <= '9') || r == ' ' || r == '-' || r == '_' || r == '/' || r == ':' || r == '.'
-		if ok { b.WriteRune(r) } else { b.WriteByte(' ') }
-		if width > 0 && b.Len() >= width { break }
+		if ok {
+			b.WriteRune(r)
+		} else {
+			b.WriteByte(' ')
+		}
+		if width > 0 && b.Len() >= width {
+			break
+		}
 	}
 	return strings.Join(strings.Fields(b.String()), " ")
 }
@@ -439,6 +461,7 @@ func fillRedundancy(dst, seed []byte) {
 		dst[i] = h[0]
 	}
 }
+
 func probeBits(v byte) string {
 	b := make([]byte, 8)
 	for i := 0; i < 8; i++ {
@@ -450,6 +473,7 @@ func probeBits(v byte) string {
 	}
 	return string(b)
 }
+
 func parseHashish(s string) ([]byte, error) {
 	s = bytesToString(bytes.TrimSpace([]byte(s)))
 	if len(s) == 64 {
@@ -460,13 +484,16 @@ func parseHashish(s string) ([]byte, error) {
 	h := sha256.Sum256([]byte(s))
 	return h[:], nil
 }
+
 func bytesToString(b []byte) string { return string(b) }
+
 func max1(v uint32) uint32 {
 	if v == 0 {
 		return 1
 	}
 	return v
 }
+
 func joinBootText(lines []string) string {
 	var b bytes.Buffer
 	for _, s := range lines {
@@ -503,6 +530,7 @@ func padPNG(data []byte, target int) ([]byte, error) {
 	}
 	return out, nil
 }
+
 func pngChunk(kind string, payload []byte) []byte {
 	var b bytes.Buffer
 	_ = binary.Write(&b, binary.BigEndian, uint32(len(payload)))
@@ -521,6 +549,7 @@ func box(img *image.Gray, x, y, w, h int, v uint8) {
 	line(img, x+w, y+h, x, y+h, v)
 	line(img, x, y+h, x, y, v)
 }
+
 func fill(img *image.Gray, x, y, w, h int, v uint8) {
 	c := color.Gray{Y: v}
 	for yy := y; yy < y+h; yy++ {
@@ -529,7 +558,9 @@ func fill(img *image.Gray, x, y, w, h int, v uint8) {
 				img.SetGray(xx, yy, c)
 			}
 		}
+	}
 }
+
 func line(img *image.Gray, x0, y0, x1, y1 int, v uint8) {
 	dx := abs(x1 - x0)
 	sx := -1
@@ -560,12 +591,14 @@ func line(img *image.Gray, x0, y0, x1, y1 int, v uint8) {
 		}
 	}
 }
+
 func diamond(img *image.Gray, cx, cy, r int, v uint8) {
 	line(img, cx, cy-r, cx+r, cy, v)
 	line(img, cx+r, cy, cx, cy+r, v)
 	line(img, cx, cy+r, cx-r, cy, v)
 	line(img, cx-r, cy, cx, cy-r, v)
 }
+
 func abs(x int) int {
 	if x < 0 {
 		return -x

@@ -21,12 +21,13 @@ type Profile3Contract struct {
 	NativeIndex    []string `json:"native_index_route"`
 	WriteIndex     []string `json:"write_index_route"`
 	RoundTripGate  string   `json:"roundtrip_gate"`
+	Renderer       string   `json:"renderer"`
 }
 
 func ReferenceProfile3() Profile3Contract {
 	return Profile3Contract{
 		ProfileID:      Profile3ID,
-		Status:         "EXPERIMENTAL_CONSTRUCTION_SPEC_ONLY",
+		Status:         "EXPERIMENTAL_RENDERER_IMPLEMENTED_EVIDENCE_PENDING",
 		Width:          Profile3Width,
 		Height:         Profile3Height,
 		TargetPNGBytes: Profile3TargetPNG,
@@ -35,6 +36,7 @@ func ReferenceProfile3() Profile3Contract {
 		NativeIndex:    []string{"T0", "T1", "S2", "T2"},
 		WriteIndex:     []string{"SEMANTIC_IR", "E2", "T2_CONSTRUCTION_IR"},
 		RoundTripGate:  "S2(E2(INDEX)) ~= INDEX",
+		Renderer:       "internal/fixedcarrier.RenderProfile3",
 	}
 }
 
@@ -61,6 +63,9 @@ func ValidateProfile3(p Profile3Contract, r Registry) error {
 	}
 	if p.RoundTripGate != "S2(E2(INDEX)) ~= INDEX" {
 		return fmt.Errorf("profile-3 first roundtrip gate drift")
+	}
+	if p.Renderer == "" {
+		return fmt.Errorf("profile-3 renderer declaration is required once renderer status is implemented")
 	}
 	return nil
 }

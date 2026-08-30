@@ -38,7 +38,7 @@ func TrajectoryNodes(carrierID, trajectoryID string, trajectory core.Trajectory)
 	if trajectory.TraceHash=="" { return nil,fmt.Errorf("trajectory hash required") }
 	out:=make([]memory.Node,0,len(trajectory.States)+len(trajectory.Evidence))
 	stateAddresses:=make([]string,len(trajectory.States))
-	for i,state:=range trajectory.States { stateAddresses[i]=memory.CanonicalAddress(carrierID,"trajectory",fmt.Sprintf("%s-state-%06d",cleanID(trajectoryID),i)) }
+	for i := range trajectory.States { stateAddresses[i]=memory.CanonicalAddress(carrierID,"trajectory",fmt.Sprintf("%s-state-%06d",cleanID(trajectoryID),i)) }
 	for i,state:=range trajectory.States {
 		body,_:=json.Marshal(state);edges:=[]memory.Edge{}
 		if i>0 { edges=append(edges,memory.Edge{Relation:"previous-state",Target:stateAddresses[i-1],Weight:1,Confidence:1,ProofRef:trajectory.TraceHash}) }

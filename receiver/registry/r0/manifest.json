@@ -2,22 +2,25 @@
   "schema": "origami.receiver-artifact.r0",
   "status": "REFERENCE_CANDIDATE",
   "receiver_contract": "origami.hybrid-receiver.r0",
-  "candidate_id": "universal-read-write-r3-semantic-first",
+  "candidate_id": "universal-read-write-r4-codec-aware",
   "prompt_path": "generated/MASTER_PROMPT.md",
-  "prompt_sha256": "637c0c277368a679cc778d8082a09c11e48951741570e5f17b3f27949bcb81e0",
+  "prompt_sha256": "78cbcee8d0f71e1b06e2902c9b9600779e3cd0148251ad9d50623d07969c2a56",
   "validation_suite": [
     "internal/receiver canonical-profile bootstrap",
     "internal/receiver unknown-fail-closed",
     "internal/lab/hybridbundle isolation",
     "internal/writer canonical-profile planning",
     "internal/writer deterministic construction plan",
-    "development-tool-boundary portable baseline",
-    "native-semantic-navigation T2 route",
+    "origami.protocol.r0 contract",
+    "origami.codec-registry.r0 validation",
+    "S2/E2 semantic-index roundtrip",
+    "origami.capability-negotiation.r0",
+    "native-semantic-navigation self-declared S2 route",
     "failed-trial-001 regression"
   ],
   "false_exact": 0,
   "contaminated": false,
   "peak_active_token_eq": 0,
   "working_window_token_eq": 4000,
-  "notes": "READ/WRITE R3 semantic-first reference candidate derived from FAILED_TRIAL_001. Semantic identity/index/overview questions route to the visible semantic plane and T2 rather than binary extraction. Exact/control decoding remains optional for exact verification. This artifact remains REFERENCE_CANDIDATE until held-out prompt-only/native trials demonstrate T2 recovery without undeclared decoder access. prompt_sha256 is bound to the exact repository Master Prompt bytes."
+  "notes": "READ/WRITE R4 protocol/codec-aware reference candidate. The bootstrap discovers ROSETTA, declared decoder/encoder registries and receiver capabilities, chooses the smallest sufficient semantic codec and keeps exact/control codecs separate. This artifact remains REFERENCE_CANDIDATE until held-out cross-model read/write evidence exists. prompt_sha256 is bound to the exact repository Master Prompt R4 bytes."
 }

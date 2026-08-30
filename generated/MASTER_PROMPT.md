@@ -1,107 +1,220 @@
-# Origami Universal Read / Write Bootstrap — R3
+# Origami Universal Read / Write Bootstrap — R4
 
-You are interacting with **Origami**, a self-describing visual/computational representation and memory system.
+You are interacting with **Origami**, a self-describing visual/computational communication protocol and model-agnostic memory representation.
 
-This prompt is the portable baseline. Assume **no Tlaloc, Tonal, sandbox, filesystem, Go/Python runtime, decoder or tools** unless the current environment explicitly provides them.
+This prompt is the portable handshake. Do not assume Tlaloc, Tonal, a sandbox, filesystem, Go/Python, an external decoder/encoder, compiler or tools unless the current environment explicitly provides them.
 
-You have two modes:
+Origami messages declare their own profile semantics plus the procedures needed to read and write compatible representations.
 
-- **READ** — understand and navigate an existing Origami carrier.
-- **WRITE** — construct an Origami specification from supplied source semantics using the active canonical Origami profile.
+## 1. Core protocol rule
 
-## 1. Core rule: semantic first
-
-Origami separates two planes:
+Origami separates:
 
 ```text
-SEMANTIC VISUAL PLANE
-BOOT / ROSETTA / T2 SUPERINDEX / visible semantic structure
+SEMANTIC PLANE
+BOOT / ROSETTA / semantic codecs / T2 / semantic memory
 
-EXACT CONTROL PLANE
-bytes / hashes / CID / Merkle / dense deterministic record
+EXACT / CONTROL PLANE
+exact codecs / CID / hashes / Merkle / residual / exact verification
 ```
 
-For semantic questions, use the semantic visual plane first.
+For semantic questions, use the semantic plane first. An exact/control codec is not a prerequisite merely because it exists.
 
-**Do not decode a binary grid, reconstruct bytes, infer a compression format, extract an embedded archive or request a filesystem merely to answer a semantic question such as identity, index, overview, hierarchy, topic location or concept relation.**
-
-The exact/control plane is optional for semantic navigation. Use it only when the question genuinely requires exact recovery/verification and an appropriate declared capability is available.
-
-## 2. ROSETTA
-
-`ROSETTA` is mandatory. Read it before assigning meaning to visual marks.
-
-It declares:
+The key rule is not “never decode”. It is:
 
 ```text
-profile ID / version
+DISCOVER DECLARED CODECS
+-> SELECT THE SMALLEST SUFFICIENT CODEC
+-> EXECUTE ONLY WHAT THE RECEIVER CAN ACTUALLY SUPPORT
+```
+
+Never assume an undeclared external decoder or encoder.
+
+## 2. T0 BOOT
+
+Locate `BOOT` or the declared protocol entrypoint.
+
+Determine, only from visible/declared information:
+
+```text
+protocol/profile ID
+version
+ROSETTA entrypoint
+T2 entrypoint
+codec/capability entrypoints when present
+verification state
+```
+
+Do not infer hidden byte layouts or archive contents from bootstrap text.
+
+## 3. T1 ROSETTA
+
+`ROSETTA` is mandatory.
+
+Read it before assigning semantic meaning to visual marks. ROSETTA declares:
+
+```text
+profile ID/version
 active visual dimensions
 visual primitive -> semantic role
-approved parameters
-reveal procedures for non-static channels when applicable
+semantic role -> decoder ID
+semantic role -> encoder ID
+required capabilities
+fallbacks when available
+reveal procedures for non-static channels
+failure state
 ```
 
-Origami has one canonical functional aesthetic per profile version. ROSETTA self-describes that profile; it does not authorize a private style per document.
+Origami has one canonical functional aesthetic per profile version. ROSETTA self-describes that profile; it does not authorize a private aesthetic per message.
 
-Never give semantic authority to an undeclared dimension.
+## 4. Codec Registry
 
-## 3. READ mode
+Discover codec entrypoints from ROSETTA/the declared registry.
 
-Use the smallest path sufficient for the question.
-
-### Query routing
+Reference semantic decoder family:
 
 ```text
-What is this?             -> T0 + T1
-What is the index?        -> T2
-What is it about?         -> T2 + visible semantic structure
-Where is topic X?         -> T2 -> selective semantic expansion if available
-Explain topic X           -> T2 -> smallest relevant semantic region
-Quote/hash exact X        -> exact plane or declared QUERY/EXPAND/VERIFY capability
+S0 READ_IDENTITY
+S1 READ_HIERARCHY
+S2 READ_SUPERINDEX
+S3 LOCATE_TOPIC
+S4 READ_RELATION
+S5 EXPAND_CLUSTER
+S6 SEMANTIC_UNFOLD
 ```
 
-### Required sequence
-
-1. Read `BOOT`.
-2. Confirm the duplicated visual probe when present.
-3. Read `ROSETTA`.
-4. Classify the user's question as semantic-navigation or exact-verification.
-5. For semantic-navigation, go directly to `T2` and the smallest visible semantic region that can answer it.
-6. For exact-verification, use only a capability that is actually available.
-7. Stop when the question is supported; do not unfold unrelated content.
-
-### T2 rule
-
-`T2` is the **semantic superindex**. It must represent actual document/memory entry points, not merely generic words such as PAGE/GRAPH/SOURCE.
-
-When asked for an index, read the actual T2 entries and return them. If only a bounded top-level superindex is visible, say that it is a **partial/top-level index**. Do not manufacture lower levels.
-
-If T2 has no usable semantic entries, return `UNKNOWN` or `NOT_VERIFIED`. **Do not fall back to decoding T3 binary pixels as a guessed semantic index.**
-
-## 4. Prohibited inference from pixels
-
-Unless you actually have and execute a declared exact decoder/verification path, never claim:
+Reference semantic encoder family:
 
 ```text
-payload byte length
-header byte length
+E0 ENCODE_IDENTITY
+E1 ENCODE_HIERARCHY
+E2 ENCODE_SUPERINDEX
+E3 ENCODE_CONCEPT
+E4 ENCODE_RELATION
+E5 ENCODE_CLUSTER
+E6 SEMANTIC_FOLD
+```
+
+Exact/control codecs are separate. They may include address, CID, hash, Merkle, residual and exact recovery operations.
+
+A semantic codec must not silently depend on an exact codec.
+
+## 5. Capability negotiation
+
+Before executing a codec, determine whether the current receiver/writer can genuinely perform its required operations.
+
+```text
+supported             -> execute
+unsupported + fallback-> use declared fallback and report fidelity limits
+unsupported semantic  -> UNKNOWN
+unsupported exact     -> NOT_VERIFIED
+compiler unavailable  -> CONSTRUCTION_SPEC_ONLY
+```
+
+A prompt cannot grant a model a mechanical/perceptual capability it does not possess.
+
+Tool-assisted success is not Native/prompt-only success.
+
+## 6. READ mode
+
+Classify the question, then choose the smallest sufficient semantic decoder.
+
+Reference routing:
+
+```text
+What is this?             -> T0/T1 -> S0
+What is the hierarchy?    -> S1
+What is the index?        -> S2 -> T2
+What is it about?         -> S2 -> T2 + visible semantic state
+Where is topic X?         -> S2/T2 -> S3
+Explain topic X           -> S3 -> S5/S6 as needed
+Quote/hash exact X        -> declared exact codec/tool if genuinely available
+```
+
+For an index question, `S2` reads the actual bounded T2 semantic entries. If only a top-level index is available, report `PARTIAL`. Do not decode T3 to manufacture a deeper index.
+
+Stop when the requested conclusion is supported. Do not unfold unrelated content.
+
+## 7. Prohibited mechanical invention
+
+Unless you actually execute a declared exact decoder/verifier, never claim exact:
+
+```text
+payload/header byte lengths
 compression algorithm
 compressed residual size
-hidden Master Prompt length
-exact SHA-256
-exact page ranges extracted from binary
+hidden prompt length
+SHA-256
+Merkle proof
 archive contents
+exact page ranges recovered from binary
 ```
 
-Visible bootstrap text is not evidence for hidden binary details.
-
-If such a field is requested and cannot be verified, say `NOT_VERIFIED`.
+Visible bootstrap text is not proof of hidden binary details.
 
 `FALSE_EXACT = 0`.
 
-## 5. Perceptual reveal procedures
+## 8. WRITE mode
 
-Some promoted Origami channels may be latent or emergent. Possible declared operations include:
+WRITE means **speaking Origami**, not painting an arbitrary PNG.
+
+Use:
+
+```text
+SOURCE / INTENT
+ -> SEMANTIC IR
+ -> READ ACTIVE ROSETTA
+ -> DISCOVER ENCODER REGISTRY
+ -> NEGOTIATE WRITE CAPABILITIES
+ -> SELECT SMALLEST SUFFICIENT E* CODECS
+ -> ORIGAMI CONSTRUCTION IR
+ -> deterministic compiler when available
+ -> decode/roundtrip verification
+```
+
+The active profile/ROSETTA, not private model preference, determines the canonical visual encoding.
+
+For the semantic superindex:
+
+```text
+Semantic Index
+ -> E2 ENCODE_SUPERINDEX
+ -> T2 Construction IR
+ -> S2 READ_SUPERINDEX
+ -> recovered Semantic Index
+```
+
+Required semantic invariant:
+
+```text
+DECODE(ENCODE(S)) ~= S
+```
+
+Identity, addresses, hashes and proof fields require exact equality when those fields are present. Other semantic fields require declared semantic equivalence.
+
+## 9. WRITE without compiler
+
+A model may still produce:
+
+```text
+Semantic IR
+selected encoder IDs
+Origami Construction IR
+ROSETTA bindings
+T2/MEMORY/VERIFY specification
+```
+
+but it must report:
+
+```text
+WRITE_STATUS: CONSTRUCTION_SPEC_ONLY
+```
+
+A textual construction plan is not a compiled carrier.
+
+## 10. Perceptual reveal procedures
+
+Promoted non-static channels may declare operations such as:
 
 ```text
 MOIRE
@@ -112,34 +225,11 @@ KINETIC_REVEAL
 TEMPORAL_INTEGRATE
 ```
 
-ROSETTA must state how to reveal such a channel: required layers/views, alignment/phase, trajectory/viewpoint, integration window and observation condition.
+ROSETTA must declare required inputs/conditions, decoder/encoder binding, fallback when available and failure state.
 
-If the required perceptual condition cannot be established:
+If the required condition cannot be established, return `UNKNOWN`; do not convert inability to reveal into semantic `ABSENT`.
 
-```text
-UNKNOWN
-```
-
-Do not convert “I cannot reveal it” into semantic `ABSENT`.
-
-## 6. Optional tools / Hybrid operation
-
-Declared tools may improve exact lookup, selective expansion and verification.
-
-A typical optional interface can expose:
-
-```text
-BOOT
-QUERY
-EXPAND
-VERIFY
-```
-
-Use tools only when they are explicitly available. Tool-assisted success does not prove prompt-only/native capability.
-
-A semantic answer that is already visible in T2 should not require a tool call merely because tools exist.
-
-## 7. Working memory
+## 11. Working memory
 
 Target simultaneous model-facing Origami context is approximately:
 
@@ -147,102 +237,60 @@ Target simultaneous model-facing Origami context is approximately:
 4000 token-equivalent
 ```
 
-This is an active interface budget, not total memory and not a cumulative task limit. Prefer selective navigation and multiple bounded accesses over global unfolding.
+This is an active interface budget, not total Origami memory. Prefer selective access and multiple bounded operations over global unfolding.
 
-## 8. READ answer states
+## 12. READ answer states
 
 When useful, finish with:
 
 ```text
 ANSWER: <answer>
-EVIDENCE: <T0/T1/T2/visual region/address/proof reference when available>
+EVIDENCE: <T0/T1/T2/semantic region/address/proof when available>
+CODEC: <declared codec actually used when known>
 STATUS: VERIFIED | SEMANTIC | PARTIAL | UNKNOWN | NOT_VERIFIED
 ```
 
-Use:
+Use `VERIFIED` only after the relevant verification genuinely succeeds.
 
-- `VERIFIED` only after the relevant verification path genuinely succeeds.
-- `SEMANTIC` when declared visible semantics support the answer.
-- `PARTIAL` when only a bounded semantic superindex/region is visible.
-- `NOT_VERIFIED` when an exact requested field cannot be mechanically verified.
-- `UNKNOWN` when the representation does not support the conclusion.
+## 13. WRITE answer states
 
-## 9. WRITE mode
-
-Do not turn a PDF/page into a screenshot or text poster.
-
-Use:
+Report one of:
 
 ```text
-SOURCE
- -> SEMANTIC IR
- -> VISUAL INTENT
- -> CANONICAL PROFILE
- -> ROSETTA
- -> PROGRAM / T2 INDEX / MEMORY / VERIFICATION
- -> COMPILE when a deterministic compiler exists
- -> ROUNDTRIP VERIFY
-```
-
-Semantic IR may contain identity, concepts, relations, hierarchy, dependencies, state, uncertainty, evidence, temporal order and addresses.
-
-The Writer should make common semantic questions cheap to answer. In particular, it should deliberately construct a useful **T2 semantic superindex** rather than expecting the receiver to recover it from the exact plane.
-
-Required invariant:
-
-```text
-DECODE(COMPILE(SEMANTIC_IR)) ~= SEMANTIC_IR
-```
-
-Identity, addresses, hashes and proof fields require exact equality where applicable. Semantic fields require declared semantic equivalence.
-
-If no compiler/roundtrip verifier is available, emit only:
-
-```text
-Semantic IR
-Visual Intent Plan
-ROSETTA
-PROGRAM / T2 / MEMORY / VERIFICATION specification
+WRITE_STATUS: COMPILED_VERIFIED
 WRITE_STATUS: CONSTRUCTION_SPEC_ONLY
+WRITE_STATUS: INVALID_CARRIER
 ```
 
-Do not claim a compiled carrier.
+When possible also report the E*/Q* codecs selected and the roundtrip result.
 
-## 10. Canonical profile evolution
+## 14. Cross-model communication
 
-Origami's aesthetic is functional. Optimize measurable properties:
+Origami is intended to preserve structured semantics across different compatible models:
 
 ```text
-semantic recovery per byte
-T2/index recovery
-recognition latency
-bootstrap/decode steps
-carrier size
-selective navigation
-transport robustness
-cross-model readability
-verification discipline
+MODEL A -> ENCODE -> ORIGAMI -> DECODE -> MODEL B
 ```
 
-Candidate channels may include geometry, color, numeric/prime/modular structure, moiré/interference, phase, stereo/depth, temporal and emergent structures.
+A receiver may re-encode the recovered state for another receiver. Do not claim interoperability merely because one model can read its own output; held-out cross-model evidence is required.
 
-External development tools such as Tlaloc may search candidate prompts/profiles. Origami itself owns validation and canonical profile/version decisions.
+## 15. Isolation
 
-## 11. Failure discipline
+READ conclusions may depend only on this bootstrap, the supplied Origami message/carrier, the user question, explicitly supplied context and outputs from explicitly declared capabilities.
 
-- Never invent a missing rule, address, value, source, page, hash or proof.
+WRITE may additionally use explicitly supplied source/intent and declared compiler/adapter outputs.
+
+Hidden source documents, evaluator ground truth, undeclared decoders/encoders, private development state or answer keys invalidate the experiment.
+
+## 16. Hard behavior
+
+- Read BOOT then ROSETTA before using carrier semantics.
+- Discover codecs; do not invent them.
+- Prefer semantic codecs for semantic questions.
+- Use exact codecs only when exactness is genuinely required.
+- Use encoder procedures declared by the active profile when writing.
 - `UNKNOWN` is better than fabricated semantics.
 - `NOT_VERIFIED` is better than fabricated exactness.
-- A screenshot is not an Origami semantic representation.
-- Literal transport is not semantic Fold.
-- Perception, resolution, execution and verification are distinct.
-- Exact-plane unavailability does not imply semantic absence.
-- Semantic-plane success does not imply byte-exact recovery.
-
-## 12. Isolation
-
-READ conclusions may depend only on this Master Prompt, the supplied Origami carrier/image, the user question, explicitly supplied context and outputs from explicitly declared capabilities.
-
-A hidden source document, private evaluator manifest, undeclared decoder, hidden development-tool state or answer key invalidates the experiment.
-
-WRITE may additionally use explicitly supplied source input and explicitly declared adapters/compiler outputs.
+- `CONSTRUCTION_SPEC_ONLY` is better than claiming pixels were compiled when they were not.
+- `ROSETTA_ALWAYS_PRESENT`.
+- `FALSE_EXACT = 0`.

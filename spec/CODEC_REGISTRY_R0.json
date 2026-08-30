@@ -1,0 +1,45 @@
+{
+  "contract_id": "origami.codec-registry.r0",
+  "status": "EXPERIMENTAL_REFERENCE_IMPLEMENTED",
+  "purpose": "Declare paired semantic read/write procedures and separate exact/control procedures so compatible models can discover how to understand and produce Origami.",
+  "semantic_decoders": [
+    {"id":"S0","operation":"READ_IDENTITY","pair":"E0","exact":false},
+    {"id":"S1","operation":"READ_HIERARCHY","pair":"E1","exact":false},
+    {"id":"S2","operation":"READ_SUPERINDEX","pair":"E2","exact":false},
+    {"id":"S3","operation":"LOCATE_TOPIC","pair":"E3","exact":false},
+    {"id":"S4","operation":"READ_RELATION","pair":"E4","exact":false},
+    {"id":"S5","operation":"EXPAND_CLUSTER","pair":"E5","exact":false},
+    {"id":"S6","operation":"SEMANTIC_UNFOLD","pair":"E6","exact":false}
+  ],
+  "semantic_encoders": [
+    {"id":"E0","operation":"ENCODE_IDENTITY","pair":"S0","exact":false},
+    {"id":"E1","operation":"ENCODE_HIERARCHY","pair":"S1","exact":false},
+    {"id":"E2","operation":"ENCODE_SUPERINDEX","pair":"S2","exact":false},
+    {"id":"E3","operation":"ENCODE_CONCEPT","pair":"S3","exact":false},
+    {"id":"E4","operation":"ENCODE_RELATION","pair":"S4","exact":false},
+    {"id":"E5","operation":"ENCODE_CLUSTER","pair":"S5","exact":false},
+    {"id":"E6","operation":"SEMANTIC_FOLD","pair":"S6","exact":false}
+  ],
+  "exact_decoders": ["X0_RESOLVE_ADDRESS","X1_READ_CID","X2_VERIFY_HASH","X3_VERIFY_MERKLE","X4_DECODE_RESIDUAL","X5_EXACT_RECOVERY"],
+  "exact_encoders": ["Q0_ASSIGN_ADDRESS","Q1_CREATE_CID","Q2_HASH_CONTENT","Q3_BUILD_MERKLE","Q4_ENCODE_RESIDUAL","Q5_BUILD_VERIFICATION"],
+  "selection": {
+    "rule": "CHOOSE_SMALLEST_SUFFICIENT_DECLARED_CODEC",
+    "semantic_before_exact": true,
+    "undeclared_external_codec_forbidden": true
+  },
+  "roundtrip": {
+    "required_for_semantic_pairs": true,
+    "first_required_pair": "S2_E2",
+    "equation": "S_n(E_n(S)) ~= S"
+  },
+  "failure_states": ["UNKNOWN","NOT_VERIFIED","CONSTRUCTION_SPEC_ONLY","INVALID_CARRIER"],
+  "hard_invariants": [
+    "CODEC_IS_DECLARED_BEFORE_USE",
+    "SEMANTIC_CODEC_NE_EXACT_CODEC",
+    "S_CODEC_DOES_NOT_HIDE_X_DEPENDENCY",
+    "E_CODEC_DOES_NOT_HIDE_Q_DEPENDENCY",
+    "PAIRED_SEMANTIC_CODEC_HAS_ROUNDTRIP_GATE",
+    "UNSUPPORTED_CODEC_RETURNS_DECLARED_FAILURE_STATE",
+    "FALSE_EXACT=0"
+  ]
+}

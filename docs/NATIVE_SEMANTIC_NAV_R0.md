@@ -2,101 +2,110 @@
 
 Status: `EXPERIMENTAL_REFERENCE_IMPLEMENTED_EVIDENCE_PENDING`
 
-This change is derived from a failed external multimodal trial in which a model could read the visible Origami bootstrap but could not answer the simple question **“What is the index?”**.
+This contract originates from `FAILED_TRIAL_001`, where a multimodal model could read the visible Origami bootstrap but could not answer **“What is the index?”**. It treated the carrier as a binary archive requiring pixel extraction/decompression and produced unverified byte/hash claims.
 
-Instead, the model treated the image as a binary archive that first needed pixel extraction, byte reconstruction and decompression. It then claimed byte counts, a compression format, an incorrect SHA-256 and page ranges that were not verified.
-
-That result is recorded in:
-
-```text
-experiments/native-semantic-nav-r0/FAILED_TRIAL_001.json
-```
-
-## Diagnosis
-
-The old Fixed Carrier T2 visually rendered generic categories:
-
-```text
-PAGE | CONCEPT | SOURCE | GRAPH | VERIFY
-```
-
-rather than the actual semantic entry points of the represented document/memory.
-
-At the same time, T3 displayed a dense black/white deterministic record. A model capable of reading the bootstrap but not executing a pixel decoder therefore had a strong incentive to conclude that semantic navigation required mechanical decoding.
-
-That was the wrong dependency.
-
-## Corrected architecture
+## Alpha.12 correction preserved
 
 ```text
 SEMANTIC VISUAL PLANE
-T0 -> T1/ROSETTA -> T2 semantic superindex -> visible/selective semantic regions
+T0 -> T1/ROSETTA -> T2 semantic superindex -> selective semantic regions
 
 EXACT / CONTROL PLANE
-T3 deterministic record -> CID / hash / root / exact verification
+T3 -> CID / hash / root / residual / exact verification
 ```
 
-The exact plane remains valuable and is not removed. It is simply no longer a prerequisite for semantic navigation.
+T3 remains useful and independent. It is not a prerequisite for semantic navigation.
+
+## Protocol refinement
+
+The correction does **not** mean that Native Origami must have no decoder. It means that semantic decoding must be self-declared by Origami and must not secretly require an external exact/mechanical decoder.
+
+ROSETTA/Codec Registry therefore expose semantic decoder entrypoints:
+
+```text
+S0 READ_IDENTITY
+S1 READ_HIERARCHY
+S2 READ_SUPERINDEX
+S3 LOCATE_TOPIC
+S4 READ_RELATION
+S5 EXPAND_CLUSTER
+S6 SEMANTIC_UNFOLD
+```
+
+For the index benchmark:
+
+```text
+BOOT -> ROSETTA -> discover S2 -> T2 -> answer
+```
+
+not:
+
+```text
+BOOT -> T3 bits -> bytes -> decompression -> reconstruct corpus -> answer
+```
+
+## Decoder boundary
+
+Allowed:
+
+- a decoder procedure declared by ROSETTA/Codec Registry;
+- conceptual/perceptual execution that the receiving model can genuinely perform;
+- a declared fallback when the preferred channel is unsupported;
+- an exact decoder/tool for an exact question when genuinely available.
+
+Forbidden:
+
+- undeclared external decoder dependency for semantic navigation;
+- semantic codec that silently calls an exact codec;
+- filesystem/sandbox requirement hidden inside a Native semantic claim;
+- semantic-to-exact escalation without need;
+- invented exact mechanics when the receiver cannot execute them.
 
 ## Query routing
 
 ```text
-identity             -> T0/T1
-index                -> T2
-overview             -> T2 + visible semantic state
-locate topic         -> T2 -> selective semantic expansion
-explain topic        -> T2 -> smallest relevant semantic region
-exact quote/hash     -> exact plane / declared tool when available
+identity             -> T0/T1 -> S0
+index                -> S2 -> T2
+overview             -> S2 -> T2 + visible semantic state
+locate topic         -> T2 -> S3
+explain topic        -> S3 -> S5/S6
+exact quote/hash     -> exact codec/tool when available
 ```
 
-A model asking for the index must not have to reconstruct the entire corpus, decompress an archive or execute a binary grid decoder.
+## T2 profile-2 baseline
 
-## T2 profile-2
+Alpha.12 profile-2 remains the current reference Fixed Carrier. It renders bounded actual semantic entries instead of generic PAGE/GRAPH/SOURCE categories and keeps the frozen 640x640 / 8192-byte envelope.
 
-`origami.fixed-carrier.r2.profile-2` changes T2 from a generic navigation legend into a bounded **actual semantic superindex**.
+## Profile-3 candidate
 
-The carrier integration layer projects high-value/top-level canonical node labels into the bounded graph hint. The JSON hint is always kept structurally valid; it is no longer blindly truncated at 256 bytes.
+The protocol work introduces `origami.fixed-carrier.r2.profile-3` only as a construction candidate. Its first goal is to bind ROSETTA to compact semantic codec IDs and capability/fallback declarations while preserving the useful alpha.12 separation.
 
-The renderer gives those actual labels visual priority in T2.
-
-If there is no usable semantic index hint, T2 explicitly displays an UNKNOWN state rather than encouraging a binary fallback.
-
-## Backward compatibility
-
-Profile-2 remains inside the Fixed Carrier R2 envelope:
-
-```text
-640 x 640
-8192 PNG bytes
-<= 512000 hard maximum
-```
-
-The deterministic decoder still accepts the legacy profile-1 profile/BOOT digest.
-
-## Master Prompt R3
-
-The portable prompt now classifies a question before navigation.
-
-For semantic questions it explicitly forbids whole-image binary extraction as a prerequisite. It also forbids claims about hidden byte lengths, compression algorithms, hashes or archive contents unless an exact decoder/verification path was genuinely executed.
-
-The prompt remains a `REFERENCE_CANDIDATE` until held-out real-model evidence passes.
+Profile-3 is not promoted by this document.
 
 ## Native benchmark
 
-The first mandatory Native semantic regression is now:
-
 ```text
 Q: What is the index?
-Expected route: T0 -> T1 -> T2
-Binary decode allowed: NO
+Expected route: T0 -> T1 -> S2 -> T2
+Exact codec allowed: NO
 ```
 
-Further cases cover identity, overview, topic location and exact quotation.
+Metrics now distinguish:
 
-The key invariant is:
+- T2 index recovery;
+- semantic decoder discovery;
+- undeclared external decoder dependency;
+- unnecessary semantic-to-exact escalation;
+- unverified mechanical claims;
+- false exactness.
+
+## Hard interpretation
 
 ```text
-SEMANTIC_NAVIGATION != MECHANICAL_DECODE
+SELF_DECLARED_SEMANTIC_DECODER = ALLOWED
+UNDECLARED_EXTERNAL_DECODER_DEPENDENCY = FORBIDDEN
+SEMANTIC_NAVIGATION_MUST_NOT_REQUIRE_EXACT_CODEC
+FALSE_EXACT = 0
 ```
 
-Exact recovery may still require a deterministic runtime. Semantic usability may not silently depend on one.
+Held-out model evidence is still required before Native semantic capability is promoted.

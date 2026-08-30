@@ -3,35 +3,35 @@ package writer
 import "github.com/LuigiD5555/origami/internal/core"
 
 const (
-	SchemaR0          = "origami.writer.r0"
-	RequestSchemaR0   = SchemaR0 + ".request"
-	PlanSchemaR0      = SchemaR0 + ".construction-plan"
+	SchemaR0           = "origami.writer.r0"
+	RequestSchemaR0    = SchemaR0 + ".request"
+	PlanSchemaR0       = SchemaR0 + ".construction-plan"
 	CanonicalProfileR0 = "origami.canonical-aesthetic.r0"
 )
 
 type Intent string
 
 const (
-	IntentIdentity      Intent = "IDENTITY"
-	IntentHierarchy     Intent = "HIERARCHY"
-	IntentRelation      Intent = "RELATION"
-	IntentDependency    Intent = "DEPENDENCY"
-	IntentScope         Intent = "SCOPE"
-	IntentImportance    Intent = "IMPORTANCE"
-	IntentState         Intent = "STATE"
-	IntentUncertainty   Intent = "UNCERTAINTY"
-	IntentEvidence      Intent = "EVIDENCE"
-	IntentVerification  Intent = "VERIFICATION"
+	IntentIdentity       Intent = "IDENTITY"
+	IntentHierarchy      Intent = "HIERARCHY"
+	IntentRelation       Intent = "RELATION"
+	IntentDependency     Intent = "DEPENDENCY"
+	IntentScope          Intent = "SCOPE"
+	IntentImportance     Intent = "IMPORTANCE"
+	IntentState          Intent = "STATE"
+	IntentUncertainty    Intent = "UNCERTAINTY"
+	IntentEvidence       Intent = "EVIDENCE"
+	IntentVerification   Intent = "VERIFICATION"
 	IntentAddressability Intent = "ADDRESSABILITY"
-	IntentTemporalOrder Intent = "TEMPORAL_ORDER"
-	IntentRedundancy    Intent = "REDUNDANCY"
-	IntentRouting       Intent = "ROUTING"
+	IntentTemporalOrder  Intent = "TEMPORAL_ORDER"
+	IntentRedundancy     Intent = "REDUNDANCY"
+	IntentRouting        Intent = "ROUTING"
 )
 
 type Request struct {
 	Schema         string             `json:"schema"`
 	SourceIdentity string             `json:"source_identity"`
-	SemanticGraph core.SemanticGraph `json:"semantic_graph"`
+	SemanticGraph  core.SemanticGraph `json:"semantic_graph"`
 	IntentHints    []IntentHint       `json:"intent_hints,omitempty"`
 }
 
@@ -42,18 +42,33 @@ type IntentHint struct {
 }
 
 type VisualIntent struct {
-	Address       string `json:"address"`
-	Intent        Intent `json:"intent"`
-	Dimension     string `json:"dimension"`
-	Primitive     string `json:"primitive"`
-	SemanticRole  string `json:"semantic_role"`
-	Authority     string `json:"authority"`
+	Address      string `json:"address"`
+	Intent       Intent `json:"intent"`
+	Dimension    string `json:"dimension"`
+	Primitive    string `json:"primitive"`
+	SemanticRole string `json:"semantic_role"`
+	Authority    string `json:"authority"`
+}
+
+// RevealProcedure describes how a perceptual channel becomes available. It is
+// empty for ordinary static primitives. A promoted moire/depth/temporal or
+// emergent channel must carry enough information for the receiver to attempt
+// the declared observation and to return UNKNOWN when the condition cannot be
+// satisfied.
+type RevealProcedure struct {
+	Operation            string   `json:"operation"`
+	RequiredInputs       []string `json:"required_inputs,omitempty"`
+	ObservationCondition string   `json:"observation_condition,omitempty"`
+	Trajectory           string   `json:"trajectory,omitempty"`
+	IntegrationWindow    string   `json:"integration_window,omitempty"`
+	FailureState         string   `json:"failure_state,omitempty"`
 }
 
 type RosettaEntry struct {
-	VisualToken  string `json:"visual_token"`
-	SemanticRole string `json:"semantic_role"`
-	Dimension    string `json:"dimension"`
+	VisualToken  string           `json:"visual_token"`
+	SemanticRole string           `json:"semantic_role"`
+	Dimension    string           `json:"dimension"`
+	Reveal       *RevealProcedure `json:"reveal,omitempty"`
 }
 
 type Rosetta struct {

@@ -1,0 +1,25 @@
+{
+  "schema": "origami.temporal-program.r0",
+  "id": "signal-chain-r0",
+  "automaton": {
+    "schema": "origami.automaton.r0",
+    "id": "signal-chain",
+    "cells": [
+      {"id":"A","kind":"SOURCE","initial_state":"ACTIVE","neighbors":["B"]},
+      {"id":"B","kind":"RELAY","initial_state":"IDLE","neighbors":["A","C"]},
+      {"id":"C","kind":"SINK","initial_state":"IDLE","neighbors":["B"]}
+    ],
+    "edges": [
+      {"from":"A","to":"B","kind":"EMISSION"},
+      {"from":"B","to":"C","kind":"EMISSION"}
+    ],
+    "rules": [
+      {"id":"r1-b-on-a","target_cell":"B","from_state":"IDLE","to_state":"ACTIVE","requires":[{"cell_id":"A","state":"ACTIVE"}]},
+      {"id":"r2-a-done","target_cell":"A","from_state":"ACTIVE","to_state":"DONE","requires":[{"cell_id":"B","state":"ACTIVE"}]},
+      {"id":"r3-c-on-b","target_cell":"C","from_state":"IDLE","to_state":"ACTIVE","requires":[{"cell_id":"B","state":"ACTIVE"}]},
+      {"id":"r4-b-done","target_cell":"B","from_state":"ACTIVE","to_state":"DONE","requires":[{"cell_id":"C","state":"ACTIVE"}]}
+    ]
+  },
+  "max_steps": 8,
+  "checkpoint_every": 2
+}

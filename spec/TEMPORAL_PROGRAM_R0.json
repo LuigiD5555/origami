@@ -1,0 +1,31 @@
+{
+  "contract_id": "origami.temporal-program.r0",
+  "status": "EXPERIMENTAL_REFERENCE_IMPLEMENTATION",
+  "purpose": "Represent a semantic film as a generative trajectory rather than literal frame storage.",
+  "representation_modes": ["PROCEDURAL", "DELTA", "CHECKPOINT_PLUS_DELTA"],
+  "default_mode": "CHECKPOINT_PLUS_DELTA",
+  "program": {
+    "required": ["automaton", "initial_state", "max_steps"],
+    "optional": ["checkpoint_every", "terminal_states", "events"]
+  },
+  "trace": {
+    "initial_state": true,
+    "frames_are_deltas": true,
+    "checkpoint_random_access": true,
+    "global_replay_not_required_for_seek": true
+  },
+  "equations": [
+    "TRACE=REPLAY(PROGRAM)",
+    "STATE_t=SEEK(TRACE,t)",
+    "REPLAY(FOLD(TRACE))~=TRACE"
+  ],
+  "semantic_film_rule": "A complete temporal behavior may be represented by initial state + rules + graph + schedule + bounded deltas/checkpoints when those structures deterministically generate the declared trajectory.",
+  "hard_invariants": [
+    "FILM_NE_LITERAL_FRAME_SEQUENCE",
+    "TEMPORAL_FOLD_REQUIRES_REPLAY_EQUIVALENCE",
+    "CHECKPOINT_SEEK_MUST_BE_DETERMINISTIC",
+    "RANDOM_ACCESS_MUST_NOT_REQUIRE_GLOBAL_REPLAY_WHEN_CHECKPOINT_EXISTS",
+    "COMPRESSIBILITY_DEPENDS_ON_STRUCTURE",
+    "FALSE_EXACT=0"
+  ]
+}

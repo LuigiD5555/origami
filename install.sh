@@ -29,7 +29,8 @@ Usage: ./install.sh [options]
   -h, --help          Show help
 
 Installs: ohf-lab, ohf-glyphcalc, origami-fixed-carrier, origami-codec,
-origami-profile3-carrier, origami-automaton, origami-temporal.
+origami-profile3-carrier, origami-automaton, origami-temporal,
+origami-temporal-carrier.
 No sudo, network access, external model calls, or shell-profile edits.
 USAGE
 }
@@ -51,7 +52,7 @@ command -v sha256sum >/dev/null 2>&1 || command -v shasum >/dev/null 2>&1 || die
 GO_RAW="$(go env GOVERSION 2>/dev/null || go version | awk '{print $3}')"; GO_VER="${GO_RAW#go}"; GO_BASE="${GO_VER%%[-+]*}"; GO_MAJOR="${GO_BASE%%.*}"; GO_REST="${GO_BASE#*.}"; GO_MINOR="${GO_REST%%.*}"
 [[ "$GO_MAJOR" =~ ^[0-9]+$ && "$GO_MINOR" =~ ^[0-9]+$ ]] || die "could not parse Go version: $GO_RAW"
 (( GO_MAJOR > MIN_GO_MAJOR || (GO_MAJOR == MIN_GO_MAJOR && GO_MINOR >= MIN_GO_MINOR) )) || die "Go >= 1.23 required; found $GO_RAW"
-for d in cmd/ohf-lab cmd/ohf-glyphcalc cmd/origami-fixed-carrier cmd/origami-codec cmd/origami-profile3-carrier cmd/origami-automaton cmd/origami-temporal; do [[ -d "$ROOT/$d" ]] || die "$d missing"; done
+for d in cmd/ohf-lab cmd/ohf-glyphcalc cmd/origami-fixed-carrier cmd/origami-codec cmd/origami-profile3-carrier cmd/origami-automaton cmd/origami-temporal cmd/origami-temporal-carrier; do [[ -d "$ROOT/$d" ]] || die "$d missing"; done
 
 BIN_DIR="$PREFIX/bin"; STATE_DIR="$PREFIX/share/origami/install-state-v1"; STATE_FILE="$STATE_DIR/manifest.tsv"; BACKUP_DIR="$STATE_DIR/backups"
 log "project: $ROOT"; log "Go: $GO_RAW"; log "prefix: $PREFIX"
@@ -60,11 +61,11 @@ cd "$ROOT"
 if ((RUN_TESTS)); then if ((FULL_CHECK)); then go test ./...; else go test ./internal/lab/dimensional ./internal/lab/glyphcalc ./internal/lab/microisa ./internal/lab/seed ./internal/lab/runid ./internal/fixedcarrier ./internal/codec ./internal/automaton ./internal/temporal; fi; fi
 if ((RUN_VET)); then go vet ./...; fi
 mkdir -p "$BIN_DIR" "$BACKUP_DIR"; TMP_DIR="$(mktemp -d "${TMPDIR:-/tmp}/origami-install.XXXXXX")"; trap 'rm -rf "$TMP_DIR"' EXIT
-for spec in 'ohf-lab ./cmd/ohf-lab' 'ohf-glyphcalc ./cmd/ohf-glyphcalc' 'origami-fixed-carrier ./cmd/origami-fixed-carrier' 'origami-codec ./cmd/origami-codec' 'origami-profile3-carrier ./cmd/origami-profile3-carrier' 'origami-automaton ./cmd/origami-automaton' 'origami-temporal ./cmd/origami-temporal'; do set -- $spec; go build -trimpath -o "$TMP_DIR/$1" "$2"; done
+for spec in 'ohf-lab ./cmd/ohf-lab' 'ohf-glyphcalc ./cmd/ohf-glyphcalc' 'origami-fixed-carrier ./cmd/origami-fixed-carrier' 'origami-codec ./cmd/origami-codec' 'origami-profile3-carrier ./cmd/origami-profile3-carrier' 'origami-automaton ./cmd/origami-automaton' 'origami-temporal ./cmd/origami-temporal' 'origami-temporal-carrier ./cmd/origami-temporal-carrier'; do set -- $spec; go build -trimpath -o "$TMP_DIR/$1" "$2"; done
 
 declare -A OLD_SHA=() ORIGINAL_PRESENT=() ORIGINAL_BACKUP=()
 if [[ -f "$STATE_FILE" ]]; then while IFS=$'\t' read -r kind name dst installed_sha original_present backup_name; do [[ "$kind" == BIN ]]||continue; OLD_SHA["$name"]="$installed_sha"; ORIGINAL_PRESENT["$name"]="$original_present"; ORIGINAL_BACKUP["$name"]="$backup_name"; done < "$STATE_FILE"; fi
-NAMES=(ohf-lab ohf-glyphcalc origami-fixed-carrier origami-codec origami-profile3-carrier origami-automaton origami-temporal)
+NAMES=(ohf-lab ohf-glyphcalc origami-fixed-carrier origami-codec origami-profile3-carrier origami-automaton origami-temporal origami-temporal-carrier)
 for name in "${NAMES[@]}"; do dst="$BIN_DIR/$name"; if [[ -n "${OLD_SHA[$name]:-}" && -e "$dst" && "$(sha256_file "$dst")" != "${OLD_SHA[$name]}" && $FORCE -eq 0 ]]; then die "$dst changed after previous installation; use --force only if intentional"; fi; done
 
 for name in "${NAMES[@]}"; do

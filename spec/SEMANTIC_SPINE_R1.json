@@ -1,14 +1,14 @@
 {
   "contract_id": "origami.semantic-spine.r1",
   "status": "EXPERIMENTAL_REFERENCE_IMPLEMENTED",
-  "purpose": "Connect Origami semantic state, addressable source memory, Fold/Unfold, bounded model access, external swarm proposals, deterministic evidence reduction, perception boundaries and fixed visual control-plane binding without allowing literal transport to masquerade as semantic representation.",
+  "purpose": "Connect Origami semantic state, addressable source memory, Fold/Unfold, bounded model access, external proposals, deterministic evidence reduction, perception boundaries and fixed visual control-plane binding without allowing literal transport to masquerade as semantic representation.",
   "canonical_flow": [
     "EXACT_SOURCE_PLANE",
     "ADDRESSABLE_MEMORY",
     "SEMANTIC_STATE_RELATIONS_RULES",
     "SEMANTIC_FOLD_UNFOLD",
     "BOUNDED_CONTEXT_PACKET",
-    "EXTERNAL_MODEL_OR_SWARM_PROPOSALS_WHEN_NEEDED",
+    "EXTERNAL_MODEL_OR_DEVELOPMENT_PROPOSALS_WHEN_NEEDED",
     "EVIDENCE_REDUCTION",
     "CANONICAL_SEMANTIC_MEMORY",
     "OPTIONAL_VISUAL_CONTROL_PROJECTION"
@@ -42,7 +42,7 @@
     "plain_text": "IMPLEMENTED",
     "canonical_layout_json": "IMPLEMENTED",
     "scanned_pdf_or_image_ocr": "ADAPTER_REQUIRED_NOT_BUILT_IN",
-    "rule": "OCR_OR_VLM_OUTPUT_ENTERS_AS_SOURCE_OR_PERCEPTION DATA AND DOES_NOT AUTOMATICALLY BECOME VERIFIED SEMANTICS",
+    "rule": "OCR_OR_VLM_OUTPUT_ENTERS_AS_SOURCE_OR_PERCEPTION_DATA_AND_DOES_NOT_AUTOMATICALLY_BECOME_VERIFIED_SEMANTICS",
     "forbidden_fallback": "RASTER_SCREENSHOT_AS_SEMANTIC_REPRESENTATION"
   },
   "visual_boundary": {
@@ -52,7 +52,7 @@
     "native_visual_semantic_readability": "EVIDENCE_PENDING"
   },
   "swarm_boundary": {
-    "orchestration": "EXTERNAL_TLALOC_OR_OTHER_SYSTEM",
+    "orchestration": "EXTERNAL_DEVELOPMENT_OR_MODEL_SYSTEM",
     "proposal_generation": "PROBABILISTIC_ALLOWED",
     "canonical_authority": "ORIGAMI_EVIDENCE_REDUCTION",
     "confidence_authority": false
@@ -71,6 +71,7 @@
     "AGENT_CONFIDENCE_NE_EVIDENCE_AUTHORITY",
     "PERCEPTION_NE_RESOLUTION_NE_EXECUTION_NE_VERIFICATION",
     "FIXED_CARRIER_NE_CORPUS",
+    "DEVELOPMENT_TOOL_NE_RUNTIME_REQUIREMENT",
     "FALSE_EXACT=0",
     "UNKNOWN_OVER_INVENTION"
   ],

@@ -2,83 +2,115 @@
 
 Status: `EXPERIMENTAL_LAB_NOT_PROMOTED`
 
-`origami.self-contained-book.r0-lab` is a failure-first experiment for the stronger claim:
+`origami.self-contained-book.r0-lab` now tests the stronger claim:
 
 ```text
-PDF -> one self-contained Origami image -> exact extracted-text recovery
+PDF + canonical Master Prompt
+ -> one self-contained Origami image
+ -> recover Master Prompt + exact extracted-text plane
 ```
 
-It does **not** replace Fixed Carrier R2 and it does not change the canonical visual profile.
+It does **not** replace Fixed Carrier R2 and it does not promote native model-only readability.
 
-## Model-facing package
+## One-image deployment claim
 
-The carrier image and the Master Prompt are different artifacts.
+The required model-facing payload is now intended to be:
 
 ```text
-MASTER_PROMPT.md
-  = portable instructions that teach a compatible model how to READ/WRITE Origami
-
 book.png
-  = the concrete carrier: BOOT + ROSETTA + INDEX + MEMORY + VERIFY
-
-model_packet.json
-  = manifest only; it binds the exact carrier and Master Prompt by SHA-256 and declares read order
-```
-
-The JSON is **not** the Master Prompt.
-
-A build now emits all three in the output directory:
-
-```text
-runs/self-contained-book-r0/
-├── book.png
-├── MASTER_PROMPT.md
-└── model_packet.json
-```
-
-The self-contained carrier header embeds `master_prompt_sha256`. The copied Markdown prompt must hash to exactly that value. Therefore a model-facing package cannot silently substitute another prompt without breaking the declared binding.
-
-Portable baseline input is:
-
-```text
-MASTER_PROMPT.md
-+ book.png
 + user question
 ```
 
-The stronger future `IMAGE_ONLY_BOOTSTRAP` experiment—where the complete portable Master Prompt itself is recoverable from the image—is deliberately separate because it consumes carrier capacity and changes the deployment claim.
+The complete canonical `generated/MASTER_PROMPT.md` bytes are embedded inside the PNG payload and SHA-256 verified when recovered.
 
-## Why this lab exists
-
-Fixed Carrier R2 intentionally keeps the PNG as a frozen visual control plane and keeps the corpus outside the image. This lab asks a different question: how far can a complete book be carried inside one image while still preserving Origami BOOT/ROSETTA/root navigation and exact verification?
-
-The first baseline deliberately separates two planes:
+A build may still export:
 
 ```text
-SEMANTIC / CONTROL PLANE
-  Fixed Carrier R2
-  T0 BOOT
-  T1 ROSETTA
-  T2 root index (PAGE / CONCEPT / SOURCE / GRAPH / VERIFY)
-  T3 deterministic machine record / GraphSignature
-  VERIFY
-
-EXACT RESIDUAL PLANE
-  pdftotext -layout UTF-8 source
-  -> bzip2 -9
-  -> self-describing binary header
-  -> black/white row-major pixel matrix
+MASTER_PROMPT.extracted.md
+model_packet.json
 ```
 
-The residual plane is **literal transport**. It is present to establish an exact-recovery ceiling and must never be reported as semantic Fold.
+but those are convenience/debug artifacts. They are **not required reconstruction state**.
 
-## Hard interpretation rule
+`model_packet.json` remains a manifest only. It is not the Master Prompt.
+
+## Self bootstrap order
+
+The experimental wrapper adds an explicit visible bootstrap around the existing Fixed Carrier R2 control plane:
 
 ```text
-PASS_ROUNDTRIP != PASS_512K
+S0  SELF BOOT
+    declares that the image contains MP0
+    declares prompt byte count + SHA-256
+    instructs receiver to load MP0 before entering the ordinary carrier
+
+MP0 MASTER PROMPT
+    exact UTF-8 bytes embedded in the pixel payload
+    SHA-256 verified before use
+
+T0  Fixed Carrier BOOT
+T1  ROSETTA + visual probe
+T2  root SuperIndex
+T3  deterministic machine record / memory binding
+VERIFY
+```
+
+The visible S0/MP0 panels are bootstrap metadata. The exact embedded MP0 bytes are authoritative.
+
+## Important capability boundary
+
+There are two different claims:
+
+```text
+SELF_CONTAINED_MECHANICAL
+  one PNG contains enough bytes to recover the exact Master Prompt and declared book source plane
+
+SELF_CONTAINED_NATIVE_MODEL
+  a previously unprepared compatible model can perceive/bootstrap/extract/use MP0 from the image without an external decoder
+```
+
+This experiment implements and tests the first claim.
+
+The second remains an **empirical perception/promotion experiment**. Do not report mechanical recovery as proof that every VLM can natively extract the embedded prompt.
+
+## Payload layout
+
+```text
+VISIBLE CONTROL / BOOTSTRAP
+  S0 self boot panels
+  Fixed Carrier R2
+    T0 BOOT
+    T1 ROSETTA
+    T2 root index
+    T3 machine record
+    VERIFY
+
+EXACT PIXEL PAYLOAD
+  self-contained header
+    source length/hash
+    Master Prompt length/hash
+    residual length/hash
+    page/block counts
+  MP0 exact UTF-8 Master Prompt bytes
+  exact book residual
+    pdftotext -layout UTF-8
+    -> bzip2 -9
+```
+
+The book residual is still **literal transport**. It establishes an exact-recovery baseline and must never be reported as semantic Fold.
+
+Embedding the Master Prompt also does not make the Master Prompt itself a semantic compression victory; it is required self-bootstrap state.
+
+## Hard interpretation rules
+
+```text
+ONE_IMAGE_CONTAINS_MASTER_PROMPT
+EXTERNAL_MASTER_PROMPT_REQUIRED = false
+MASTER_PROMPT_HASH_VERIFIED
+PASS_SELF_CONTAINED_ROUNDTRIP != PASS_512K
+MECHANICAL_SELF_BOOT != NATIVE_MODEL_PROMOTION
 LITERAL_RESIDUAL != SEMANTIC_FOLD
 ROSETTA_ALWAYS_PRESENT
-MASTER_PROMPT_SHA256_BOUND
 FALSE_EXACT = 0
 ```
 
@@ -90,9 +122,9 @@ R0 embeds the UTF-8 text produced by:
 pdftotext -layout -enc UTF-8 book.pdf -
 ```
 
-Therefore exact recovery means byte equality with this declared extracted-text plane, **not** byte equality with the original PDF file and not recovery of figures that exist only as raster/vector images.
+Therefore exact book recovery means byte equality with this declared extracted-text plane, **not** byte equality with the original PDF and not recovery of figures that exist only as raster/vector objects.
 
-A later multimodal document adapter must account for those objects explicitly.
+A later multimodal adapter must account for those objects explicitly.
 
 ## Build
 
@@ -113,47 +145,81 @@ pdftotext
 bzip2
 ```
 
-The command writes the PNG, copies the exact Master Prompt, writes `model_packet.json`, and prints a JSON report containing source/residual sizes, hashes, prompt binding, page/block counts, PNG size, 512 KB delta and round-trip result.
+Build must prove both round trips from the generated PNG:
 
-## Decode
+```text
+PNG -> MP0 -> exact Master Prompt bytes
+PNG -> residual -> exact declared book text bytes
+```
+
+## Recover only the Master Prompt from the image
+
+```bash
+./bin/origami-self-contained-book \
+  -mode prompt \
+  -in runs/self-contained-book-r0/book.png \
+  -out runs/self-contained-book-r0/MASTER_PROMPT.recovered.md
+```
+
+To print it directly:
+
+```bash
+./bin/origami-self-contained-book \
+  -mode prompt \
+  -in runs/self-contained-book-r0/book.png \
+  -out -
+```
+
+## Decode both prompt and book plane
 
 ```bash
 ./bin/origami-self-contained-book \
   -mode decode \
   -in runs/self-contained-book-r0/book.png \
-  -out runs/self-contained-book-r0/recovered.txt
+  -out runs/self-contained-book-r0/recovered.txt \
+  -prompt-out runs/self-contained-book-r0/MASTER_PROMPT.recovered.md
 ```
 
-Then compare:
+Then verify independently:
 
 ```bash
+cmp generated/MASTER_PROMPT.md runs/self-contained-book-r0/MASTER_PROMPT.recovered.md
 pdftotext -layout -enc UTF-8 /path/to/book.pdf expected.txt
 cmp expected.txt runs/self-contained-book-r0/recovered.txt
 ```
 
-## Current visual contract
+## Visual contract
 
-The upper control region is the existing 640x640 Fixed Carrier R2 visual language. It visibly includes T0 BOOT, T1 ROSETTA, T2 root navigation, T3 machine state and VERIFY.
+With the default wide laboratory canvas, the upper area contains three visible regions:
 
-The lower region is the exact residual bit matrix. The matrix has no authority to redefine ROSETTA. It is decoded mechanically as one bit per pixel, row-major, black=1, white=0.
+```text
+left:   S0 SELF BOOT + MP0 hash/order
+center: existing 640x640 Fixed Carrier R2 with T0/T1/T2/T3/VERIFY
+right:  MP0 MASTER PROMPT status/purpose panel
+```
 
-The current T2 root index acts only as the **root SuperIndex**. Book-specific chapter/page-group routing is the next experiment and must be represented independently of the exact residual before it can be credited as semantic Fold.
+Below them is the exact pixel payload.
+
+This makes the Master Prompt discoverable as a named part of the carrier instead of silently hiding it behind a JSON manifest.
 
 ## Success ladder
 
-1. ROSETTA visible: required.
-2. Master Prompt copied and SHA-bound: required for the portable package.
-3. exact extracted-text round-trip: required.
-4. `FALSE_EXACT=0`: required.
-5. report the PNG byte size honestly.
-6. if PNG > 512000 bytes, status remains `PASS_ROUNDTRIP_FAIL_512K`.
-7. replace residual bytes with generative/addressable Fold structures only when deterministic Unfold can recover the same declared information.
-8. measure each reduction against this baseline.
+1. S0 self-bootstrap visible.
+2. ROSETTA visible.
+3. complete Master Prompt bytes physically inside the PNG.
+4. Master Prompt SHA-256 exact recovery.
+5. exact declared book-text round-trip.
+6. external Master Prompt not required for mechanical decode.
+7. `FALSE_EXACT=0`.
+8. report PNG size honestly.
+9. if PNG > 512000 bytes, size objective remains failed.
+10. test native clean models separately before claiming image-only native bootstrap.
+11. replace book residual bytes with generative/addressable Fold structures only when deterministic Unfold preserves the declared information.
 
 Target:
 
 ```text
-BOOT + ROSETTA + SUPERINDEX + FOLD + residual + VERIFY <= 512000 bytes
+S0 + MP0 + BOOT + ROSETTA + SUPERINDEX + FOLD + residual + VERIFY <= 512000 bytes
 ```
 
 without silently moving required reconstruction state outside the image.

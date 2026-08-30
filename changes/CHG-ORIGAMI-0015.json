@@ -1,0 +1,68 @@
+{
+  "schema": "origami.change-control.r0",
+  "change_id": "CHG-ORIGAMI-0015",
+  "title": "Introduce self-described read/write protocol codecs and rendered profile-3",
+  "component": "protocol/rosetta/codec-registry/fixed-carrier",
+  "status": "implemented_reference_external_model_evidence_pending",
+  "before": {
+    "version": "6.0.0-alpha.12",
+    "state": "Origami used semantic-first T2 navigation and a separate exact/control plane, but ROSETTA did not yet formalize a paired read/write codec ABI and profile-3 existed only as a construction candidate."
+  },
+  "after": {
+    "version": "6.0.0-alpha.13",
+    "state": "Origami formalizes Protocol R0, semantic decoder/encoder registries, capability negotiation, Master Prompt R4 and a parallel rendered Fixed Carrier profile-3 that visibly declares S2/E2 semantic index procedures while preserving the 640x640 / 8192-byte envelope and profile-1/profile-2 compatibility.",
+    "artifacts": [
+      "spec/ORIGAMI_PROTOCOL_R0.json",
+      "spec/CODEC_REGISTRY_R0.json",
+      "spec/CAPABILITY_NEGOTIATION_R0.json",
+      "spec/FIXED_CARRIER_PROFILE_3_R0.json",
+      "docs/ORIGAMI_PROTOCOL_R0.md",
+      "docs/CODEC_REGISTRY_R0.md",
+      "docs/CAPABILITY_NEGOTIATION_R0.md",
+      "docs/FIXED_CARRIER_PROFILE_3_R0.md",
+      "internal/codec",
+      "internal/fixedcarrier/profile3_render.go",
+      "cmd/origami-codec",
+      "cmd/origami-profile3-carrier",
+      "generated/MASTER_PROMPT.md"
+    ]
+  },
+  "corrected_interpretation": [
+    "decoder use itself is not forbidden",
+    "a self-declared semantic decoder such as S2 is part of Origami",
+    "undeclared external decoder/file/binary dependency remains forbidden for Native semantic navigation",
+    "semantic questions must not escalate to exact codecs without need",
+    "encoder instructions are first-class so compatible models can construct new Origami messages"
+  ],
+  "preserved": [
+    "profile-1 deterministic decoding",
+    "profile-2 default renderer",
+    "640x640 canvas",
+    "8192-byte frozen envelope",
+    "T3 exact/control plane",
+    "CID/hash/Merkle/residual verification",
+    "optional Hybrid tools",
+    "FALSE_EXACT=0"
+  ],
+  "evidence": {
+    "protocol_contract_tests": "PASS_CI",
+    "S2_E2_deterministic_roundtrip": "PASS_CI",
+    "profile_3_render_decode_roundtrip": "PASS_CI",
+    "profile_3_8192_byte_envelope": "PASS_CI",
+    "profile_1_2_decode_non_regression": "PASS_CI",
+    "held_out_native_s2": "PENDING_EXTERNAL_MODEL_TRIALS",
+    "held_out_native_e2": "PENDING_EXTERNAL_MODEL_TRIALS",
+    "cross_model_interoperability": "PENDING_EXTERNAL_MODEL_TRIALS"
+  },
+  "hard_invariants": [
+    "PROTOCOL_NE_CARRIER",
+    "ROSETTA_DECLARES_DECODING_SEMANTICS",
+    "ROSETTA_DECLARES_ENCODING_SEMANTICS",
+    "SELF_DECLARED_SEMANTIC_CODEC_ALLOWED",
+    "NO_UNDECLARED_EXTERNAL_DECODER_DEPENDENCY",
+    "SEMANTIC_NAVIGATION_MUST_NOT_REQUIRE_EXACT_CODEC",
+    "S2_E2_ROUNDTRIP_REQUIRED",
+    "UNKNOWN_OVER_INVENTION",
+    "FALSE_EXACT=0"
+  ]
+}

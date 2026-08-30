@@ -119,10 +119,11 @@ func Validate(doc Document) error {
 			if block.Page != page.Number || block.Order <= 0 || block.ID == "" {
 				return fmt.Errorf("invalid block identity on page %d", page.Number)
 			}
-			if _, ok := seen[block.ID]; ok {
-				return fmt.Errorf("duplicate block id %q", block.ID)
+			identity := fmt.Sprintf("%d/%s", page.Number, block.ID)
+			if _, ok := seen[identity]; ok {
+				return fmt.Errorf("duplicate block identity %q", identity)
 			}
-			seen[block.ID] = struct{}{}
+			seen[identity] = struct{}{}
 			if strings.TrimSpace(block.Text) == "" {
 				return fmt.Errorf("block %q has empty text", block.ID)
 			}

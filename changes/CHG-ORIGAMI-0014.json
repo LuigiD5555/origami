@@ -1,0 +1,48 @@
+{
+  "schema": "origami.change-control.r0",
+  "change_id": "CHG-ORIGAMI-0014",
+  "title": "Turn failed prompt-only index trial into Native Semantic Navigation R0",
+  "component": "receiver/fixed-carrier/native-semantic-navigation",
+  "status": "implemented_reference_external_evidence_pending",
+  "before": {
+    "version": "6.0.0-alpha.11",
+    "state": "Prompt-only compatibility was declared, but Fixed Carrier T2 rendered generic navigation categories rather than actual document entry points. A real multimodal trial read BOOT yet failed the index query, requested binary/file decoding and produced unverified mechanical claims."
+  },
+  "after": {
+    "version": "6.0.0-alpha.12",
+    "state": "Fixed Carrier profile-2 makes T2 an actual bounded semantic superindex, keeps T3 as separate exact/control plane, updates Master Prompt R3 to semantic-first query routing, records the failed trial as a permanent regression, and forbids unverified byte/hash/compression claims.",
+    "artifacts": [
+      "spec/NATIVE_SEMANTIC_NAV_R0.json",
+      "docs/NATIVE_SEMANTIC_NAV_R0.md",
+      "experiments/native-semantic-nav-r0/FAILED_TRIAL_001.json",
+      "internal/fixedcarrier/carrier.go",
+      "internal/integration/fixedcarrier.go",
+      "generated/MASTER_PROMPT.md"
+    ]
+  },
+  "removed_or_demoted": [
+    "generic PAGE/CONCEPT/SOURCE/GRAPH/VERIFY T2 as substitute for actual index",
+    "binary extraction as implicit prerequisite for semantic navigation",
+    "blind 256-byte JSON truncation in carrier routing hint",
+    "BLACK=1 WHITE=0 as the main Rosetta semantic description"
+  ],
+  "preserved": [
+    "8192-byte Fixed Carrier envelope",
+    "640x640 canvas",
+    "deterministic T3 exact/control record",
+    "CID/Merkle/root verification",
+    "optional Hybrid tools",
+    "legacy profile-1 deterministic decoding",
+    "FALSE_EXACT=0"
+  ],
+  "hard_invariants": [
+    "SEMANTIC_NAVIGATION_NE_MECHANICAL_DECODE",
+    "T2_CONTAINS_ACTUAL_SEMANTIC_ENTRIES",
+    "INDEX_QUERY_ROUTES_TO_T2",
+    "EXACT_PLANE_OPTIONAL_FOR_SEMANTIC_NAVIGATION",
+    "NO_UNVERIFIED_BYTE_HASH_COMPRESSION_CLAIMS",
+    "FAILED_NATIVE_TRIAL_BECOMES_REGRESSION",
+    "UNKNOWN_OVER_INVENTION",
+    "FALSE_EXACT=0"
+  ]
+}

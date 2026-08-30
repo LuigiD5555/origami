@@ -1,6 +1,6 @@
 {
   "profile_id": "origami.fixed-carrier.r2.profile-3",
-  "status": "EXPERIMENTAL_RENDERER_IMPLEMENTED_EVIDENCE_PENDING",
+  "status": "EXPERIMENTAL_CONSTRUCTION_SPEC_ONLY",
   "base_schema": "origami.fixed-carrier.r2",
   "protocol_contract": "origami.protocol.r0",
   "codec_contract": "origami.codec-registry.r0",
@@ -11,7 +11,8 @@
     "implementation": "internal/fixedcarrier.RenderProfile3",
     "cli": "cmd/origami-profile3-carrier",
     "parallel_to_profile_2": true,
-    "default_renderer": false
+    "default_renderer": false,
+    "status_transition_pending_ci": "EXPERIMENTAL_RENDERER_IMPLEMENTED_EVIDENCE_PENDING"
   },
   "logical_zones": [
     {"id":"T0","role":"BOOT_PROTOCOL_PROFILE_AND_ENTRYPOINT"},
@@ -32,7 +33,7 @@
     "profile_3_default_renderer": false
   },
   "evidence_state": {
-    "deterministic_renderer_roundtrip": "REQUIRED_BY_CI",
+    "deterministic_renderer_roundtrip": "PENDING_CI",
     "held_out_native_s2": "PENDING_EXTERNAL_MODEL_TRIALS",
     "held_out_native_e2": "PENDING_EXTERNAL_MODEL_TRIALS",
     "cross_model_interop": "PENDING_EXTERNAL_MODEL_TRIALS",

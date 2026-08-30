@@ -18,6 +18,7 @@ Origami is the visual/computational representation, state-machine language and m
 | Virtual Memory R0 | EXPERIMENTAL_REFERENCE_IMPLEMENTED — alpha.4 |
 | multi-carrier GraphSignature federation | IMPLEMENTED / deterministic reference |
 | universal ContextPacket interface | IMPLEMENTED / deterministic reference |
+| Memory Scale Lab R0 | EXPERIMENTAL_DETERMINISTIC_LAB / fixed-context scaling |
 | visual macro/meso/micro memory projection | IMPLEMENTED / Native perception NOT PROMOTED |
 | receiver Master Prompt | REFERENCE_CANDIDATE / unchanged |
 | OHF R3.10-LAB | EXPERIMENTAL / executable |
@@ -66,7 +67,58 @@ ohf://<carrier>/<cluster>/<node>
 
 Address identifies location; CID identifies content. Multiple addresses may share one CID.
 
-Each rich carrier exposes a compact `GraphSignature`. Federation ranks signatures before mounting/searching local nodes. This is the implemented first version of global graph routing over multiple Origamis.
+Each rich carrier exposes a compact `GraphSignature`. Federation ranks signatures before mounting/searching local nodes. Federation now reports global routing and local metadata preparation separately through:
+
+```text
+signatures_scanned
+candidate_carriers
+selected_carriers
+metadata_nodes_loaded
+```
+
+This prevents a bounded ContextPacket from hiding an uncontrolled preparation scan.
+
+## Memory Scale Lab R0
+
+`origami.memory-scale-lab.r0` is the deterministic scale campaign for Virtual Memory.
+
+Canonical configuration:
+
+```text
+carriers: 1 -> 10 -> 100 -> 1,000
+nodes per carrier: 64
+active model-facing budget: 4,000 token-equivalent
+selected carrier limit: 4
+```
+
+The fixture deliberately gives all carriers a shared domain/evidence vocabulary plus query-specific topics. This makes routing non-trivial while keeping exact truth deterministic.
+
+It measures:
+
+```text
+Carrier Top-1 Accuracy
+Carrier Recall@K
+Target Hit Accuracy
+Evidence Hit Accuracy
+Negative UNKNOWN Accuracy
+Useful Context Efficiency (UCE)
+Knowledge Scale Degradation (KSD)
+Routing Selectivity
+Exposure Fraction
+```
+
+and keeps routing/metadata work separate from model-facing unfolding work.
+
+`cmd/origami-memory-scale` writes:
+
+```text
+runs/memory-scale-r0/report.json
+runs/memory-scale-r0/trace.jsonl
+```
+
+The JSONL trace is the stable case/evidence contract for the next phase: small local LLMs, larger baseline LLMs, Hybrid model-driven access and eventually Native visual navigation can all consume the same cases.
+
+The deterministic lab does **not** establish LLM answer quality or visual readability by itself.
 
 ## Model-facing interface
 
@@ -125,7 +177,7 @@ Hybrid remains the preferred receiver target; Native and Computational remain di
 
 ## Evidence boundary
 
-Alpha.4 can promote the deterministic Virtual Memory reference only after CI is green. It does **not** promote the visual Native profile without held-out external model evidence.
+Alpha.4 implements the deterministic Virtual Memory reference. Memory Scale Lab R0 tests whether its routing/unfolding behavior remains bounded as available memory grows. It does **not** promote model-facing answer quality or the visual Native profile without held-out evidence.
 
 Important invariants:
 
@@ -135,6 +187,8 @@ UNKNOWN > invented exactness
 address != CID
 active model interface != total memory
 no implicit global exact scan
+routing work must be reported
+metadata loading must be reported
 fidelity fallback before budget violation
 visual navigation != exactness authority
 42 registered families != 42 safe independent channels
@@ -147,7 +201,7 @@ model specialization is optional
 
 OHF remains a nested carrier/protocol laboratory. The historical R3.10 SDK/codebook artifact is still missing, so byte-identical historical baseline claims remain blocked. That does not block independent Origami 6.x contracts or current deterministic laboratory work.
 
-Implemented/experimental OHF assets now include Accessible Memory/SuperIndex evidence, Dependency Folding, Hybrid image-backed receiver, Virtual Memory runtime/federation, visual memory map, Glyph Calculus, SAFE_MICRO_ISA, Context SIMD, DVR/PSS and reversible lab-tool installation.
+Implemented/experimental OHF assets now include Accessible Memory/SuperIndex evidence, Dependency Folding, Hybrid image-backed receiver, Virtual Memory runtime/federation, Memory Scale Lab, visual memory map, Glyph Calculus, SAFE_MICRO_ISA, Context SIMD, DVR/PSS and reversible lab-tool installation.
 
 ## Source of truth
 
@@ -160,9 +214,11 @@ docs/CURRENT_STATE.md
 docs/ARCHITECTURE.md
 docs/VIRTUAL_MEMORY_R0.md
 docs/VISUAL_MEMORY_LAYOUT_R0.md
+docs/MEMORY_SCALE_LAB_R0.md
 spec/VIRTUAL_MEMORY_R0.json
 spec/VISUAL_MEMORY_PROFILE_R0.json
 spec/VIRTUAL_MEMORY_NAV_EVAL_R0.json
+spec/MEMORY_SCALE_LAB_R0.json
 spec/HYBRID_RECEIVER_R0.json
-changes/CHG-ORIGAMI-0005.json
+changes/CHG-ORIGAMI-0006.json
 ```

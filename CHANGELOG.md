@@ -1,5 +1,49 @@
 # Origami changelog
 
+## 6.0.0-alpha.7 — Semantic Spine R1
+
+### Restored / connected
+
+- executable `S_(t+1)=F(S_t,C_t,R)` core with first-class Context and declarative Rule IDs;
+- distinct `PRESENT`, `ABSENT`, `UNKNOWN`, `INHIBITED`, `CANCELLED` states;
+- declarative contradictions, signed contribution/cancellation evidence and higher-order participant-set rules;
+- finite Observation Contracts separated from transition;
+- temporal-sequence observations over ordered trajectories;
+- exhaustive finite combinatorial exploration oracle without silent pruning;
+- semantic graph Fold with commitment, dependencies, relations and unresolved alternatives;
+- selective Unfold with touched-address accounting so hidden whole-graph loading cannot masquerade as selective access;
+- neutral exact source plane and source->Virtual Memory projection without automatically promoting extracted text to semantic summaries;
+- semantic graphs and deterministic trajectories projected directly into Virtual Memory;
+- Evidence Reduction results promoted back into memory as canonical claims;
+- perception observations accepted as addressable `PERCEPTION_ONLY` records but never semantic authority by themselves;
+- Fixed Carrier R2 bound explicitly to the external canonical memory root rather than treated as the corpus.
+
+### Anti-shortcut corrections
+
+- formalized `SCREENSHOT != ORIGAMI_SEMANTIC_REPRESENTATION`;
+- formalized `LITERAL_TRANSPORT != SEMANTIC_FOLD`;
+- a cited exact-fidelity block no longer grants exactness to a paraphrase;
+- `VERIFIED_EXACT` now requires the selected proposition to be byte-for-byte equal to accepted verified exact evidence;
+- raw PDF/OCR text does not receive an automatic semantic `summary` merely because it was extracted.
+
+### Preserved work
+
+- Virtual Memory R0, Memory Scale Lab R0, Evidence Reduction R0 and Fixed Carrier R2 remain intact;
+- OHF R3.10-LAB, Perception Lab, visual-family experiments, DVR/PSS, Glyph Calculus, SAFE_MICRO_ISA and Context SIMD remain active evidence-gated research assets;
+- Tlaloc `6.0.0-alpha.11` remains the existing Canonical Document IR/OCR, Tlaloque, Merkle exact plane, CanonicalState, External Recursive Attention H0-H5 and `tlaloc.origami-tools.r2` orchestration/data-plane implementation; alpha.7 does not fork that pipeline into Origami.
+
+### New tools/contracts
+
+- `origami.semantic-spine.r1`;
+- `origami.document.r0` neutral source format;
+- `internal/core`, `internal/document`, `internal/integration`;
+- `origami-ingest`;
+- `origami-system`.
+
+### Evidence boundary
+
+Alpha.7 provides a connected deterministic semantic reference. Built-in arbitrary scan/image OCR inside Origami, complete alpha.2 perceptual operations, held-out Native visual navigation, cross-model Hybrid/Native promotion and optimized large combinatorial search remain evidence-pending.
+
 ## 6.0.0-alpha.6 — Evidence Reduction R0
 
 ### Added
@@ -13,9 +57,9 @@
 - canonical claim states `VERIFIED`, `REJECTED`, `CONFLICT`, `UNKNOWN`;
 - explicit preservation of verified conflicts instead of majority-vote erasure;
 - order-deterministic canonical claim IDs and whole-reduction digest;
-- separate `VERIFIED_EXACT` gating for accepted verified exact-fidelity evidence;
+- separate exactness state from claim verification;
 - model-neutral `origami-reduce` CLI;
-- deterministic tests for order invariance, duplicate collapse, identity mismatch, unverified evidence, conflict preservation, independent sources and exactness.
+- deterministic tests for order invariance, duplicate collapse, identity mismatch, unverified evidence, conflict preservation and independent sources.
 
 ### Boundary
 
@@ -34,7 +78,7 @@
 
 ### Evidence boundary
 
-Alpha.6 implements the deterministic reducer. It does not yet prove model retrieval quality, arbitrary PDF/OCR perception quality or Native visual readability. Those remain evidence-gated external/perceptual phases.
+Alpha.6 implements the deterministic reducer. Alpha.7 later tightens exactness from “verified exact reference” to byte-equality between the canonical proposition and accepted exact evidence.
 
 ## 6.0.0-alpha.5 — Fixed Carrier R2
 

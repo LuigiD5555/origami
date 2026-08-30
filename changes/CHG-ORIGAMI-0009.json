@@ -1,0 +1,41 @@
+{
+  "schema": "origami.change-control.r0",
+  "change_id": "CHG-ORIGAMI-0009",
+  "title": "Reconnect Origami semantic state, source memory, Fold/Unfold, evidence and visual control boundaries",
+  "component": "core/semantic-spine-r1",
+  "status": "implemented_reference_pending_native_perception_evidence",
+  "before": {
+    "version": "6.0.0-alpha.6",
+    "state": "Virtual Memory, Fixed Carrier, evidence reduction and historical semantic/perceptual contracts existed, but the alpha.3 semantic intent was still fragmented across contracts, reference code and OHF laboratory tracks. Literal/exact transport could be tested independently while first-class Context, declarative Rules, semantic statuses, observation, temporal contracts and semantic Fold/Unfold were not one executable path."
+  },
+  "after": {
+    "version": "6.0.0-alpha.7",
+    "state": "Semantic Spine R1 provides an executable deterministic state core with S_(t+1)=F(S_t,C_t,R), distinct PRESENT/ABSENT/UNKNOWN/INHIBITED/CANCELLED statuses, declarative contradictions, higher-order participants, temporal observation contracts, exhaustive finite exploration oracle, semantic Fold with unresolved alternatives, selective Unfold with touched-address accounting, exact-source/semantic separation, Virtual Memory projection, evidence-backed canonical claim promotion and Fixed Carrier binding to external canonical memory.",
+    "artifacts": [
+      "internal/core/",
+      "internal/document/",
+      "internal/integration/",
+      "cmd/origami-ingest/",
+      "cmd/origami-system/",
+      "spec/SEMANTIC_SPINE_R1.json",
+      "docs/SEMANTIC_SPINE_R1.md"
+    ]
+  },
+  "preserved_external_work": {
+    "tlaloc": "Tlaloc 6.0.0-alpha.11 remains the existing Canonical Document IR/OCR, Tlaloque orchestration, CanonicalState, Merkle exact plane, ERA H0-H5 and tlaloc.origami-tools.r2 provider. Semantic Spine R1 does not duplicate or replace that pipeline.",
+    "tonal": "Existing Fixed Carrier R2 candidate composition and empirical promotion gates remain valid and unpromoted until their external evidence gates pass.",
+    "ohf": "Perception Lab and Native/Hybrid research assets remain evidence-gated and are not discarded."
+  },
+  "hard_invariants": [
+    "SCREENSHOT_NE_ORIGAMI_SEMANTIC_REPRESENTATION",
+    "SOURCE_PLANE_NE_SEMANTIC_PLANE",
+    "LITERAL_TRANSPORT_NE_SEMANTIC_FOLD",
+    "OBSERVATION_NE_TRANSITION",
+    "FOLD_PRESERVES_UNRESOLVED_ALTERNATIVES",
+    "SELECTIVE_UNFOLD_TOUCHES_DECLARED_CLOSURE_ONLY",
+    "EXACT_CLAIM_REQUIRES_BYTE_EQUAL_EXACT_EVIDENCE",
+    "PERCEPTION_NE_RESOLUTION_NE_EXECUTION_NE_VERIFICATION",
+    "FIXED_CARRIER_NE_CORPUS",
+    "FALSE_EXACT=0"
+  ]
+}

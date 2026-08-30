@@ -24,7 +24,7 @@ const (
 type Exactness string
 
 const (
-	ExactnessVerified Exactness = "VERIFIED_EXACT"
+	ExactnessVerified   Exactness = "VERIFIED_EXACT"
 	ExactnessNotClaimed Exactness = "NOT_CLAIMED"
 )
 
@@ -64,6 +64,10 @@ type ResolvedEvidence struct {
 	SourceHash string          `json:"source_hash,omitempty"`
 	Verified   bool            `json:"verified"`
 	Exact      bool            `json:"exact"`
+	// Content is intentionally private to the reducer. It is required to decide
+	// whether a claim is byte-for-byte exact, but it is never emitted as hidden
+	// output in an audit record merely because the source was opened.
+	Content string `json:"-"`
 }
 
 type EvidenceAudit struct {
@@ -75,32 +79,33 @@ type EvidenceAudit struct {
 	Reason     string           `json:"reason,omitempty"`
 	Anchor     string           `json:"anchor,omitempty"`
 	SourceKey  string           `json:"source_key,omitempty"`
+	ExactMatch bool             `json:"exact_match,omitempty"`
 }
 
 type ClaimResult struct {
-	ClaimKey                string          `json:"claim_key"`
-	Proposition             string          `json:"proposition,omitempty"`
-	PropositionVariants     []string        `json:"proposition_variants,omitempty"`
-	Status                  ClaimStatus     `json:"status"`
-	Exactness               Exactness       `json:"exactness"`
-	CanonicalID             string          `json:"canonical_id"`
-	ProposalIDs             []string        `json:"proposal_ids"`
-	SupportEvidence         []EvidenceAudit `json:"support_evidence,omitempty"`
-	OpposeEvidence          []EvidenceAudit `json:"oppose_evidence,omitempty"`
-	RejectedEvidence        []EvidenceAudit `json:"rejected_evidence,omitempty"`
-	VerifiedSupportAnchors  int             `json:"verified_support_anchors"`
-	VerifiedOpposeAnchors   int             `json:"verified_oppose_anchors"`
-	IndependentSupport      int             `json:"independent_support_sources"`
-	IndependentOppose       int             `json:"independent_oppose_sources"`
-	Reason                  string          `json:"reason,omitempty"`
+	ClaimKey               string          `json:"claim_key"`
+	Proposition            string          `json:"proposition,omitempty"`
+	PropositionVariants    []string        `json:"proposition_variants,omitempty"`
+	Status                 ClaimStatus     `json:"status"`
+	Exactness              Exactness       `json:"exactness"`
+	CanonicalID            string          `json:"canonical_id"`
+	ProposalIDs            []string        `json:"proposal_ids"`
+	SupportEvidence        []EvidenceAudit `json:"support_evidence,omitempty"`
+	OpposeEvidence         []EvidenceAudit `json:"oppose_evidence,omitempty"`
+	RejectedEvidence       []EvidenceAudit `json:"rejected_evidence,omitempty"`
+	VerifiedSupportAnchors int             `json:"verified_support_anchors"`
+	VerifiedOpposeAnchors  int             `json:"verified_oppose_anchors"`
+	IndependentSupport     int             `json:"independent_support_sources"`
+	IndependentOppose      int             `json:"independent_oppose_sources"`
+	Reason                 string          `json:"reason,omitempty"`
 }
 
 type Metrics struct {
-	Proposals           int `json:"proposals"`
-	Claims              int `json:"claims"`
-	EvidenceRequested   int `json:"evidence_requested"`
-	EvidenceAccepted    int `json:"evidence_accepted"`
-	EvidenceRejected    int `json:"evidence_rejected"`
+	Proposals            int `json:"proposals"`
+	Claims               int `json:"claims"`
+	EvidenceRequested    int `json:"evidence_requested"`
+	EvidenceAccepted     int `json:"evidence_accepted"`
+	EvidenceRejected     int `json:"evidence_rejected"`
 	EvidenceDeduplicated int `json:"evidence_deduplicated"`
 }
 

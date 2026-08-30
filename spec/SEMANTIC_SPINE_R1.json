@@ -1,0 +1,84 @@
+{
+  "contract_id": "origami.semantic-spine.r1",
+  "status": "EXPERIMENTAL_REFERENCE_IMPLEMENTED",
+  "purpose": "Connect Origami semantic state, addressable source memory, Fold/Unfold, bounded model access, external swarm proposals, deterministic evidence reduction, perception boundaries and fixed visual control-plane binding without allowing literal transport to masquerade as semantic representation.",
+  "canonical_flow": [
+    "EXACT_SOURCE_PLANE",
+    "ADDRESSABLE_MEMORY",
+    "SEMANTIC_STATE_RELATIONS_RULES",
+    "SEMANTIC_FOLD_UNFOLD",
+    "BOUNDED_CONTEXT_PACKET",
+    "EXTERNAL_MODEL_OR_SWARM_PROPOSALS_WHEN_NEEDED",
+    "EVIDENCE_REDUCTION",
+    "CANONICAL_SEMANTIC_MEMORY",
+    "OPTIONAL_VISUAL_CONTROL_PROJECTION"
+  ],
+  "runtime": {
+    "core": "internal/core",
+    "source_plane": "internal/document",
+    "virtual_memory": "internal/memory",
+    "evidence_reduction": "internal/evidence",
+    "integration": "internal/integration",
+    "ingest_cli": "cmd/origami-ingest",
+    "system_cli": "cmd/origami-system",
+    "fixed_carrier": "internal/fixedcarrier"
+  },
+  "intent_crosswalk": {
+    "ORI-I001": {"intent":"relational state first-class","status":"IMPLEMENTED_REFERENCE","evidence":["internal/core/model.go","internal/core/engine.go"]},
+    "ORI-I002": {"intent":"S_(t+1)=F(S_t,C_t,R)","status":"IMPLEMENTED_REFERENCE","evidence":["internal/core/model.go","internal/core/engine.go","TestADV002ContextParticipatesInTransition","TestADV003RulesAreDataWithStableProvenance"]},
+    "ORI-I003": {"intent":"observation is not transition","status":"IMPLEMENTED_REFERENCE","evidence":["internal/core/observation.go","TestADV005ObservationDoesNotRewriteTransition"]},
+    "ORI-I004": {"intent":"ABSENT UNKNOWN INHIBITED CANCELLED remain distinct","status":"IMPLEMENTED_REFERENCE","evidence":["internal/core/model.go","TestADV004SemanticStatusesRemainDistinct"]},
+    "ORI-I005": {"intent":"combinatorial and higher-order space first-class","status":"IMPLEMENTED_REFERENCE_ORACLE","evidence":["internal/core/explore.go","TestADV001HigherOrderInteractionRequiresExactParticipantSet","TestCombinatorialOracleEnumeratesFullDeclaredProduct"]},
+    "ORI-I006": {"intent":"semantic Fold/Unfold preserves unresolved structure","status":"IMPLEMENTED_REFERENCE","evidence":["internal/core/fold.go","TestADV006FoldPreservesUnresolvedAlternatives"]},
+    "ORI-I007": {"intent":"emergent properties may belong to interactions or trajectories","status":"IMPLEMENTED_REFERENCE_FOR_DECLARED_PARTICIPANT_AND_TEMPORAL_CONTRACTS","evidence":["internal/core/observation.go","TestADV001HigherOrderInteractionRequiresExactParticipantSet","TestADV008TemporalLatentPropertyRequiresOrderedTrajectory"]},
+    "ORI-I008": {"intent":"visual projection optional","status":"IMPLEMENTED_ARCHITECTURAL_BOUNDARY","evidence":["internal/core","internal/document","internal/integration","cmd/origami-system"]},
+    "ORI-I009": {"intent":"selective unfolding fundamental","status":"IMPLEMENTED_REFERENCE","evidence":["internal/core/fold.go","internal/memory/manager.go","TestADV007SelectiveUnfoldReadsOnlyDependencyClosure"]},
+    "ORI-I010": {"intent":"earned exactness and explicit literal/residual burden","status":"IMPLEMENTED_REFERENCE","evidence":["internal/core/accounting.go","internal/evidence/reducer.go","TestADV010And011LiteralTransportCannotClaimSemanticComputation","TestExactFidelityCitationDoesNotMakeParaphraseExact"]},
+    "ORI-I011": {"intent":"semantic perceptual and carrier layers remain separate","status":"IMPLEMENTED_ARCHITECTURAL_BOUNDARY","evidence":["internal/integration/perception.go","internal/integration/fixedcarrier.go","TestPerceptionObservationCannotDirectlyBecomeVerifiedSemanticEvidence","TestFixedCarrierBindsExternalCanonicalMemoryInsteadOfContainingCorpus"]},
+    "ORI-I012": {"intent":"nominal possibility is not evidenced capability","status":"IMPLEMENTED_DISCIPLINE_EVIDENCE_PENDING_FOR_NATIVE_PERCEPTION","evidence":["internal/core/explore.go","spec/VIRTUAL_MEMORY_NAV_EVAL_R0.json","spec/PERCEPTUAL_CHANNELS_R0.json"]}
+  },
+  "source_ingestion": {
+    "digital_pdf_text": "IMPLEMENTED_VIA_PDFTOTEXT_ADAPTER",
+    "plain_text": "IMPLEMENTED",
+    "canonical_layout_json": "IMPLEMENTED",
+    "scanned_pdf_or_image_ocr": "ADAPTER_REQUIRED_NOT_BUILT_IN",
+    "rule": "OCR_OR_VLM_OUTPUT_ENTERS_AS_SOURCE_OR_PERCEPTION DATA AND DOES_NOT AUTOMATICALLY BECOME VERIFIED SEMANTICS",
+    "forbidden_fallback": "RASTER_SCREENSHOT_AS_SEMANTIC_REPRESENTATION"
+  },
+  "visual_boundary": {
+    "fixed_carrier_role": "FROZEN_BOOT_NAVIGATION_CONTROL_PLANE",
+    "corpus_location": "EXTERNAL_CANONICAL_MEMORY_PLANE",
+    "legacy_glyph_transport_role": "EXACT_TRANSPORT_DIAGNOSTIC_NOT_SEMANTIC_FOLD_AUTHORITY",
+    "native_visual_semantic_readability": "EVIDENCE_PENDING"
+  },
+  "swarm_boundary": {
+    "orchestration": "EXTERNAL_TLALOC_OR_OTHER_SYSTEM",
+    "proposal_generation": "PROBABILISTIC_ALLOWED",
+    "canonical_authority": "ORIGAMI_EVIDENCE_REDUCTION",
+    "confidence_authority": false
+  },
+  "hard_invariants": [
+    "SOURCE_PLANE_NE_SEMANTIC_PLANE",
+    "LITERAL_TRANSPORT_NE_SEMANTIC_FOLD",
+    "SCREENSHOT_NE_ORIGAMI_SEMANTIC_REPRESENTATION",
+    "S_T_PLUS_1_EQ_F_S_T_C_T_R",
+    "OBSERVATION_NE_TRANSITION",
+    "ABSENT_NE_UNKNOWN_NE_INHIBITED_NE_CANCELLED",
+    "FOLD_PRESERVES_UNRESOLVED_ALTERNATIVES",
+    "SELECTIVE_UNFOLD_TOUCHES_DECLARED_CLOSURE_ONLY",
+    "NO_IMPLICIT_GLOBAL_EXACT_SCAN",
+    "EXACT_CLAIM_REQUIRES_BYTE_EQUAL_EXACT_EVIDENCE",
+    "AGENT_CONFIDENCE_NE_EVIDENCE_AUTHORITY",
+    "PERCEPTION_NE_RESOLUTION_NE_EXECUTION_NE_VERIFICATION",
+    "FIXED_CARRIER_NE_CORPUS",
+    "FALSE_EXACT=0",
+    "UNKNOWN_OVER_INVENTION"
+  ],
+  "evidence_pending": [
+    "BUILT_IN_SCANNED_PDF_IMAGE_OCR_ADAPTER",
+    "GENERAL_EXECUTABLE_RUNTIME_FOR_ALL_PERCEPTUAL_CHANNEL_OPERATIONS",
+    "HELD_OUT_NATIVE_VISUAL_NAVIGATION",
+    "CROSS_MODEL_PERCEPTUAL_PROMOTION",
+    "OPTIMIZED_LARGE_COMBINATORIAL_EXPLORATION_WITH_EQUIVALENCE_PROOF_TO_EXHAUSTIVE_ORACLE"
+  ]
+}

@@ -4,7 +4,7 @@
   "receiver_contract": "origami.hybrid-receiver.r0",
   "candidate_id": "universal-read-write-r2",
   "prompt_path": "generated/MASTER_PROMPT.md",
-  "prompt_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "prompt_sha256": "c83b426124250c1e4e533dc0a329f4bbde8060c41c88d51484915ab22eaa914a",
   "validation_suite": [
     "internal/receiver canonical-profile bootstrap",
     "internal/receiver unknown-fail-closed",
@@ -17,5 +17,5 @@
   "contaminated": false,
   "peak_active_token_eq": 0,
   "working_window_token_eq": 4000,
-  "notes": "READ/WRITE R2 portable reference candidate. The Master Prompt explicitly assumes no Tlaloc, Tonal, sandbox, Go/Python runtime or tools unless declared; optional richer interfaces remain enhancements. ROSETTA and canonical profile rules remain Origami-owned. This artifact remains REFERENCE_CANDIDATE until real prompt-only, Hybrid/Native and Writer roundtrip evidence satisfies the applicable gates. The temporary zero prompt SHA must be replaced by CI-reported repository SHA before merge."
+  "notes": "READ/WRITE R2 portable reference candidate. The Master Prompt explicitly assumes no Tlaloc, Tonal, sandbox, Go/Python runtime or tools unless declared; optional richer interfaces remain enhancements. ROSETTA and canonical profile rules remain Origami-owned. This artifact remains REFERENCE_CANDIDATE until real prompt-only, Hybrid/Native and Writer roundtrip evidence satisfies the applicable gates. prompt_sha256 is bound to the exact repository Master Prompt bytes."
 }

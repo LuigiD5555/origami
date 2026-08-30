@@ -24,7 +24,7 @@
   ],
   "evidence_kinds": {
     "MOCK": "May validate harness/mechanical plumbing only. Never satisfies an empirical promotion gate.",
-    "REAL_MODEL": "Eligible as one empirical trial only when deterministic checks pass. One trial never equals stack support."
+    "REAL_MODEL": "Eligible as one empirical trial only when deterministic checks pass. One trial never equals supported capability."
   },
   "deterministic_checks": [
     "T0_BOOT",
@@ -44,10 +44,10 @@
     "requires": ["REAL_MODEL", "HYBRID_MECHANICAL_PASS", "T3_MACHINE_RECORD"],
     "meaning": "The model additionally reproduced the deterministic T3 machine record for this trial. This remains separate from general Native visual support."
   },
-  "promotion_ownership": {
-    "origami": "DETERMINISTIC_TRIAL_EVALUATION_AND_SEMANTIC_VALIDATION",
-    "tlaloc": "CROSS_MODEL_CAMPAIGN_ORCHESTRATION_TRANSPORT_VARIANTS_AND_REAL_TOOL_LOOPS",
-    "tonal": "STACK_COMPOSITION_AND_SUPPORTED_STATUS_PROMOTION"
+  "ownership": {
+    "origami": "DETERMINISTIC_TRIAL_EVALUATION_SEMANTIC_VALIDATION_AND_ORIGAMI_CAPABILITY_PROFILE_AUTHORITY",
+    "development_tool": "CROSS_MODEL_CAMPAIGN_ORCHESTRATION_TRANSPORT_VARIANTS_AND_REAL_TOOL_LOOPS; TLALOC_IS_THE_PRIMARY_CURRENT_IMPLEMENTATION_BUT_ALTERNATIVES_ARE_ALLOWED",
+    "tonal": "OPTIONAL_MULTI_TOOL_COMPOSITION_INTEGRATION_AND_PROVENANCE_ONLY"
   },
   "hard_invariants": [
     "MOCK_NE_EMPIRICAL_PROMOTION",
@@ -60,9 +60,10 @@
     "TOOL_PROTOCOL_MATCH_REQUIRED",
     "ADDRESS_ABI_MATCH_REQUIRED",
     "PERCEPTION_NE_SEMANTIC_AUTHORITY",
+    "TONAL_COMPOSITION_NE_ORIGAMI_CAPABILITY_AUTHORITY",
     "FALSE_EXACT=0"
   ],
   "reference_runtime": "internal/promotion",
   "reference_cli": "cmd/origami-perception-eval",
-  "campaign_requirements_delegated_to_tlaloc_tonal": true
+  "external_campaign_runner_required_for_cross_model_claims": true
 }

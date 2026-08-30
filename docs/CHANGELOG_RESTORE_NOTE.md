@@ -1,1 +1,0 @@
-Temporary note: canonical CHANGELOG restoration is performed in the following commit.

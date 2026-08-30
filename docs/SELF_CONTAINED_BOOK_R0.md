@@ -2,7 +2,7 @@
 
 Status: `EXPERIMENTAL_LAB_NOT_PROMOTED`
 
-`origami.self-contained-book.r0-lab` now tests the stronger claim:
+`origami.self-contained-book.r0-lab` tests the stronger claim:
 
 ```text
 PDF + canonical Master Prompt
@@ -14,14 +14,14 @@ It does **not** replace Fixed Carrier R2 and it does not promote native model-on
 
 ## One-image deployment claim
 
-The required model-facing payload is now intended to be:
+The required model-facing payload is intended to be:
 
 ```text
 book.png
 + user question
 ```
 
-The complete canonical `generated/MASTER_PROMPT.md` bytes are embedded inside the PNG payload and SHA-256 verified when recovered.
+The complete canonical `generated/MASTER_PROMPT.md` UTF-8 bytes are physically embedded inside the PNG payload and SHA-256 verified when recovered.
 
 A build may still export:
 

@@ -1,13 +1,13 @@
 {
   "contract_id": "origami.canonical-visual-grammar.r0",
   "status": "EXPERIMENTAL_REFERENCE_PROFILE",
-  "purpose": "Define the single canonical visual aesthetic used by Origami carriers while keeping the carrier self-describing through ROSETTA and allowing controlled future profile evolution from Tlaloc experimental evidence.",
+  "purpose": "Define the single canonical visual aesthetic used by Origami carriers while keeping the carrier self-describing through ROSETTA and allowing controlled future profile evolution from development-tool evidence.",
   "aesthetic": {
     "id": "origami.canonical-aesthetic.r0",
     "scope": "GLOBAL_FOR_THIS_PROFILE_VERSION",
     "carrier_specific_aesthetics": false,
     "self_describing": true,
-    "evolution": "VERSIONED_PROFILE_PROMOTION_ONLY"
+    "evolution": "VERSIONED_ORIGAMI_PROFILE_PROMOTION_ONLY"
   },
   "design_principle": "AESTHETIC_IS_FUNCTIONAL_ENCODING_NOT_DECORATION",
   "current_visual_language": {
@@ -21,7 +21,11 @@
     "repetition_role": "REDUNDANCY_AND_VERIFICATION",
     "density_role": "DATA_VS_CONTROL_STRUCTURE",
     "color_role": "RESERVED_EXPERIMENTAL_REDUNDANT_CHANNEL_NOT_PRIMARY_AUTHORITY",
-    "numeric_structure_role": "RESERVED_EXPERIMENTAL_CHANNEL_FAMILY_NOT_PRIMARY_AUTHORITY"
+    "numeric_structure_role": "RESERVED_EXPERIMENTAL_CHANNEL_FAMILY_NOT_PRIMARY_AUTHORITY",
+    "interference_role": "EXPERIMENTAL_MOIRE_PHASE_RELATIONAL_CHANNEL",
+    "depth_role": "EXPERIMENTAL_STEREO_PARALLAX_RELATIONAL_CHANNEL",
+    "temporal_role": "EXPERIMENTAL_TRAJECTORY_AND_INTEGRATION_CHANNEL",
+    "emergent_role": "EXPERIMENTAL_MULTI_LAYER_OR_MULTI_INSTANT_PERCEPT_CHANNEL"
   },
   "canonical_primitives": [
     {"id":"ROOT_MARK","shape":"RINGED_SQUARE","fill":"BLACK_WHITE_NESTED","intent":"ROOT_OR_CONTROL_ANCHOR"},
@@ -47,7 +51,10 @@
     {"id":"D09_TEXT","status":"CANONICAL_LIMITED","uses":["boot","rosetta","small_labels"]},
     {"id":"D10_COLOR","status":"EXPERIMENTAL_REDUNDANT_ONLY","uses":["future_intent","future_state","future_routing"]},
     {"id":"D11_NUMERIC_STRUCTURE","status":"EXPERIMENTAL","uses":["periodicity","prime_structure","modular_pattern","factorization_structure"]},
-    {"id":"D12_TEMPORAL","status":"EXPERIMENTAL","uses":["trajectory","phase","motion","temporal_latent"]}
+    {"id":"D12_TEMPORAL","status":"EXPERIMENTAL","uses":["trajectory","motion","temporal_latent","integration"]},
+    {"id":"D13_INTERFERENCE","status":"EXPERIMENTAL","uses":["moire","phase_shift","relative_alignment","interference_field"]},
+    {"id":"D14_DEPTH","status":"EXPERIMENTAL","uses":["stereo_bind","parallax","viewpoint_relation","depth_signal"]},
+    {"id":"D15_EMERGENT","status":"EXPERIMENTAL","uses":["multi_layer_reveal","multi_instant_reveal","relational_percept"]}
   ],
   "rosetta": {
     "required": true,
@@ -57,7 +64,16 @@
     "may_create_arbitrary_new_aesthetic": false,
     "must_declare_profile_id": true,
     "must_declare_active_dimensions": true,
-    "must_declare_any_extension": true
+    "must_declare_any_extension": true,
+    "promoted_perceptual_channel_must_declare": [
+      "SEMANTIC_ROLE",
+      "REVEAL_OPERATION",
+      "REQUIRED_INPUTS_OR_LAYERS",
+      "OBSERVATION_CONDITION",
+      "TRAJECTORY_OR_PHASE_IF_APPLICABLE",
+      "INTEGRATION_WINDOW_IF_APPLICABLE",
+      "FAILURE_STATE_UNKNOWN"
+    ]
   },
   "writer_rule": {
     "source_to_image_directly": false,
@@ -73,9 +89,11 @@
     ]
   },
   "evolution": {
-    "search_owner": "TLALOC",
+    "primary_search_tool": "TLALOC",
+    "alternative_or_complementary_search_tools_allowed": true,
     "canonical_authority": "ORIGAMI",
-    "composition_promotion": "TONAL",
+    "profile_promotion_owner": "ORIGAMI",
+    "optional_toolchain_composition": "TONAL",
     "candidate_changes": [
       "PROMPT",
       "CHANNEL_ROLE",
@@ -84,11 +102,24 @@
       "REDUNDANCY",
       "COLOR_USAGE",
       "NUMERIC_STRUCTURE",
-      "TEMPORAL_STRUCTURE"
+      "INTERFERENCE_STRUCTURE",
+      "DEPTH_STRUCTURE",
+      "TEMPORAL_STRUCTURE",
+      "EMERGENT_STRUCTURE"
+    ],
+    "optimization_objectives": [
+      "MAXIMIZE_RECOVERABLE_SEMANTIC_CAPACITY_PER_BYTE",
+      "MINIMIZE_CARRIER_BYTES",
+      "MINIMIZE_RECOGNITION_TIME",
+      "MINIMIZE_BOOTSTRAP_STEPS",
+      "MINIMIZE_DECODE_STEPS",
+      "MAXIMIZE_TRANSPORT_ROBUSTNESS",
+      "PRESERVE_SEMANTIC_ROUNDTRIP_AND_FALSE_EXACT_ZERO"
     ],
     "promotion_requires": [
       "SEMANTIC_ROUNDTRIP_NON_REGRESSION",
       "READABILITY_EVIDENCE",
+      "PERCEPTUAL_REVEAL_EVIDENCE_FOR_NONSTATIC_CHANNELS",
       "TRANSPORT_ROBUSTNESS",
       "BOUNDED_CONTEXT_NON_REGRESSION",
       "FALSE_EXACT_0",
@@ -100,10 +131,13 @@
     "ONE_CANONICAL_AESTHETIC_PER_PROFILE_VERSION",
     "ROSETTA_ALWAYS_PRESENT",
     "ROSETTA_DOES_NOT_LICENSE_ARBITRARY_AESTHETIC_DRIFT",
+    "PROMOTED_PERCEPTUAL_CHANNEL_HAS_DECLARED_REVEAL_PROCEDURE",
+    "UNAVAILABLE_REVEAL_CONDITION_RETURNS_UNKNOWN",
     "AESTHETIC_SERVES_READABILITY_AND_COMPUTATION",
     "SEMANTIC_IR_IS_INDEPENDENT_OF_VISUAL_STYLE",
     "EXPERIMENTAL_CHANNEL_NE_CANONICAL_AUTHORITY",
-    "TLALOC_PROPOSES_ORIGAMI_PROMOTES",
+    "DEVELOPMENT_TOOL_PROPOSES_ORIGAMI_PROMOTES",
+    "TONAL_COMPOSITION_NE_ORIGAMI_PROFILE_AUTHORITY",
     "OLD_PROFILE_REMAINS_DECODABLE_BY_EMBEDDED_PROFILE_AND_ROSETTA",
     "FALSE_EXACT=0"
   ]

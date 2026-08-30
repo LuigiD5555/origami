@@ -2,16 +2,16 @@
   "contract_id": "origami.evidence-reduction.r0",
   "status": "EXPERIMENTAL_REFERENCE_IMPLEMENTED",
   "memory_contract": "origami.virtual-memory.r0",
-  "purpose": "Convert probabilistic swarm proposals into deterministic canonical claim states using addressable verified evidence.",
+  "purpose": "Convert probabilistic external proposals into deterministic canonical claim states using addressable verified evidence.",
   "boundary": {
-    "swarm_generation": "EXTERNAL_TLALOC_OR_OTHER_MODEL_SYSTEM",
+    "swarm_generation": "EXTERNAL_DEVELOPMENT_OR_MODEL_SYSTEM",
     "candidate_reasoning": "PROBABILISTIC_ALLOWED",
     "memory_and_evidence_authority": "ORIGAMI",
     "canonical_reduction": "ORIGAMI_DETERMINISTIC"
   },
   "flow": [
     "CONTEXT_PACKET",
-    "EXTERNAL_SWARM_PROPOSALS",
+    "EXTERNAL_PROPOSALS",
     "EVIDENCE_ADDRESS_RESOLUTION",
     "IDENTITY_AND_VERIFICATION_CHECK",
     "DETERMINISTIC_DEDUPLICATION",
@@ -60,7 +60,7 @@
     "UNKNOWN_OVER_UNSUPPORTED_CLAIM",
     "EXACT_CLAIM_REQUIRES_BYTE_EQUAL_EXACT_EVIDENCE",
     "FALSE_EXACT=0",
-    "TLALOC_SWARM_ORCHESTRATION_REMAINS_EXTERNAL",
+    "EXTERNAL_PROPOSAL_ORCHESTRATION_REMAINS_EXTERNAL",
     "ORIGAMI_REDUCTION_IS_ORDER_DETERMINISTIC"
   ],
   "reference_runtime": "internal/evidence",

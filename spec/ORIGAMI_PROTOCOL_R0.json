@@ -1,0 +1,40 @@
+{
+  "contract_id": "origami.protocol.r0",
+  "status": "EXPERIMENTAL_REFERENCE_CANDIDATE",
+  "purpose": "Define Origami as a self-describing read/write communication protocol between compatible models, independent of any one carrier.",
+  "communication_model": ["SEMANTIC_IR", "ENCODE", "ORIGAMI_MESSAGE", "DECODE", "SEMANTIC_IR"],
+  "logical_sections": ["T0_BOOT", "T1_ROSETTA", "CODEC_REGISTRY", "CAPABILITY_DECLARATION", "T2_SEMANTIC_SUPERINDEX", "SEMANTIC_MEMORY_PROGRAM", "T3_EXACT_CONTROL", "VERIFY"],
+  "required_properties": {
+    "self_describing": true,
+    "read_write_bidirectional": true,
+    "carrier_independent_semantics": true,
+    "capability_negotiation": true,
+    "semantic_first": true,
+    "exact_plane_separate": true
+  },
+  "semantic_decoder_family": ["S0_READ_IDENTITY", "S1_READ_HIERARCHY", "S2_READ_SUPERINDEX", "S3_LOCATE_TOPIC", "S4_READ_RELATION", "S5_EXPAND_CLUSTER", "S6_SEMANTIC_UNFOLD"],
+  "semantic_encoder_family": ["E0_ENCODE_IDENTITY", "E1_ENCODE_HIERARCHY", "E2_ENCODE_SUPERINDEX", "E3_ENCODE_CONCEPT", "E4_ENCODE_RELATION", "E5_ENCODE_CLUSTER", "E6_SEMANTIC_FOLD"],
+  "roundtrip": {
+    "equation": "DECODE(ENCODE(S)) ~= S",
+    "identity_address_proof_fields": "EXACT_WHEN_PRESENT",
+    "semantic_fields": "DECLARED_SEMANTIC_EQUIVALENCE"
+  },
+  "unsupported_capability": {
+    "optional_with_fallback": "USE_DECLARED_FALLBACK",
+    "required_semantic": "UNKNOWN",
+    "required_exact": "NOT_VERIFIED",
+    "required_write_compiler": "CONSTRUCTION_SPEC_ONLY"
+  },
+  "hard_invariants": [
+    "PROTOCOL_NE_CARRIER",
+    "ROSETTA_ALWAYS_PRESENT",
+    "ROSETTA_DECLARES_DECODING_SEMANTICS",
+    "ROSETTA_DECLARES_ENCODING_SEMANTICS",
+    "NO_UNDECLARED_EXTERNAL_DECODER_DEPENDENCY",
+    "NO_UNDECLARED_EXTERNAL_ENCODER_DEPENDENCY",
+    "SEMANTIC_NAVIGATION_MUST_NOT_REQUIRE_EXACT_CODEC",
+    "UNSUPPORTED_CAPABILITY_NE_INVENTION",
+    "DECODE_ENCODE_ROUNDTRIP_REQUIRED",
+    "FALSE_EXACT=0"
+  ]
+}

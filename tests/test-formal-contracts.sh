@@ -6,155 +6,29 @@ python3 - <<'PY'
 import json
 from pathlib import Path
 paths = [
-    Path('spec/FORMAL_CORE_R0.json'),
-    Path('spec/OBSERVATION_CONTRACT_R0.json'),
-    Path('spec/PERCEPTUAL_CHANNELS_R0.json'),
-    Path('spec/VIRTUAL_MEMORY_R0.json'),
-    Path('spec/VISUAL_MEMORY_PROFILE_R0.json'),
-    Path('spec/VIRTUAL_MEMORY_NAV_EVAL_R0.json'),
-    Path('spec/MEMORY_SCALE_LAB_R0.json'),
-    Path('spec/FIXED_CARRIER_R2.json'),
-    Path('spec/EVIDENCE_REDUCTION_R0.json'),
-    Path('spec/SEMANTIC_SPINE_R1.json'),
-    Path('spec/PERCEPTION_PROMOTION_R1.json'),
-    Path('spec/CANONICAL_VISUAL_GRAMMAR_R0.json'),
-    Path('spec/WRITER_R0.json'),
-    Path('spec/HYBRID_RECEIVER_R0.json'),
-    Path('spec/DEVELOPMENT_TOOL_BOUNDARY_R0.json'),
-    Path('experiments/memory-scale-r0/config.json'),
-    Path('experiments/EXP-001-relational-state/experiment.json'),
-    Path('changes/CHG-ORIGAMI-0009.json'),
+    Path('spec/FORMAL_CORE_R0.json'), Path('spec/OBSERVATION_CONTRACT_R0.json'), Path('spec/PERCEPTUAL_CHANNELS_R0.json'),
+    Path('spec/VIRTUAL_MEMORY_R0.json'), Path('spec/VISUAL_MEMORY_PROFILE_R0.json'), Path('spec/VIRTUAL_MEMORY_NAV_EVAL_R0.json'),
+    Path('spec/MEMORY_SCALE_LAB_R0.json'), Path('spec/FIXED_CARRIER_R2.json'), Path('spec/EVIDENCE_REDUCTION_R0.json'),
+    Path('spec/SEMANTIC_SPINE_R1.json'), Path('spec/PERCEPTION_PROMOTION_R1.json'), Path('spec/CANONICAL_VISUAL_GRAMMAR_R0.json'),
+    Path('spec/WRITER_R0.json'), Path('spec/HYBRID_RECEIVER_R0.json'), Path('spec/DEVELOPMENT_TOOL_BOUNDARY_R0.json'),
+    Path('spec/NATIVE_SEMANTIC_NAV_R0.json'), Path('experiments/native-semantic-nav-r0/FAILED_TRIAL_001.json'),
+    Path('experiments/memory-scale-r0/config.json'), Path('experiments/EXP-001-relational-state/experiment.json'), Path('changes/CHG-ORIGAMI-0009.json')
 ]
 data={str(p):json.loads(p.read_text()) for p in paths}
-formal=data['spec/FORMAL_CORE_R0.json']
-obs=data['spec/OBSERVATION_CONTRACT_R0.json']
-percept=data['spec/PERCEPTUAL_CHANNELS_R0.json']
-vmem=data['spec/VIRTUAL_MEMORY_R0.json']
-visual=data['spec/VISUAL_MEMORY_PROFILE_R0.json']
-nav=data['spec/VIRTUAL_MEMORY_NAV_EVAL_R0.json']
-scale=data['spec/MEMORY_SCALE_LAB_R0.json']
-fixed=data['spec/FIXED_CARRIER_R2.json']
-evidence=data['spec/EVIDENCE_REDUCTION_R0.json']
-spine=data['spec/SEMANTIC_SPINE_R1.json']
-promotion=data['spec/PERCEPTION_PROMOTION_R1.json']
-grammar=data['spec/CANONICAL_VISUAL_GRAMMAR_R0.json']
-writer=data['spec/WRITER_R0.json']
-receiver=data['spec/HYBRID_RECEIVER_R0.json']
-dev=data['spec/DEVELOPMENT_TOOL_BOUNDARY_R0.json']
-scale_cfg=data['experiments/memory-scale-r0/config.json']
-exp=data['experiments/EXP-001-relational-state/experiment.json']
-change=data['changes/CHG-ORIGAMI-0009.json']
-
-assert formal['contract_id']=='origami.formal-core.r0'
-assert obs['contract_id']=='origami.observation-contract.r0'
-assert percept['observation_contract']==obs['contract_id']
-assert 'LATENT_IS_FALSIFIABLE' in percept['invariants']
-assert 'BUDGET_MUST_BE_FINITE' in obs['invariants']
-
-assert vmem['contract_id']=='origami.virtual-memory.r0'
-assert vmem['context_budget']['default_token_equivalent']==4000
-assert 'NO_IMPLICIT_GLOBAL_EXACT_SCAN' in vmem['invariants']
-assert visual['contract_id']=='origami.visual-memory-profile.r0'
-assert visual['memory_contract']==vmem['contract_id']
-assert len(visual['family_roles'])==42
-assert visual['status']=='EXPERIMENTAL_NOT_PERCEPTUALLY_PROMOTED'
-assert nav['contract_id']=='origami.virtual-memory-nav-eval.r0'
-assert nav['active_context_token_eq']==4000
-assert nav['promotion']['false_exact_required']==0
-
-assert scale['contract_id']=='origami.memory-scale-lab.r0'
-assert scale['memory_contract']==vmem['contract_id']
-assert scale_cfg['budget_tokens']-scale_cfg['reserve_tokens']==4000
-assert scale_cfg['carrier_counts']==[1,10,100,1000]
-assert 'ROUTING_WORK_MUST_BE_REPORTED' in scale['hard_invariants']
-assert 'METADATA_LOAD_WORK_MUST_BE_REPORTED' in scale['hard_invariants']
-
-assert fixed['contract_id']=='origami.fixed-carrier.r2'
-assert fixed['physical_profile']['max_png_bytes']==512000
-assert fixed['physical_profile']['frozen_png_bytes']==8192
-assert fixed['physical_profile']['width_px']==640
-assert fixed['physical_profile']['height_px']==640
-assert 'CANVAS_DOES_NOT_GROW_WITH_CORPUS' in fixed['hard_invariants']
-assert 'OCR_IS_OPTIONAL_NOT_BOOT' in fixed['hard_invariants']
-
-assert evidence['contract_id']=='origami.evidence-reduction.r0'
-assert evidence['memory_contract']==vmem['contract_id']
-assert evidence['boundary']['swarm_generation']=='EXTERNAL_DEVELOPMENT_OR_MODEL_SYSTEM'
-assert evidence['default_policy']['min_verified_evidence']==1
-assert evidence['default_policy']['min_independent_sources']==1
-assert 'AGENT_CONFIDENCE_IS_NOT_AUTHORITY' in evidence['hard_invariants']
-assert 'EXTERNAL_PROPOSAL_ORCHESTRATION_REMAINS_EXTERNAL' in evidence['hard_invariants']
-assert 'ORIGAMI_REDUCTION_IS_ORDER_DETERMINISTIC' in evidence['hard_invariants']
-
-assert spine['contract_id']=='origami.semantic-spine.r1'
-assert spine['status']=='EXPERIMENTAL_REFERENCE_IMPLEMENTED'
-assert spine['canonical_flow'][0]=='EXACT_SOURCE_PLANE'
-assert 'SEMANTIC_STATE_RELATIONS_RULES' in spine['canonical_flow']
-assert 'EVIDENCE_REDUCTION' in spine['canonical_flow']
-assert spine['source_ingestion']['scanned_pdf_or_image_ocr']=='ADAPTER_REQUIRED_NOT_BUILT_IN'
-assert spine['visual_boundary']['fixed_carrier_role']=='FROZEN_BOOT_NAVIGATION_CONTROL_PLANE'
-assert spine['swarm_boundary']['orchestration']=='EXTERNAL_DEVELOPMENT_OR_MODEL_SYSTEM'
-assert spine['swarm_boundary']['confidence_authority'] is False
-assert 'SCREENSHOT_NE_ORIGAMI_SEMANTIC_REPRESENTATION' in spine['hard_invariants']
-assert 'EXACT_CLAIM_REQUIRES_BYTE_EQUAL_EXACT_EVIDENCE' in spine['hard_invariants']
-assert 'DEVELOPMENT_TOOL_NE_RUNTIME_REQUIREMENT' in spine['hard_invariants']
-
-assert promotion['contract_id']=='origami.perception-promotion.r1'
-assert promotion['fixed_carrier_contract']=='origami.fixed-carrier.r2'
-assert promotion['semantic_spine_contract']=='origami.semantic-spine.r1'
-assert promotion['evidence_kinds']['MOCK'].startswith('May validate harness')
-assert 'T3_MACHINE_RECORD' in promotion['hybrid_trial']['does_not_require']
-assert promotion['ownership']['origami'].startswith('DETERMINISTIC_TRIAL_EVALUATION')
-assert 'TLALOC_IS_THE_PRIMARY_CURRENT_IMPLEMENTATION' in promotion['ownership']['development_tool']
-assert promotion['ownership']['tonal'].startswith('OPTIONAL_MULTI_TOOL_COMPOSITION')
-assert 'MOCK_NE_EMPIRICAL_PROMOTION' in promotion['hard_invariants']
-assert 'HYBRID_SUPPORTED_NE_NATIVE_VISUAL_SUPPORTED' in promotion['hard_invariants']
-assert 'PRIVATE_GROUND_TRUTH_NE_MODEL_INPUT' in promotion['hard_invariants']
-assert 'TONAL_COMPOSITION_NE_ORIGAMI_CAPABILITY_AUTHORITY' in promotion['hard_invariants']
-
-assert grammar['contract_id']=='origami.canonical-visual-grammar.r0'
-assert grammar['aesthetic']['carrier_specific_aesthetics'] is False
-assert grammar['aesthetic']['scope']=='GLOBAL_FOR_THIS_PROFILE_VERSION'
-assert grammar['rosetta']['required'] is True
-assert grammar['rosetta']['may_create_arbitrary_new_aesthetic'] is False
-assert grammar['current_visual_language']['numeric_structure_role'].startswith('RESERVED_EXPERIMENTAL')
-assert grammar['evolution']['profile_promotion_owner']=='ORIGAMI'
-assert grammar['evolution']['alternative_or_complementary_search_tools_allowed'] is True
-assert 'DEVELOPMENT_TOOL_PROPOSES_ORIGAMI_PROMOTES' in grammar['hard_invariants']
-assert 'TONAL_COMPOSITION_NE_ORIGAMI_PROFILE_AUTHORITY' in grammar['hard_invariants']
-
-assert writer['contract_id']=='origami.writer.r0'
-assert writer['visual_grammar_contract']==grammar['contract_id']
-assert writer['perceptual_contract']==percept['contract_id']
-assert writer['source_policy']['pdf_to_png_screenshot_forbidden'] is True
-assert writer['construction_spec']['carrier_local_style_override'] is False
-assert writer['rosetta_generation']['promoted_perceptual_binding_must_include_reveal_procedure'] is True
-assert writer['perceptual_write_rule']['unavailable_reveal_condition']=='UNKNOWN'
-assert writer['model_behavior']['may_directly_paint_arbitrary_png'] is False
-assert writer['roundtrip_gate']['required'] is True
-assert 'WRITE_USES_CANONICAL_VISUAL_PROFILE' in writer['hard_invariants']
-assert 'PROMOTED_PERCEPTUAL_CHANNEL_REQUIRES_REVEAL_PROCEDURE' in writer['hard_invariants']
-
-assert receiver['external_receiver_contract']['canonical_visual_profile']=='origami.canonical-aesthetic.r0'
-assert receiver['external_receiver_contract']['carrier_specific_aesthetic'] is False
-assert 'ONE_CANONICAL_AESTHETIC_PER_PROFILE_VERSION' in receiver['semantic_invariants']
-
-assert dev['contract_id']=='origami.development-tool-boundary.r0'
-assert dev['portable_baseline']['artifact']=='MASTER_PROMPT_PLUS_EXPLICIT_USER_INPUT'
-assert dev['portable_baseline']['target_assumptions']==['LLM_TEXT_INTERFACE']
-assert 'TLALOC' in dev['portable_baseline']['does_not_require']
-assert 'TONAL' in dev['portable_baseline']['does_not_require']
-assert 'SANDBOX' in dev['portable_baseline']['does_not_require']
-assert 'TOOLS' in dev['portable_baseline']['does_not_require']
-assert dev['development_tools']['role']=='OPTIONAL_EXTERNAL_DEVELOPMENT_AND_EXPERIMENTATION'
-assert 'BLUEPRINT_FRAMEWORK' in dev['development_tools']['examples']
-assert dev['tonal_role'].startswith('OPTIONAL_MULTI_TOOL_COMPOSITION')
-assert 'ORIGAMI_OWNS_ORIGAMI_RELEASES' in dev['hard_invariants']
-assert 'MASTER_PROMPT_IS_PORTABLE_BASELINE' in dev['hard_invariants']
-assert 'DEVELOPMENT_TOOL_NE_RUNTIME_REQUIREMENT' in dev['hard_invariants']
-
-assert change['after']['version']=='6.0.0-alpha.7'
-assert exp['status']=='SPECIFIED_NOT_YET_EXECUTED'
-assert 'runtime' not in exp or exp['status']!='SUPPORTED'
+formal=data['spec/FORMAL_CORE_R0.json']; obs=data['spec/OBSERVATION_CONTRACT_R0.json']; percept=data['spec/PERCEPTUAL_CHANNELS_R0.json']; vmem=data['spec/VIRTUAL_MEMORY_R0.json']; visual=data['spec/VISUAL_MEMORY_PROFILE_R0.json']; nav=data['spec/VIRTUAL_MEMORY_NAV_EVAL_R0.json']; scale=data['spec/MEMORY_SCALE_LAB_R0.json']; fixed=data['spec/FIXED_CARRIER_R2.json']; evidence=data['spec/EVIDENCE_REDUCTION_R0.json']; spine=data['spec/SEMANTIC_SPINE_R1.json']; promotion=data['spec/PERCEPTION_PROMOTION_R1.json']; grammar=data['spec/CANONICAL_VISUAL_GRAMMAR_R0.json']; writer=data['spec/WRITER_R0.json']; receiver=data['spec/HYBRID_RECEIVER_R0.json']; dev=data['spec/DEVELOPMENT_TOOL_BOUNDARY_R0.json']; native=data['spec/NATIVE_SEMANTIC_NAV_R0.json']; failed=data['experiments/native-semantic-nav-r0/FAILED_TRIAL_001.json']; scale_cfg=data['experiments/memory-scale-r0/config.json']; exp=data['experiments/EXP-001-relational-state/experiment.json']; change=data['changes/CHG-ORIGAMI-0009.json']
+assert formal['contract_id']=='origami.formal-core.r0'; assert obs['contract_id']=='origami.observation-contract.r0'; assert percept['observation_contract']==obs['contract_id']; assert 'LATENT_IS_FALSIFIABLE' in percept['invariants']; assert 'BUDGET_MUST_BE_FINITE' in obs['invariants']
+assert vmem['contract_id']=='origami.virtual-memory.r0'; assert vmem['context_budget']['default_token_equivalent']==4000; assert 'NO_IMPLICIT_GLOBAL_EXACT_SCAN' in vmem['invariants']; assert visual['contract_id']=='origami.visual-memory-profile.r0'; assert len(visual['family_roles'])==42; assert nav['active_context_token_eq']==4000; assert nav['promotion']['false_exact_required']==0
+assert scale['contract_id']=='origami.memory-scale-lab.r0'; assert scale_cfg['budget_tokens']-scale_cfg['reserve_tokens']==4000; assert scale_cfg['carrier_counts']==[1,10,100,1000]
+assert fixed['contract_id']=='origami.fixed-carrier.r2'; assert fixed['physical_profile']['profile_id']=='origami.fixed-carrier.r2.profile-2'; assert fixed['physical_profile']['legacy_profile_readable']=='origami.fixed-carrier.r2.profile-1'; assert fixed['physical_profile']['frozen_png_bytes']==8192; assert fixed['physical_profile']['width_px']==640; assert fixed['physical_profile']['height_px']==640; assert fixed['semantic_plane']['index_query_requires_binary_decode'] is False; assert fixed['exact_plane']['native_semantic_dependency'] is False; assert 'T2_CONTAINS_ACTUAL_SEMANTIC_ENTRIES' in fixed['hard_invariants']; assert 'SEMANTIC_NAVIGATION_NE_MECHANICAL_DECODE' in fixed['hard_invariants']
+assert evidence['contract_id']=='origami.evidence-reduction.r0'; assert evidence['boundary']['swarm_generation']=='EXTERNAL_DEVELOPMENT_OR_MODEL_SYSTEM'; assert evidence['default_policy']['min_verified_evidence']==1; assert 'ORIGAMI_REDUCTION_IS_ORDER_DETERMINISTIC' in evidence['hard_invariants']
+assert spine['contract_id']=='origami.semantic-spine.r1'; assert spine['status']=='EXPERIMENTAL_REFERENCE_IMPLEMENTED'; assert spine['canonical_flow'][0]=='EXACT_SOURCE_PLANE'; assert spine['swarm_boundary']['orchestration']=='EXTERNAL_DEVELOPMENT_OR_MODEL_SYSTEM'; assert spine['swarm_boundary']['confidence_authority'] is False
+assert promotion['contract_id']=='origami.perception-promotion.r1'; assert promotion['evidence_kinds']['MOCK'].startswith('May validate harness'); assert 'MOCK_NE_EMPIRICAL_PROMOTION' in promotion['hard_invariants']; assert 'PRIVATE_GROUND_TRUTH_NE_MODEL_INPUT' in promotion['hard_invariants']
+assert grammar['contract_id']=='origami.canonical-visual-grammar.r0'; assert grammar['aesthetic']['carrier_specific_aesthetics'] is False; assert grammar['rosetta']['required'] is True; assert grammar['evolution']['profile_promotion_owner']=='ORIGAMI'
+assert writer['contract_id']=='origami.writer.r0'; assert writer['source_policy']['pdf_to_png_screenshot_forbidden'] is True; assert writer['roundtrip_gate']['required'] is True; assert writer['model_behavior']['may_directly_paint_arbitrary_png'] is False
+assert receiver['external_receiver_contract']['carrier_specific_aesthetic'] is False; assert 'ONE_CANONICAL_AESTHETIC_PER_PROFILE_VERSION' in receiver['semantic_invariants']
+assert dev['contract_id']=='origami.development-tool-boundary.r0'; assert dev['portable_baseline']['artifact']=='MASTER_PROMPT_PLUS_EXPLICIT_USER_INPUT'; assert 'TLALOC' in dev['portable_baseline']['does_not_require']; assert 'SANDBOX' in dev['portable_baseline']['does_not_require']; assert 'ORIGAMI_OWNS_ORIGAMI_RELEASES' in dev['hard_invariants']
+assert native['contract_id']=='origami.native-semantic-navigation.r0'; assert native['query_routes']['INDEX']==['T0','T1','T2']; assert native['t2']['must_render_actual_semantic_entries'] is True; assert native['exact_plane']['required_for_semantic_index'] is False; assert native['benchmark_questions'][1]['id']=='NSN-Q2'; assert native['benchmark_questions'][1]['mechanical_decode_allowed'] is False; assert 'NO_UNVERIFIED_BYTE_HASH_COMPRESSION_CLAIMS' in native['hard_invariants']; assert 'FAILED_NATIVE_TRIAL_BECOMES_REGRESSION' in native['hard_invariants']
+assert failed['trial_id']=='FAILED_TRIAL_001'; assert failed['observed_behavior']['boot_text_perceived'] is True; assert failed['observed_behavior']['semantic_t2_index_recovered'] is False; assert failed['observed_behavior']['invented_or_corrupted_exact_fields'] is True; assert failed['repository_reference']['hash_match'] is False
+assert change['after']['version']=='6.0.0-alpha.7'; assert exp['status']=='SPECIFIED_NOT_YET_EXECUTED'
 print('formal-contracts: PASS')
 PY

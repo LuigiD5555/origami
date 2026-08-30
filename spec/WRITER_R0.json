@@ -4,7 +4,8 @@
   "visual_grammar_contract": "origami.canonical-visual-grammar.r0",
   "semantic_spine_contract": "origami.semantic-spine.r1",
   "perceptual_contract": "origami.perceptual-channels.r0",
-  "purpose": "Allow a compatible model or deterministic toolchain to construct a new Origami carrier from source/document semantics using the single canonical Origami visual grammar instead of inventing an ad-hoc per-carrier aesthetic.",
+  "native_navigation_contract": "origami.native-semantic-navigation.r0",
+  "purpose": "Allow a compatible model or deterministic toolchain to construct a new Origami carrier from source/document semantics using the single canonical Origami visual grammar, including a useful VLM-readable T2 semantic superindex, instead of inventing an ad-hoc per-carrier aesthetic or hiding semantic navigation in the exact plane.",
   "modes": ["READ", "WRITE"],
   "write_flow": [
     "INGEST_SOURCE_OR_CANONICAL_DOCUMENT_IR",
@@ -12,7 +13,8 @@
     "DECLARE_VISUAL_INTENTS",
     "BIND_INTENTS_TO_CANONICAL_DIMENSIONS",
     "GENERATE_ROSETTA",
-    "GENERATE_PROGRAM_INDEX_MEMORY_VERIFICATION",
+    "GENERATE_PROGRAM_AND_ACTUAL_T2_SEMANTIC_INDEX",
+    "GENERATE_MEMORY_AND_VERIFICATION",
     "COMPILE_CANONICAL_CARRIER",
     "SELF_VERIFY",
     "ROUNDTRIP_SEMANTIC_CHECK"
@@ -21,38 +23,16 @@
     "pdf_to_png_screenshot_forbidden": true,
     "raw_text_poster_forbidden": true,
     "source_may_be_pdf_image_text_or_document_ir": true,
-    "semantic_extraction_may_use_tlaloc_or_other_external_system": true,
+    "semantic_extraction_may_use_external_development_or_ingestion_system": true,
     "final_visual_compilation_authority": "ORIGAMI_CANONICAL_PROFILE"
   },
-  "visual_intent_classes": [
-    "IDENTITY",
-    "HIERARCHY",
-    "RELATION",
-    "DEPENDENCY",
-    "SCOPE",
-    "IMPORTANCE",
-    "STATE",
-    "UNCERTAINTY",
-    "EVIDENCE",
-    "VERIFICATION",
-    "ADDRESSABILITY",
-    "TEMPORAL_ORDER",
-    "REDUNDANCY",
-    "ROUTING"
-  ],
+  "visual_intent_classes": ["IDENTITY","HIERARCHY","RELATION","DEPENDENCY","SCOPE","IMPORTANCE","STATE","UNCERTAINTY","EVIDENCE","VERIFICATION","ADDRESSABILITY","TEMPORAL_ORDER","REDUNDANCY","ROUTING"],
   "construction_spec": {
-    "required": [
-      "schema",
-      "profile_id",
-      "source_identity",
-      "semantic_commitment",
-      "visual_intents",
-      "rosetta",
-      "sections",
-      "verification_plan"
-    ],
+    "required": ["schema","profile_id","source_identity","semantic_commitment","visual_intents","rosetta","sections","verification_plan"],
     "profile_id": "origami.canonical-aesthetic.r0",
-    "carrier_local_style_override": false
+    "carrier_local_style_override": false,
+    "t2_requirement": "BOUNDED_ACTUAL_SEMANTIC_ENTRY_POINTS_FOR_COMMON_NATIVE_QUERIES",
+    "generic_category_only_t2_forbidden": true
   },
   "rosetta_generation": {
     "must_include_profile_id": true,
@@ -61,21 +41,21 @@
     "must_map_visual_primitives_to_semantic_roles": true,
     "must_include_any_experimental_extension": true,
     "promoted_perceptual_binding_must_include_reveal_procedure": true,
-    "reveal_procedure_fields": [
-      "operation",
-      "required_inputs",
-      "observation_condition",
-      "trajectory_if_needed",
-      "integration_window_if_needed",
-      "failure_state"
-    ],
+    "reveal_procedure_fields": ["operation","required_inputs","observation_condition","trajectory_if_needed","integration_window_if_needed","failure_state"],
     "must_not_depend_on_private_prompt_state": true
+  },
+  "native_semantic_write_rule": {
+    "index_query_target": "T2",
+    "t2_must_prioritize_actual_semantic_entries": true,
+    "semantic_index_must_not_require_exact_plane_decode": true,
+    "bounded_top_level_index_allowed": true,
+    "missing_index_behavior": "UNKNOWN_NOT_BINARY_FALLBACK"
   },
   "perceptual_write_rule": {
     "static_primitive_reveal_optional": true,
     "interference_depth_temporal_emergent_reveal_required_when_profile_promotes_channel": true,
     "unavailable_reveal_condition": "UNKNOWN",
-    "examples": ["MOIRE", "PHASE_SHIFT", "STEREO_BIND", "PARALLAX_RESOLVE", "KINETIC_REVEAL", "TEMPORAL_INTEGRATE"]
+    "examples": ["MOIRE","PHASE_SHIFT","STEREO_BIND","PARALLAX_RESOLVE","KINETIC_REVEAL","TEMPORAL_INTEGRATE"]
   },
   "model_behavior": {
     "if_compiler_available": "EMIT_CONSTRUCTION_SPEC_AND_USE_COMPILER",
@@ -88,6 +68,7 @@
     "equation": "DECODE(COMPILE(SEMANTIC_IR)) ~= SEMANTIC_IR",
     "exact_parts": "IDENTITY_ADDRESS_HASH_AND_VERIFICATION_FIELDS_REQUIRE_EXACT_MATCH",
     "semantic_parts": "SEMANTIC_EQUIVALENCE_UNDER_DECLARED_CANONICALIZATION",
+    "native_navigation_parts": "T2 must recover the declared bounded semantic entry points without exact/control-plane decoding",
     "perceptual_parts": "A promoted non-static channel must reproduce its declared semantic result under its declared observation/reveal contract; inability to satisfy the reveal condition is UNKNOWN rather than absence.",
     "failure_state": "INVALID_CARRIER"
   },
@@ -95,6 +76,8 @@
     "WRITE_USES_CANONICAL_VISUAL_PROFILE",
     "ROSETTA_IS_REQUIRED_IN_READ_AND_WRITE",
     "MODEL_DOES_NOT_DEFINE_A_NEW_AESTHETIC_PER_DOCUMENT",
+    "T2_CONTAINS_ACTUAL_SEMANTIC_ENTRIES",
+    "SEMANTIC_INDEX_NE_EXACT_PLANE_DECODE",
     "PROMOTED_PERCEPTUAL_CHANNEL_REQUIRES_REVEAL_PROCEDURE",
     "FAILED_REVEAL_NE_SEMANTIC_ABSENCE",
     "SOURCE_SCREENSHOT_NE_ORIGAMI",

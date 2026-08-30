@@ -1,9 +1,9 @@
 {
   "schema": "origami.hybrid-receiver.r0",
   "status": "EXPERIMENTAL_NOT_PROMOTED",
-  "purpose": "A carrier can bootstrap the active canonical Origami visual profile, its concrete ROSETTA bindings and bounded micro-machine while remaining usable through prompt/native perception and optionally enhanced by deterministic computation or Hybrid tools.",
+  "purpose": "A carrier can bootstrap the active canonical Origami visual profile, its concrete ROSETTA bindings and bounded semantic/micro-machine structure while remaining usable through prompt/native perception and optionally enhanced by deterministic computation or Hybrid tools.",
   "external_receiver_contract": {
-    "master_prompt_role": "portable universal read/write bootstrap",
+    "master_prompt_role": "portable universal semantic-first read/write bootstrap",
     "portable_baseline": "MASTER_PROMPT_PLUS_EXPLICIT_INPUT_NO_REQUIRED_TOOLS_OR_SANDBOX",
     "canonical_visual_profile": "origami.canonical-aesthetic.r0",
     "carrier_specific_aesthetic": false,
@@ -13,19 +13,19 @@
     "tool_assisted_success_is_not_prompt_only_success": true
   },
   "carrier_sections": [
-    {"id": "BOOT", "required": true, "role": "entry point, canonical profile/version discovery, section discovery, start state and execution hints"},
+    {"id": "BOOT", "required": true, "role": "entry point, canonical profile/version discovery and semantic-vs-exact route hints"},
     {"id": "ROSETTA", "required": true, "role": "self-description of canonical profile/version, active dimensions, visual-token to semantic-role bindings and reveal procedures where required"},
-    {"id": "PROGRAM", "required": true, "role": "deterministic micro-agent or micro-automata transition rules"},
-    {"id": "INDEX", "required": true, "role": "addressable navigation and dependency discovery"},
-    {"id": "MEMORY", "required": true, "role": "represented knowledge or behavior payload"},
+    {"id": "PROGRAM", "required": true, "role": "deterministic micro-agent or micro-automata transition rules where applicable"},
+    {"id": "INDEX", "required": true, "role": "T2 VLM-readable actual semantic superindex and addressable navigation entry points"},
+    {"id": "MEMORY", "required": true, "role": "represented semantic knowledge or behavior payload"},
     {"id": "VERIFICATION", "required": true, "role": "proof references, checks, semantic roundtrip and exactness boundaries"},
-    {"id": "RESIDUAL", "required": false, "role": "explicit irreducible information; never a hidden escape hatch"}
+    {"id": "RESIDUAL", "required": false, "role": "explicit irreducible exact information; never a hidden semantic-navigation prerequisite"}
   ],
   "modes": {
-    "native": "BOOT + ROSETTA + PROGRAM + INDEX + MEMORY are interpreted from one visual carrier by a model with no undeclared decoder or required external runtime.",
+    "native": "BOOT + ROSETTA + T2 semantic index + visible semantic state are interpreted from one visual carrier by a model with no undeclared decoder or required external runtime. Binary/exact decoding is not required for semantic index/overview questions.",
     "computational": "An explicitly available deterministic Origami runtime exposes bounded operations without requiring visual low-level decoding.",
-    "hybrid": "The model uses the carrier for bootstrap/high-level navigation and delegates exact/local mechanical work to explicitly declared tools/runtime. Hybrid is a performance target, not the minimum compatibility requirement.",
-    "write": "The model/source pipeline emits a semantic/construction specification bound to the canonical visual profile; when a deterministic compiler is actually available it creates and roundtrip-verifies the carrier; otherwise the model returns CONSTRUCTION_SPEC_ONLY."
+    "hybrid": "The model uses the carrier for semantic bootstrap/high-level navigation and delegates exact/local mechanical work to explicitly declared tools/runtime. Hybrid is a performance target, not the minimum compatibility requirement.",
+    "write": "The model/source pipeline emits a semantic/construction specification bound to the canonical visual profile and deliberately constructs T2; when a deterministic compiler is actually available it creates and roundtrip-verifies the carrier; otherwise the model returns CONSTRUCTION_SPEC_ONLY."
   },
   "semantic_invariants": [
     "ONE_CANONICAL_AESTHETIC_PER_PROFILE_VERSION",
@@ -34,6 +34,10 @@
     "ROSETTA_DOES_NOT_LICENSE_PER_DOCUMENT_AESTHETIC_DRIFT",
     "BOOT_PRECEDES_PAYLOAD_INTERPRETATION",
     "ROSETTA_PRECEDES_SYMBOL_EXECUTION",
+    "T2_CONTAINS_ACTUAL_SEMANTIC_ENTRIES",
+    "INDEX_QUERY_ROUTES_TO_T2",
+    "SEMANTIC_NAVIGATION_NE_MECHANICAL_DECODE",
+    "EXACT_PLANE_OPTIONAL_FOR_SEMANTIC_NAVIGATION",
     "MICRO_AGENTS_ARE_DETERMINISTIC_AND_BOUNDED",
     "TRAJECTORY_MAY_CARRY_MEANING",
     "PERCEPTION_RESOLUTION_EXECUTION_VERIFICATION_ARE_DISTINCT",
@@ -50,9 +54,11 @@
     "Do not remove ROSETTA merely because the profile is known.",
     "Do not require the external prompt to contain private carrier bindings.",
     "Do not hide a full-memory scan behind a compact model-facing answer.",
+    "Do not require binary extraction/decompression to answer a semantic T2/index question.",
+    "Do not claim hidden byte counts, compression formats or hashes without an executed verification path.",
     "Do not let the model silently perform semantics absent from the carrier/runtime.",
     "Do not report a semantic reconstruction as byte-exact without verification.",
     "Do not report a tool-assisted result as evidence that prompt-only/native operation succeeded."
   ],
-  "cross_model_test": "Keep the external Master Prompt and canonical profile version fixed while varying target models and document semantics. Evaluate prompt/native and Hybrid/tool-assisted capabilities separately. Correct behavior must follow BOOT/ROSETTA and preserve the canonical aesthetic; future aesthetic revisions require explicit Origami profile-version promotion rather than per-carrier drift."
+  "cross_model_test": "Keep the external Master Prompt and canonical profile version fixed while varying target models and document semantics. The first Native semantic regression is recovery of the actual T2 index without undeclared binary/file decoding. Evaluate prompt/native and Hybrid/tool-assisted capabilities separately."
 }

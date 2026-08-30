@@ -1,0 +1,10 @@
+{
+  "schema": "origami.change-control.r0",
+  "change_id": "CHG-ORIGAMI-0007",
+  "title": "Promote self-booting Fixed Carrier R2 control plane",
+  "component": "fixed-carrier/r2",
+  "status": "implemented_deterministic_native_visual_evidence_pending",
+  "before": {"version":"6.0.0-alpha.4","state":"Virtual Memory and scale labs existed, but the carrier still lacked a frozen plaintext-to-Origami bootstrap/control-plane contract."},
+  "after": {"version":"6.0.0-alpha.5","state":"Fixed Carrier R2 freezes a 640x640 / 8192-byte control plane with T0 plaintext BOOT, duplicated visual challenge, root index, graph signature, deterministic machine record and Tlaloc R2 tool binding. Corpus growth occurs only in the external canonical memory plane.","artifacts":["internal/fixedcarrier/","cmd/origami-fixed-carrier/","spec/FIXED_CARRIER_R2.json","docs/FIXED_CARRIER_R2.md"]},
+  "invariants": ["CANVAS_DOES_NOT_GROW_WITH_CORPUS","PNG_BYTES_EQ_8192","PNG_BYTES_LE_512000","T0_PLAINTEXT_BOOT_PRESENT","DUPLICATED_VISUAL_PROBE_REQUIRED","OCR_IS_NOT_BOOT","CONTROL_PLANE_NE_DATA_PLANE","FALSE_EXACT=0","NATIVE_VISUAL_READABILITY_NOT_PROMOTED"]
+}

@@ -4,7 +4,7 @@
   "receiver_contract": "origami.hybrid-receiver.r0",
   "candidate_id": "universal-read-write-r4-codec-aware",
   "prompt_path": "generated/MASTER_PROMPT.md",
-  "prompt_sha256": "637c0c277368a679cc778d8082a09c11e48951741570e5f17b3f27949bcb81e0",
+  "prompt_sha256": "78cbcee8d0f71e1b06e2902c9b9600779e3cd0148251ad9d50623d07969c2a56",
   "validation_suite": [
     "internal/receiver canonical-profile bootstrap",
     "internal/receiver unknown-fail-closed",
@@ -22,5 +22,5 @@
   "contaminated": false,
   "peak_active_token_eq": 0,
   "working_window_token_eq": 4000,
-  "notes": "READ/WRITE R4 protocol/codec-aware reference candidate. The bootstrap discovers ROSETTA, declared decoder/encoder registries and receiver capabilities, chooses the smallest sufficient semantic codec and keeps exact/control codecs separate. This artifact remains REFERENCE_CANDIDATE until held-out cross-model read/write evidence exists. prompt_sha256 must be rebound to the exact R4 repository bytes before merge."
+  "notes": "READ/WRITE R4 protocol/codec-aware reference candidate. The bootstrap discovers ROSETTA, declared decoder/encoder registries and receiver capabilities, chooses the smallest sufficient semantic codec and keeps exact/control codecs separate. This artifact remains REFERENCE_CANDIDATE until held-out cross-model read/write evidence exists. prompt_sha256 is bound to the exact repository Master Prompt R4 bytes."
 }

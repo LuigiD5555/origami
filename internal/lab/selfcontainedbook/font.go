@@ -25,7 +25,9 @@ func fill(img *image.Gray, x, y, w, h int, value uint8) {
 }
 
 func box(img *image.Gray, x, y, w, h int, value uint8) {
-	if w <= 0 || h <= 0 { return }
+	if w <= 0 || h <= 0 {
+		return
+	}
 	fill(img, x, y, w, 1, value)
 	fill(img, x, y+h-1, w, 1, value)
 	fill(img, x, y, 1, h, value)
@@ -33,17 +35,22 @@ func box(img *image.Gray, x, y, w, h int, value uint8) {
 }
 
 func drawText(img *image.Gray, x, y, scale int, text string, value uint8) {
-	if scale < 1 { scale = 1 }
+	if scale < 1 {
+		scale = 1
+	}
 	cx := x
 	c := color.Gray{Y: value}
 	for _, rr := range strings.ToUpper(text) {
 		g, ok := font5x7[rr]
-		if !ok { g = font5x7['?'] }
+		if !ok {
+			g = font5x7['?']
+		}
 		for row, bits := range g {
 			for col := 0; col < 5; col++ {
 				if bits&(1<<uint(4-col)) != 0 {
 					fill(img, cx+col*scale, y+row*scale, scale, scale, c.Y)
 				}
+			}
 		}
 		cx += 6 * scale
 	}

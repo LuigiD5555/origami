@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/sha256"
 	"encoding/binary"
+	"hash/crc32"
 	"image"
 	"image/draw"
 	"image/png"
@@ -76,19 +77,10 @@ func TestDecoderAcceptsLegacyProfile1Record(t *testing.T) {
 	if err != nil { t.Fatal(err) }
 	legacyProfile := sha256.Sum256([]byte(LegacyProfileID)); copy(rec[138:154], legacyProfile[:16])
 	legacyBoot := sha256.Sum256([]byte(joinBootText(legacyBootText))); copy(rec[154:170], legacyBoot[:16])
-	fillRedundancy(rec[426:508], rec[:426]); binary.BigEndian.PutUint32(rec[508:512], crc32Checksum(rec[:508]))
+	fillRedundancy(rec[426:508], rec[:426]); binary.BigEndian.PutUint32(rec[508:512], crc32.ChecksumIEEE(rec[:508]))
 	got, err := decodeRecord(rec)
 	if err != nil { t.Fatal(err) }
 	if got.Profile != LegacyProfileID { t.Fatalf("legacy profile not preserved: %s", got.Profile) }
-}
-
-func crc32Checksum(b []byte) uint32 {
-	// Same IEEE polynomial as the production carrier, kept tiny to avoid
-	// exposing crc32 internals through the test API.
-	const poly = uint32(0xedb88320)
-	crc := ^uint32(0)
-	for _, v := range b { crc ^= uint32(v); for i:=0;i<8;i++ { mask:=uint32(0)-crc&1; crc=(crc>>1)^(poly&mask) } }
-	return ^crc
 }
 
 func nearest(src image.Image, w, h int) *image.RGBA {

@@ -23,6 +23,8 @@ jobs:
         run: bash tests/test-gatekeeper.sh
       - name: Formal contract coherence
         run: bash tests/test-formal-contracts.sh
+      - name: Temporal contract coherence
+        run: bash tests/test-temporal-contracts.sh
       - name: Test
         run: go test ./...
       - name: Vet
@@ -38,6 +40,8 @@ jobs:
           go build ./cmd/origami-system
           go build ./cmd/origami-perception-eval
           go build ./cmd/origami-write-plan
+          go build ./cmd/origami-automaton
+          go build ./cmd/origami-temporal
       - name: Run deterministic reference experiment
         run: |
           mkdir -p evidence

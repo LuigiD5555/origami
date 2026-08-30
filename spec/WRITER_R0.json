@@ -3,6 +3,7 @@
   "status": "EXPERIMENTAL_REFERENCE_IMPLEMENTED",
   "visual_grammar_contract": "origami.canonical-visual-grammar.r0",
   "semantic_spine_contract": "origami.semantic-spine.r1",
+  "perceptual_contract": "origami.perceptual-channels.r0",
   "purpose": "Allow a compatible model or deterministic toolchain to construct a new Origami carrier from source/document semantics using the single canonical Origami visual grammar instead of inventing an ad-hoc per-carrier aesthetic.",
   "modes": ["READ", "WRITE"],
   "write_flow": [
@@ -59,7 +60,22 @@
     "must_include_active_dimensions": true,
     "must_map_visual_primitives_to_semantic_roles": true,
     "must_include_any_experimental_extension": true,
+    "promoted_perceptual_binding_must_include_reveal_procedure": true,
+    "reveal_procedure_fields": [
+      "operation",
+      "required_inputs",
+      "observation_condition",
+      "trajectory_if_needed",
+      "integration_window_if_needed",
+      "failure_state"
+    ],
     "must_not_depend_on_private_prompt_state": true
+  },
+  "perceptual_write_rule": {
+    "static_primitive_reveal_optional": true,
+    "interference_depth_temporal_emergent_reveal_required_when_profile_promotes_channel": true,
+    "unavailable_reveal_condition": "UNKNOWN",
+    "examples": ["MOIRE", "PHASE_SHIFT", "STEREO_BIND", "PARALLAX_RESOLVE", "KINETIC_REVEAL", "TEMPORAL_INTEGRATE"]
   },
   "model_behavior": {
     "if_compiler_available": "EMIT_CONSTRUCTION_SPEC_AND_USE_COMPILER",
@@ -72,12 +88,15 @@
     "equation": "DECODE(COMPILE(SEMANTIC_IR)) ~= SEMANTIC_IR",
     "exact_parts": "IDENTITY_ADDRESS_HASH_AND_VERIFICATION_FIELDS_REQUIRE_EXACT_MATCH",
     "semantic_parts": "SEMANTIC_EQUIVALENCE_UNDER_DECLARED_CANONICALIZATION",
+    "perceptual_parts": "A promoted non-static channel must reproduce its declared semantic result under its declared observation/reveal contract; inability to satisfy the reveal condition is UNKNOWN rather than absence.",
     "failure_state": "INVALID_CARRIER"
   },
   "hard_invariants": [
     "WRITE_USES_CANONICAL_VISUAL_PROFILE",
     "ROSETTA_IS_REQUIRED_IN_READ_AND_WRITE",
     "MODEL_DOES_NOT_DEFINE_A_NEW_AESTHETIC_PER_DOCUMENT",
+    "PROMOTED_PERCEPTUAL_CHANNEL_REQUIRES_REVEAL_PROCEDURE",
+    "FAILED_REVEAL_NE_SEMANTIC_ABSENCE",
     "SOURCE_SCREENSHOT_NE_ORIGAMI",
     "CONSTRUCTION_SPEC_PRECEDES_COMPILATION",
     "COMPILER_NOT_MODEL_PIXELS_IS_CARRIER_AUTHORITY",

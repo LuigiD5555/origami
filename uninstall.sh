@@ -12,7 +12,7 @@ sha256_file(){ if command -v sha256sum >/dev/null 2>&1; then sha256sum "$1"|awk 
 do_cmd(){ if ((DRY_RUN)); then printf '[uninstall][DRY-RUN]'; printf ' %q' "$@"; printf '\n'; else "$@"; fi; }
 while (($#)); do case "$1" in --prefix) shift; (($#))||die '--prefix requires path'; PREFIX="$1";; --dry-run) DRY_RUN=1;; --force) FORCE=1;; --legacy) LEGACY=1;; --purge-generated) PURGE_GENERATED=1;; -h|--help) usage; exit 0;; *) die "unknown option: $1";; esac; shift; done
 BIN_DIR="$PREFIX/bin"; STATE_DIR="$PREFIX/share/origami/install-state-v1"; STATE_FILE="$STATE_DIR/manifest.tsv"; BACKUP_DIR="$STATE_DIR/backups"
-NAMES=(ohf-lab ohf-glyphcalc origami-fixed-carrier origami-codec origami-profile3-carrier)
+NAMES=(ohf-lab ohf-glyphcalc origami-fixed-carrier origami-codec origami-profile3-carrier origami-automaton origami-temporal)
 legacy(){ for name in "${NAMES[@]}"; do dst="$BIN_DIR/$name"; if [[ -e "$dst.bak" ]]; then do_cmd mv -f "$dst.bak" "$dst"; elif [[ -e "$dst" ]]; then do_cmd rm -f "$dst"; fi; done; }
 if [[ ! -f "$STATE_FILE" ]]; then ((LEGACY))&&legacy||die "no tracked Origami installation state found at $STATE_FILE"; else
   declare -A DST=() INSTALLED_SHA=() ORIGINAL_PRESENT=() ORIGINAL_BACKUP=()

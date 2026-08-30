@@ -42,6 +42,7 @@ jobs:
           go build ./cmd/origami-write-plan
           go build ./cmd/origami-automaton
           go build ./cmd/origami-temporal
+          go build ./cmd/origami-temporal-carrier
       - name: Run temporal automaton reference
         run: bash tests/test-temporal-reference.sh
       - name: Run deterministic reference experiment

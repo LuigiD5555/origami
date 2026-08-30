@@ -3,17 +3,19 @@
   "status": "REFERENCE_CANDIDATE",
   "receiver_contract": "origami.hybrid-receiver.r0",
   "distiller_contract": "tlaloc.origami-receiver-distillation.r0",
-  "candidate_id": "universal-bootstrap-r0",
+  "candidate_id": "universal-read-write-r1",
   "prompt_path": "generated/MASTER_PROMPT.md",
-  "prompt_sha256": "122ff484e8b026b486038ab84f47c749d2b7b2bf4b07cfbd6adb882f0c07d46a",
+  "prompt_sha256": "d02ed836326ccfd8c1d17fe300c8fe34aae92fec5ba555420cde548465c6321a",
   "validation_suite": [
-    "internal/receiver symbol-permutation",
+    "internal/receiver canonical-profile bootstrap",
     "internal/receiver unknown-fail-closed",
-    "internal/lab/hybridbundle isolation"
+    "internal/lab/hybridbundle isolation",
+    "internal/writer canonical-profile planning",
+    "internal/writer deterministic construction plan"
   ],
   "false_exact": 0,
   "contaminated": false,
   "peak_active_token_eq": 0,
   "working_window_token_eq": 4000,
-  "notes": "Bootstrap reference candidate only. It is stored by Origami but is NOT PROMOTED until model-facing Hybrid and cross-model permutation gates pass. source_trace_sha256 is intentionally absent because this seed predates automated Tlaloc distillation."
+  "notes": "READ/WRITE R1 reference candidate. The prompt now binds receiver and writer behavior to origami.canonical-aesthetic.r0, keeps ROSETTA mandatory, and forbids per-document aesthetic drift. It remains NOT PROMOTED until the required model-facing Hybrid/Native and writer roundtrip gates pass. source_trace_sha256 is intentionally absent because this candidate combines Origami-owned canonical visual/writer contracts with the existing receiver lineage rather than representing an automatically promoted Tlaloc trace."
 }

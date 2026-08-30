@@ -1,0 +1,110 @@
+{
+  "contract_id": "origami.canonical-visual-grammar.r0",
+  "status": "EXPERIMENTAL_REFERENCE_PROFILE",
+  "purpose": "Define the single canonical visual aesthetic used by Origami carriers while keeping the carrier self-describing through ROSETTA and allowing controlled future profile evolution from Tlaloc experimental evidence.",
+  "aesthetic": {
+    "id": "origami.canonical-aesthetic.r0",
+    "scope": "GLOBAL_FOR_THIS_PROFILE_VERSION",
+    "carrier_specific_aesthetics": false,
+    "self_describing": true,
+    "evolution": "VERSIONED_PROFILE_PROMOTION_ONLY"
+  },
+  "design_principle": "AESTHETIC_IS_FUNCTIONAL_ENCODING_NOT_DECORATION",
+  "current_visual_language": {
+    "primary_palette": "HIGH_CONTRAST_MONOCHROME",
+    "text_role": "BOOTSTRAP_AND_SMALL_DECLARATIVE_LABELS_ONLY",
+    "geometry_role": "SEMANTIC_CLASS_AND_NAVIGATION",
+    "topology_role": "RELATION_AND_DEPENDENCY",
+    "position_role": "HIERARCHY_AND_ROUTE",
+    "enclosure_role": "SPACE_AND_SCOPE",
+    "scale_role": "MACRO_MESO_MICRO_LEVEL",
+    "repetition_role": "REDUNDANCY_AND_VERIFICATION",
+    "density_role": "DATA_VS_CONTROL_STRUCTURE",
+    "color_role": "RESERVED_EXPERIMENTAL_REDUNDANT_CHANNEL_NOT_PRIMARY_AUTHORITY",
+    "numeric_structure_role": "RESERVED_EXPERIMENTAL_CHANNEL_FAMILY_NOT_PRIMARY_AUTHORITY"
+  },
+  "canonical_primitives": [
+    {"id":"ROOT_MARK","shape":"RINGED_SQUARE","fill":"BLACK_WHITE_NESTED","intent":"ROOT_OR_CONTROL_ANCHOR"},
+    {"id":"PAGE_NODE","shape":"SQUARE","fill":"BLACK_CENTER","intent":"PAGE_OR_MAJOR_CONTAINER"},
+    {"id":"CONCEPT_NODE","shape":"SQUARE","fill":"WHITE","intent":"CONCEPT"},
+    {"id":"SOURCE_NODE","shape":"DIAMOND","fill":"WHITE","intent":"SOURCE_OR_EVIDENCE_ORIGIN"},
+    {"id":"GRAPH_NODE","shape":"SMALL_SQUARE","fill":"BLACK","intent":"GRAPH_OR_RELATION_CLUSTER"},
+    {"id":"VERIFY_NODE","shape":"RINGED_SQUARE","fill":"BLACK_WHITE_NESTED","intent":"VERIFY_OR_PROOF_ANCHOR"},
+    {"id":"RELATION_EDGE","shape":"LINE_OR_ARROW","intent":"DECLARED_RELATION"},
+    {"id":"SPACE_BOX","shape":"ENCLOSURE","intent":"SPACE_SCOPE_OR_ADDRESS_REGION"},
+    {"id":"PROBE_ONE","shape":"CELL","fill":"BLACK","intent":"VISUAL_BIT_1"},
+    {"id":"PROBE_ZERO","shape":"CELL","fill":"WHITE","intent":"VISUAL_BIT_0"}
+  ],
+  "dimension_registry": [
+    {"id":"D01_GEOMETRY","status":"CANONICAL","uses":["class","role","anchor"]},
+    {"id":"D02_FILL_CONTRAST","status":"CANONICAL","uses":["bit","role","state_redundancy"]},
+    {"id":"D03_POSITION","status":"CANONICAL","uses":["hierarchy","route","ordering"]},
+    {"id":"D04_TOPOLOGY","status":"CANONICAL","uses":["relation","dependency","graph"]},
+    {"id":"D05_ENCLOSURE","status":"CANONICAL","uses":["scope","space","address_region"]},
+    {"id":"D06_SCALE","status":"CANONICAL","uses":["macro","meso","micro"]},
+    {"id":"D07_REPETITION","status":"CANONICAL","uses":["redundancy","agreement","verification"]},
+    {"id":"D08_DENSITY","status":"CANONICAL","uses":["data_plane","control_plane","importance_hint"]},
+    {"id":"D09_TEXT","status":"CANONICAL_LIMITED","uses":["boot","rosetta","small_labels"]},
+    {"id":"D10_COLOR","status":"EXPERIMENTAL_REDUNDANT_ONLY","uses":["future_intent","future_state","future_routing"]},
+    {"id":"D11_NUMERIC_STRUCTURE","status":"EXPERIMENTAL","uses":["periodicity","prime_structure","modular_pattern","factorization_structure"]},
+    {"id":"D12_TEMPORAL","status":"EXPERIMENTAL","uses":["trajectory","phase","motion","temporal_latent"]}
+  ],
+  "rosetta": {
+    "required": true,
+    "role": "SELF_DESCRIBE_THE_ACTIVE_CANONICAL_PROFILE_AND_CONCRETE_CARRIER_BINDINGS",
+    "may_restate_canonical_bindings": true,
+    "may_declare_profile_approved_local_parameters": true,
+    "may_create_arbitrary_new_aesthetic": false,
+    "must_declare_profile_id": true,
+    "must_declare_active_dimensions": true,
+    "must_declare_any_extension": true
+  },
+  "writer_rule": {
+    "source_to_image_directly": false,
+    "required_path": [
+      "SOURCE_OR_DOCUMENT_IR",
+      "SEMANTIC_IR",
+      "VISUAL_INTENT_PLAN",
+      "CANONICAL_PROFILE_BINDING",
+      "ROSETTA",
+      "PROGRAM_INDEX_MEMORY_VERIFICATION",
+      "DETERMINISTIC_COMPILATION",
+      "SELF_VERIFY"
+    ]
+  },
+  "evolution": {
+    "search_owner": "TLALOC",
+    "canonical_authority": "ORIGAMI",
+    "composition_promotion": "TONAL",
+    "candidate_changes": [
+      "PROMPT",
+      "CHANNEL_ROLE",
+      "PRIMITIVE",
+      "LAYOUT",
+      "REDUNDANCY",
+      "COLOR_USAGE",
+      "NUMERIC_STRUCTURE",
+      "TEMPORAL_STRUCTURE"
+    ],
+    "promotion_requires": [
+      "SEMANTIC_ROUNDTRIP_NON_REGRESSION",
+      "READABILITY_EVIDENCE",
+      "TRANSPORT_ROBUSTNESS",
+      "BOUNDED_CONTEXT_NON_REGRESSION",
+      "FALSE_EXACT_0",
+      "CARRIER_SIZE_INVARIANT_OR_EXPLICIT_PROFILE_CHANGE",
+      "CROSS_MODEL_EVIDENCE_WHEN_MODEL_PERCEPTION_IS_CLAIMED"
+    ]
+  },
+  "hard_invariants": [
+    "ONE_CANONICAL_AESTHETIC_PER_PROFILE_VERSION",
+    "ROSETTA_ALWAYS_PRESENT",
+    "ROSETTA_DOES_NOT_LICENSE_ARBITRARY_AESTHETIC_DRIFT",
+    "AESTHETIC_SERVES_READABILITY_AND_COMPUTATION",
+    "SEMANTIC_IR_IS_INDEPENDENT_OF_VISUAL_STYLE",
+    "EXPERIMENTAL_CHANNEL_NE_CANONICAL_AUTHORITY",
+    "TLALOC_PROPOSES_ORIGAMI_PROMOTES",
+    "OLD_PROFILE_REMAINS_DECODABLE_BY_EMBEDDED_PROFILE_AND_ROSETTA",
+    "FALSE_EXACT=0"
+  ]
+}

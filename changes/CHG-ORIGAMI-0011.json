@@ -1,0 +1,51 @@
+{
+  "schema": "origami.change-control.r0",
+  "change_id": "CHG-ORIGAMI-0011",
+  "title": "Canonical Visual Grammar R0 and Writer R0",
+  "component": "visual/writer",
+  "status": "implemented_reference_renderer_integration_partial",
+  "before": {
+    "version": "6.0.0-alpha.8",
+    "state": "The universal prompt was receiver-first and the Hybrid Receiver contract still allowed an interpretation where every carrier could define a wholly private visual dialect. Tlaloc could search receiver behavior, but there was no explicit canonical WRITE contract from Semantic IR to a versioned Origami aesthetic."
+  },
+  "after": {
+    "version": "6.0.0-alpha.9",
+    "state": "Origami defines one canonical functional visual aesthetic per profile version, keeps ROSETTA mandatory for self-description and compatibility, adds a deterministic Writer construction-plan runtime, and teaches the Master Prompt both READ and WRITE modes. Visual changes found by Tlaloc become candidate profile revisions and only alter the aesthetic through explicit versioned promotion.",
+    "artifacts": [
+      "spec/CANONICAL_VISUAL_GRAMMAR_R0.json",
+      "spec/WRITER_R0.json",
+      "docs/CANONICAL_VISUAL_GRAMMAR_R0.md",
+      "docs/WRITER_R0.md",
+      "internal/writer/",
+      "cmd/origami-write-plan/",
+      "generated/MASTER_PROMPT.md"
+    ]
+  },
+  "current_profile": {
+    "id": "origami.canonical-aesthetic.r0",
+    "primary_palette": "HIGH_CONTRAST_MONOCHROME",
+    "canonical_dimensions": ["GEOMETRY","FILL_CONTRAST","POSITION","TOPOLOGY","ENCLOSURE","SCALE","REPETITION","DENSITY","LIMITED_TEXT"],
+    "experimental_dimensions": ["COLOR","NUMERIC_STRUCTURE","TEMPORAL"]
+  },
+  "evolution_boundary": {
+    "tlaloc": "search/mutate/evaluate prompt and representation candidates",
+    "origami": "validate semantic/visual contract and canonical profile",
+    "tonal": "aggregate promotion/composition gate"
+  },
+  "hard_invariants": [
+    "ONE_CANONICAL_AESTHETIC_PER_PROFILE_VERSION",
+    "ROSETTA_ALWAYS_PRESENT",
+    "ROSETTA_DOES_NOT_LICENSE_PER_DOCUMENT_AESTHETIC_DRIFT",
+    "SOURCE_SCREENSHOT_NE_ORIGAMI",
+    "SEMANTIC_IR_PRECEDES_VISUAL_COMPILATION",
+    "COMPILER_NOT_MODEL_PIXELS_IS_CARRIER_AUTHORITY",
+    "ROUNDTRIP_REQUIRED",
+    "TLALOC_PROPOSES_ORIGAMI_VALIDATES_TONAL_PROMOTES",
+    "FALSE_EXACT=0"
+  ],
+  "remaining": [
+    "connect Writer construction plan to the next canonical carrier renderer revision",
+    "run Tlaloc representation-search campaigns for color/numeric/other candidate channels",
+    "promote no aesthetic change without cross-model evidence when perception claims are involved"
+  ]
+}

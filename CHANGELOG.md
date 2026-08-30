@@ -1,5 +1,59 @@
 # Origami changelog
 
+## 6.0.0-alpha.9 — Canonical Visual Grammar R0 + Writer R0
+
+### Added
+
+- `origami.canonical-visual-grammar.r0` defining one canonical Origami aesthetic per promoted profile version;
+- explicit distinction between functional visual encoding and arbitrary per-document styling;
+- canonical visual dimensions for geometry, fill/contrast, position, topology, enclosure, scale, repetition, density and limited declarative text;
+- color, numeric/mathematical structure and temporal channels as experimental candidate dimensions rather than automatic semantic authority;
+- canonical primitive roles matching the current Fixed Carrier visual language;
+- mandatory ROSETTA as self-description of profile/version, active dimensions and concrete bindings without permitting arbitrary aesthetic drift;
+- `origami.writer.r0` READ/WRITE construction contract;
+- deterministic `internal/writer` planner mapping Semantic IR intents onto the canonical visual grammar;
+- `origami-write-plan` CLI;
+- semantic roundtrip requirement `DECODE(COMPILE(SEMANTIC_IR)) ~= SEMANTIC_IR`;
+- Master Prompt R1 with READ and WRITE modes;
+- explicit PDF/source -> Semantic IR -> visual intent -> canonical grammar -> ROSETTA -> compiler -> roundtrip verification workflow.
+
+### Corrected
+
+- replaced the earlier interpretation that every carrier may invent a completely different visual dialect;
+- profile-bound symbols now have versioned canonical meaning while ROSETTA remains mandatory for self-description and compatibility;
+- a model may not directly paint an arbitrary PNG and call it a valid Origami carrier;
+- a PDF screenshot or text poster remains forbidden as an Origami semantic representation.
+
+### Evolution boundary
+
+- Tlaloc owns experimental search over candidate prompt/channel/layout/color/shape/numeric/temporal strategies;
+- Origami owns validation and canonical visual-profile semantics;
+- Tonal owns aggregate stack/profile promotion;
+- aesthetic changes are promoted as new canonical profile versions, not private styles for individual documents;
+- old carriers remain readable through embedded profile/version + ROSETTA.
+
+## 6.0.0-alpha.8 — Perception Promotion R1
+
+### Added
+
+- deterministic `origami.perception-promotion.r1` evaluator;
+- T0 BOOT comparison against actual Fixed Carrier ground truth;
+- duplicated top/bottom visual probe checks and agreement gate;
+- exact Tool Protocol and Address ABI checks;
+- optional T3 machine-record comparison against the actual decoded carrier;
+- explicit `MOCK` vs `REAL_MODEL` evidence kinds;
+- independent Hybrid and Native-T3 per-trial eligibility;
+- `origami-perception-eval` CLI.
+
+### Promotion boundary
+
+- a mock may pass every mechanical check but can never become empirical promotion evidence;
+- a real single trial is only one eligible trial, not a support claim;
+- Hybrid trial success does not require Native T3;
+- Tlaloc owns cross-model campaigns/transport variants/real tool loops;
+- Tonal owns final aggregate stack promotion;
+- real external VLM evidence remains pending.
+
 ## 6.0.0-alpha.7 — Semantic Spine R1
 
 ### Restored / connected
@@ -30,7 +84,7 @@
 
 - Virtual Memory R0, Memory Scale Lab R0, Evidence Reduction R0 and Fixed Carrier R2 remain intact;
 - OHF R3.10-LAB, Perception Lab, visual-family experiments, DVR/PSS, Glyph Calculus, SAFE_MICRO_ISA and Context SIMD remain active evidence-gated research assets;
-- Tlaloc `6.0.0-alpha.11` remains the existing Canonical Document IR/OCR, Tlaloque, Merkle exact plane, CanonicalState, External Recursive Attention H0-H5 and `tlaloc.origami-tools.r2` orchestration/data-plane implementation; alpha.7 does not fork that pipeline into Origami.
+- Tlaloc remains the existing Canonical Document IR/OCR, Tlaloque, Merkle exact plane, CanonicalState, External Recursive Attention H0-H5 and `tlaloc.origami-tools.r2` orchestration/data-plane implementation; alpha.7 does not fork that pipeline into Origami.
 
 ### New tools/contracts
 
@@ -123,7 +177,7 @@ Alpha.6 implements the deterministic reducer. Alpha.7 later tightens exactness f
 - legacy `Address/Value/Links` memory remains readable and queryable;
 - legacy `Render/DecodePNG` remains available;
 - rich virtual-memory carriers use optional memory-profile metadata and `RenderMemory/DecodeMemoryPNG`;
-- the Master Prompt was not manually changed.
+- the original Master Prompt remained receiver-only at this stage.
 
 ### Invariants
 

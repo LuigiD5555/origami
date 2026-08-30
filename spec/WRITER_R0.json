@@ -1,0 +1,89 @@
+{
+  "contract_id": "origami.writer.r0",
+  "status": "EXPERIMENTAL_REFERENCE_IMPLEMENTED",
+  "visual_grammar_contract": "origami.canonical-visual-grammar.r0",
+  "semantic_spine_contract": "origami.semantic-spine.r1",
+  "purpose": "Allow a compatible model or deterministic toolchain to construct a new Origami carrier from source/document semantics using the single canonical Origami visual grammar instead of inventing an ad-hoc per-carrier aesthetic.",
+  "modes": ["READ", "WRITE"],
+  "write_flow": [
+    "INGEST_SOURCE_OR_CANONICAL_DOCUMENT_IR",
+    "DERIVE_OR_ACCEPT_SEMANTIC_IR",
+    "DECLARE_VISUAL_INTENTS",
+    "BIND_INTENTS_TO_CANONICAL_DIMENSIONS",
+    "GENERATE_ROSETTA",
+    "GENERATE_PROGRAM_INDEX_MEMORY_VERIFICATION",
+    "COMPILE_CANONICAL_CARRIER",
+    "SELF_VERIFY",
+    "ROUNDTRIP_SEMANTIC_CHECK"
+  ],
+  "source_policy": {
+    "pdf_to_png_screenshot_forbidden": true,
+    "raw_text_poster_forbidden": true,
+    "source_may_be_pdf_image_text_or_document_ir": true,
+    "semantic_extraction_may_use_tlaloc_or_other_external_system": true,
+    "final_visual_compilation_authority": "ORIGAMI_CANONICAL_PROFILE"
+  },
+  "visual_intent_classes": [
+    "IDENTITY",
+    "HIERARCHY",
+    "RELATION",
+    "DEPENDENCY",
+    "SCOPE",
+    "IMPORTANCE",
+    "STATE",
+    "UNCERTAINTY",
+    "EVIDENCE",
+    "VERIFICATION",
+    "ADDRESSABILITY",
+    "TEMPORAL_ORDER",
+    "REDUNDANCY",
+    "ROUTING"
+  ],
+  "construction_spec": {
+    "required": [
+      "schema",
+      "profile_id",
+      "source_identity",
+      "semantic_commitment",
+      "visual_intents",
+      "rosetta",
+      "sections",
+      "verification_plan"
+    ],
+    "profile_id": "origami.canonical-aesthetic.r0",
+    "carrier_local_style_override": false
+  },
+  "rosetta_generation": {
+    "must_include_profile_id": true,
+    "must_include_profile_version": true,
+    "must_include_active_dimensions": true,
+    "must_map_visual_primitives_to_semantic_roles": true,
+    "must_include_any_experimental_extension": true,
+    "must_not_depend_on_private_prompt_state": true
+  },
+  "model_behavior": {
+    "if_compiler_available": "EMIT_CONSTRUCTION_SPEC_AND_USE_COMPILER",
+    "if_compiler_unavailable": "EMIT_CONSTRUCTION_SPEC_ONLY_AND_DO_NOT_CLAIM_VALID_CARRIER",
+    "may_directly_paint_arbitrary_png": false,
+    "may_change_canonical_aesthetic_without_profile_promotion": false
+  },
+  "roundtrip_gate": {
+    "required": true,
+    "equation": "DECODE(COMPILE(SEMANTIC_IR)) ~= SEMANTIC_IR",
+    "exact_parts": "IDENTITY_ADDRESS_HASH_AND_VERIFICATION_FIELDS_REQUIRE_EXACT_MATCH",
+    "semantic_parts": "SEMANTIC_EQUIVALENCE_UNDER_DECLARED_CANONICALIZATION",
+    "failure_state": "INVALID_CARRIER"
+  },
+  "hard_invariants": [
+    "WRITE_USES_CANONICAL_VISUAL_PROFILE",
+    "ROSETTA_IS_REQUIRED_IN_READ_AND_WRITE",
+    "MODEL_DOES_NOT_DEFINE_A_NEW_AESTHETIC_PER_DOCUMENT",
+    "SOURCE_SCREENSHOT_NE_ORIGAMI",
+    "CONSTRUCTION_SPEC_PRECEDES_COMPILATION",
+    "COMPILER_NOT_MODEL_PIXELS_IS_CARRIER_AUTHORITY",
+    "ROUNDTRIP_REQUIRED",
+    "FALSE_EXACT=0"
+  ],
+  "reference_runtime": "internal/writer",
+  "reference_cli": "cmd/origami-write-plan"
+}

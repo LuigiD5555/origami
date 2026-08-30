@@ -21,6 +21,7 @@ build:
 	go build -trimpath -o bin/origami-ingest ./cmd/origami-ingest
 	go build -trimpath -o bin/origami-system ./cmd/origami-system
 	go build -trimpath -o bin/origami-perception-eval ./cmd/origami-perception-eval
+	go build -trimpath -o bin/origami-write-plan ./cmd/origami-write-plan
 
 install:
 	./install.sh

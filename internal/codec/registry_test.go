@@ -9,6 +9,12 @@ func TestReferenceRegistryValid(t *testing.T) {
 	}
 }
 
+func TestReferenceProfile3Valid(t *testing.T) {
+	if err := ValidateProfile3(ReferenceProfile3(), ReferenceRegistry()); err != nil {
+		t.Fatalf("profile-3 contract invalid: %v", err)
+	}
+}
+
 func TestSemanticCodecDoesNotRequireExactCapability(t *testing.T) {
 	r := ReferenceRegistry()
 	for _, e := range r.Entries {
@@ -43,7 +49,7 @@ func TestS2E2RoundTrip(t *testing.T) {
 		{ID: "part-2", Label: "Deep Learning", Address: "ohf://book/index/part-2"},
 		{ID: "part-3", Label: "Attention", Address: "ohf://book/index/part-3"},
 	}}
-	ir, err := EncodeSuperIndex(want, "origami.fixed-carrier.r2.profile-3")
+	ir, err := EncodeSuperIndex(want, Profile3ID)
 	if err != nil {
 		t.Fatal(err)
 	}

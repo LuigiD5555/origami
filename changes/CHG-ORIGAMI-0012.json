@@ -1,0 +1,35 @@
+{
+  "schema": "origami.change-control.r0",
+  "change_id": "CHG-ORIGAMI-0012",
+  "title": "Perceptual profile evolution, Rosetta reveal procedures and corrected development-tool hierarchy",
+  "component": "visual-profile/perceptual-evolution",
+  "status": "implemented_contract_extension_evidence_pending",
+  "before": {
+    "version": "6.0.0-alpha.9",
+    "state": "Canonical Visual Grammar and Writer READ/WRITE existed, but interference/depth/emergent reveal semantics were not connected to Writer Rosetta entries and the ecosystem documentation incorrectly treated Tonal as Origami profile-promotion authority."
+  },
+  "after": {
+    "version": "6.0.0-alpha.10",
+    "state": "Origami keeps one canonical aesthetic per profile version, supports explicit Rosetta reveal procedures for promoted interference/depth/temporal/emergent channels, and defines the hierarchy correctly: development tools such as Tlaloc propose and experiment; Origami owns promotion of Origami profiles; Tonal optionally composes multiple development tools such as Tlaloc and Blueprint Framework.",
+    "experimental_dimensions": ["COLOR","NUMERIC_STRUCTURE","TEMPORAL","INTERFERENCE","DEPTH","EMERGENT"],
+    "reveal_examples": ["MOIRE","PHASE_SHIFT","STEREO_BIND","PARALLAX_RESOLVE","KINETIC_REVEAL","TEMPORAL_INTEGRATE"]
+  },
+  "optimization_direction": {
+    "maximize": ["recoverable_semantic_capacity_per_byte","semantic_roundtrip","readability","perceptual_reveal","routing_accuracy","verified_evidence_accuracy","transport_robustness"],
+    "minimize": ["carrier_bytes","recognition_latency","bootstrap_steps","decode_steps","model_facing_context"]
+  },
+  "authority": {
+    "origami": "OWNS_ORIGAMI_SEMANTICS_AND_PROFILE_PROMOTION",
+    "tlaloc": "PRIMARY_CURRENT_DEVELOPMENT_KIT_AND_EXPERIMENTAL_SEARCH_SYSTEM",
+    "other_development_tools": "ALLOWED",
+    "tonal": "OPTIONAL_MULTI_TOOL_COMPOSITION_INTEGRATION_PROVENANCE"
+  },
+  "hard_invariants": [
+    "ONE_CANONICAL_AESTHETIC_PER_PROFILE_VERSION",
+    "PROMOTED_PERCEPTUAL_CHANNEL_REQUIRES_REVEAL_PROCEDURE",
+    "FAILED_REVEAL_NE_SEMANTIC_ABSENCE",
+    "DEVELOPMENT_TOOL_PROPOSES_ORIGAMI_PROMOTES",
+    "TONAL_COMPOSITION_NE_ORIGAMI_PROFILE_PROMOTION",
+    "FALSE_EXACT=0"
+  ]
+}

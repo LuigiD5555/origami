@@ -1,0 +1,66 @@
+{
+  "contract_id": "origami.evidence-reduction.r0",
+  "status": "EXPERIMENTAL_REFERENCE_IMPLEMENTED",
+  "memory_contract": "origami.virtual-memory.r0",
+  "purpose": "Convert probabilistic swarm proposals into deterministic canonical claim states using addressable verified evidence.",
+  "boundary": {
+    "swarm_generation": "EXTERNAL_TLALOC_OR_OTHER_MODEL_SYSTEM",
+    "candidate_reasoning": "PROBABILISTIC_ALLOWED",
+    "memory_and_evidence_authority": "ORIGAMI",
+    "canonical_reduction": "ORIGAMI_DETERMINISTIC"
+  },
+  "flow": [
+    "CONTEXT_PACKET",
+    "EXTERNAL_SWARM_PROPOSALS",
+    "EVIDENCE_ADDRESS_RESOLUTION",
+    "IDENTITY_AND_VERIFICATION_CHECK",
+    "DETERMINISTIC_DEDUPLICATION",
+    "CLAIM_REDUCTION",
+    "CANONICAL_CLAIM_STATE"
+  ],
+  "proposal": {
+    "required": ["id", "claim_key", "position"],
+    "positions": ["SUPPORT", "OPPOSE", "UNKNOWN"],
+    "evidence_ref": ["address", "fidelity", "cid", "source_hash"],
+    "confidence_semantics": "DIAGNOSTIC_ONLY_NOT_TRUTH_AUTHORITY"
+  },
+  "evidence": {
+    "default_requested_fidelity": "evidence",
+    "accepted_only_when": [
+      "ADDRESS_EXISTS",
+      "CID_MATCHES_WHEN_DECLARED",
+      "SOURCE_HASH_MATCHES_WHEN_DECLARED",
+      "REQUESTED_FIDELITY_EXISTS",
+      "CONTENT_LEVEL_VERIFIED_TRUE"
+    ],
+    "deduplication_anchor": "CID + FIDELITY + SOURCE_HASH",
+    "independent_source_key_order": ["SOURCE_HASH", "SOURCE_ID", "CID"]
+  },
+  "default_policy": {
+    "min_verified_evidence": 1,
+    "min_independent_sources": 1
+  },
+  "reduction": {
+    "VERIFIED": "support threshold met and opposing threshold not met",
+    "REJECTED": "opposing threshold met and support threshold not met",
+    "CONFLICT": "both support and opposing thresholds met",
+    "UNKNOWN": "neither side reaches verified evidence thresholds"
+  },
+  "exactness": {
+    "VERIFIED_EXACT": "earned only from accepted verified exact-fidelity support evidence and a VERIFIED claim",
+    "NOT_CLAIMED": "all other outcomes"
+  },
+  "hard_invariants": [
+    "VERIFIED_EVIDENCE_ONLY",
+    "CID_MISMATCH_REJECTED",
+    "SOURCE_HASH_MISMATCH_REJECTED",
+    "DUPLICATE_EVIDENCE_COUNTS_ONCE",
+    "AGENT_CONFIDENCE_IS_NOT_AUTHORITY",
+    "UNKNOWN_OVER_UNSUPPORTED_CLAIM",
+    "FALSE_EXACT=0",
+    "TLALOC_SWARM_ORCHESTRATION_REMAINS_EXTERNAL",
+    "ORIGAMI_REDUCTION_IS_ORDER_DETERMINISTIC"
+  ],
+  "reference_runtime": "internal/evidence",
+  "reference_cli": "cmd/origami-reduce"
+}

@@ -18,6 +18,8 @@ build:
 	go build -trimpath -o bin/origami-memory-scale ./cmd/origami-memory-scale
 	go build -trimpath -o bin/origami-fixed-carrier ./cmd/origami-fixed-carrier
 	go build -trimpath -o bin/origami-reduce ./cmd/origami-reduce
+	go build -trimpath -o bin/origami-ingest ./cmd/origami-ingest
+	go build -trimpath -o bin/origami-system ./cmd/origami-system
 
 install:
 	./install.sh

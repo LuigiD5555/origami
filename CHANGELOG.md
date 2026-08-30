@@ -1,5 +1,48 @@
 # Origami changelog
 
+## 6.0.0-alpha.11 — Portable Development-Tool Boundary R0
+
+### Added / corrected
+
+- adds `origami.development-tool-boundary.r0`;
+- makes the universal Master Prompt R2 the portable compatibility baseline;
+- explicitly requires no Tlaloc, Tonal, sandbox, Go/Python runtime or external tools for baseline prompt compatibility;
+- distinguishes prompt/native capability from optional tool-assisted/Hybrid capability;
+- READ without tools now returns `UNKNOWN` or `NOT_VERIFIED` when an unavailable mechanical/exact operation is necessary;
+- WRITE without a compiler may emit Semantic IR, visual intent, ROSETTA and construction specification but must report `CONSTRUCTION_SPEC_ONLY` rather than claiming a compiled carrier;
+- generalizes Evidence Reduction and Semantic Spine external proposal/orchestration boundaries beyond Tlaloc;
+- makes Tlaloc, Blueprint Framework and future systems optional development tools while Origami owns its own semantics, Master Prompt, canonical profile and releases;
+- clarifies Tonal as optional multi-tool composition/reproducibility rather than Origami profile authority;
+- preserves the existing `tlaloc.origami-tools.r2` path as an optional external provider ABI.
+
+### Invariants
+
+- `ORIGAMI_OWNS_ORIGAMI_RELEASES`;
+- `MASTER_PROMPT_IS_PORTABLE_BASELINE`;
+- `DEVELOPMENT_TOOL != RUNTIME_REQUIREMENT`;
+- `TOOL_ASSISTED_SUCCESS != PROMPT_ONLY_SUCCESS`;
+- `FALSE_EXACT=0`.
+
+### Evidence boundary
+
+Alpha.11 defines the portable/no-hidden-runtime contract. It does not claim that prompt-only operation already matches Hybrid/tool-assisted operation on every task or that every target model can natively read/write every channel.
+
+## 6.0.0-alpha.10 — Perceptual Profile Evolution + ROSETTA Reveal Semantics
+
+### Added / connected
+
+- connects the alpha.2 interference, depth, temporal and emergent perceptual-channel contracts to canonical visual-profile evolution;
+- adds experimental canonical dimension families for interference, depth and emergent perception alongside color, numeric and temporal channels;
+- extends Writer/ROSETTA planning with reveal procedures for non-static channels;
+- reveal procedures can declare operations such as `MOIRE`, `PHASE_SHIFT`, `STEREO_BIND`, `PARALLAX_RESOLVE`, `KINETIC_REVEAL` and `TEMPORAL_INTEGRATE` plus required inputs/conditions;
+- failed reveal remains `UNKNOWN`, never semantic absence;
+- formalizes profile optimization toward more recoverable semantics/readability/robustness with fewer bytes, recognition time, BOOT/decode steps and model-facing context;
+- corrects project authority: external development tools propose and measure; Origami validates/adopts its own profile versions; Tonal is optional composition.
+
+### Evidence boundary
+
+No moiré, stereo, temporal, numeric or color candidate is promoted merely by this release. Advanced channels remain evidence-gated.
+
 ## 6.0.0-alpha.9 — Canonical Visual Grammar R0 + Writer R0
 
 ### Added
@@ -24,12 +67,12 @@
 - a model may not directly paint an arbitrary PNG and call it a valid Origami carrier;
 - a PDF screenshot or text poster remains forbidden as an Origami semantic representation.
 
-### Evolution boundary
+### Evolution boundary at alpha.9
 
-- Tlaloc owns experimental search over candidate prompt/channel/layout/color/shape/numeric/temporal strategies;
-- Origami owns validation and canonical visual-profile semantics;
-- Tonal owns aggregate stack/profile promotion;
-- aesthetic changes are promoted as new canonical profile versions, not private styles for individual documents;
+- Tlaloc was the primary experimental search implementation for prompt/channel/layout/color/shape/numeric/temporal strategies;
+- Origami owned validation and canonical visual-profile semantics;
+- later releases clarified that Origami itself owns profile promotion and Tonal is only optional toolchain composition;
+- aesthetic changes are versioned profile changes, not private styles for individual documents;
 - old carriers remain readable through embedded profile/version + ROSETTA.
 
 ## 6.0.0-alpha.8 — Perception Promotion R1
@@ -50,8 +93,8 @@
 - a mock may pass every mechanical check but can never become empirical promotion evidence;
 - a real single trial is only one eligible trial, not a support claim;
 - Hybrid trial success does not require Native T3;
-- Tlaloc owns cross-model campaigns/transport variants/real tool loops;
-- Tonal owns final aggregate stack promotion;
+- Tlaloc was the primary cross-model campaign/transport/tool-loop implementation;
+- Origami remains capability/profile authority; later releases clarify Tonal as optional composition only;
 - real external VLM evidence remains pending.
 
 ## 6.0.0-alpha.7 — Semantic Spine R1
@@ -84,7 +127,7 @@
 
 - Virtual Memory R0, Memory Scale Lab R0, Evidence Reduction R0 and Fixed Carrier R2 remain intact;
 - OHF R3.10-LAB, Perception Lab, visual-family experiments, DVR/PSS, Glyph Calculus, SAFE_MICRO_ISA and Context SIMD remain active evidence-gated research assets;
-- Tlaloc remains the existing Canonical Document IR/OCR, Tlaloque, Merkle exact plane, CanonicalState, External Recursive Attention H0-H5 and `tlaloc.origami-tools.r2` orchestration/data-plane implementation; alpha.7 does not fork that pipeline into Origami.
+- Tlaloc remains an available external Canonical Document IR/OCR, Tlaloque, Merkle exact plane, CanonicalState, External Recursive Attention H0-H5 and `tlaloc.origami-tools.r2` implementation; alpha.11 later generalizes this as optional external development/tool infrastructure.
 
 ### New tools/contracts
 
@@ -103,7 +146,7 @@ Alpha.7 provides a connected deterministic semantic reference. Built-in arbitrar
 ### Added
 
 - generalized `origami.evidence-reduction.r0` contract;
-- structured external swarm proposals with `SUPPORT`, `OPPOSE` and `UNKNOWN` positions;
+- structured external proposals with `SUPPORT`, `OPPOSE` and `UNKNOWN` positions;
 - Origami-owned evidence resolution against address, CID, source hash and requested fidelity;
 - verified-evidence-only reduction authority;
 - deterministic evidence deduplication so repeated agents cannot manufacture consensus from one source;
@@ -117,7 +160,7 @@ Alpha.7 provides a connected deterministic semantic reference. Built-in arbitrar
 
 ### Boundary
 
-- Tlaloc continues to own swarm/Tlaloque search, prompts, exploration and proposal generation;
+- external model/development systems may generate proposals;
 - Origami owns addressable evidence identity, verification, deterministic reduction and exactness state;
 - agent confidence is diagnostic and never substitutes for verified evidence.
 
@@ -149,7 +192,8 @@ Alpha.6 implements the deterministic reducer. Alpha.7 later tightens exactness f
 
 - corpus growth occurs in the external canonical memory plane rather than by growing the visual canvas;
 - OCR is optional and is not BOOT authority;
-- Native VLM readability remains unpromoted until held-out evidence exists.
+- Native VLM readability remains unpromoted until held-out evidence exists;
+- later releases classify the Tlaloc tool ABI as an optional provider rather than a universal Origami dependency.
 
 ## 6.0.0-alpha.4 — Virtual Memory R0
 
@@ -247,7 +291,7 @@ Deterministic runtime, PNG round-trip and budget tests are part of this release 
 
 ### Removed from Origami ownership
 
-Behavior compilation, PromptIR, Tlaloque coordination/training, target-model orchestration and behavioral-artifact promotion belong to Tlaloc.
+Behavior compilation, PromptIR, Tlaloque coordination/training and target-model experiment orchestration belong to external development tooling such as Tlaloc. Origami owns Origami semantics/releases.
 
 ## Historical OHF / R3.10 laboratory milestones
 

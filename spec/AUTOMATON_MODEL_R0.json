@@ -1,0 +1,30 @@
+{
+  "contract_id": "origami.automaton-model.r0",
+  "status": "EXPERIMENTAL_REFERENCE_IMPLEMENTATION",
+  "purpose": "Represent bounded local semantic behavior as deterministic graph automata suitable for Origami read/write transport and Tlaloc behavioral distillation.",
+  "cell_model": {
+    "unit": "SEMANTIC_GRAPH_AUTOMATON_CELL",
+    "fields": ["id", "kind", "initial_state", "neighbors"],
+    "interpretation": "A cell is a bounded local transition unit. A Tlaloque may be distilled into one or more cells, but Origami does not require Tlaloc at runtime."
+  },
+  "rule_model": {
+    "fields": ["id", "target_cell", "from_state", "to_state", "requires", "priority"],
+    "update_mode": "SYNCHRONOUS",
+    "conflict_resolution": "HIGHEST_PRIORITY_THEN_LEXICOGRAPHIC_RULE_ID",
+    "undeclared_conflict": "INVALID"
+  },
+  "graph_model": {
+    "directed": true,
+    "edge_roles": ["NEIGHBOR", "DEPENDENCY", "EMISSION", "CAUSAL", "ROUTE"]
+  },
+  "transition": "S_(t+1)=F(S_t,ACTIVE_RULES_t,G,R)",
+  "stop_conditions": ["STABLE", "MAX_STEPS", "DECLARED_TERMINAL_STATE"],
+  "hard_invariants": [
+    "LOCAL_RULES_ARE_DECLARED",
+    "SYNCHRONOUS_STEP_IS_DETERMINISTIC",
+    "RULE_CONFLICT_RESOLUTION_IS_DETERMINISTIC",
+    "GRAPH_ADDRESSABILITY_REQUIRED",
+    "UNKNOWN_OVER_INVENTION",
+    "FALSE_EXACT=0"
+  ]
+}

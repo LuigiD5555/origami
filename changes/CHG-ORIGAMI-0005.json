@@ -1,0 +1,72 @@
+{
+  "schema": "origami.change-control.r0",
+  "change_id": "CHG-ORIGAMI-0005",
+  "title": "Add model-agnostic Virtual Memory R0 and redundant visual navigation",
+  "component": "virtual-memory/r0",
+  "status": "implemented_pending_ci_and_native_perception_evidence",
+  "before": {
+    "state": "Accessible Memory, SuperIndex and Dependency Folding established bounded selective-access experiments, but the Hybrid memory unit exposed only Address/Value/Links and there was no generic fidelity ladder, context packet, CID/address separation, multi-carrier graph-signature federation or visual macro/meso/micro memory projection.",
+    "version": "6.0.0-alpha.3"
+  },
+  "after": {
+    "state": "Virtual Memory R0 defines a model-agnostic addressable memory node, metadata-only search, graph-addressed selective unfolding, bounded ContextPacket, working-set cache, carrier GraphSignature federation and an experimental visual macro/meso/micro navigation band coexisting with the verified exact transport in one PNG.",
+    "version": "6.0.0-alpha.4",
+    "artifacts": [
+      "internal/memory/",
+      "internal/lab/memoryvisual/",
+      "internal/lab/hybridcarrier/carrier.go",
+      "internal/lab/hybridruntime/runtime.go",
+      "cmd/origami-memory/",
+      "spec/VIRTUAL_MEMORY_R0.json",
+      "spec/VISUAL_MEMORY_PROFILE_R0.json",
+      "spec/VIRTUAL_MEMORY_NAV_EVAL_R0.json",
+      "docs/VIRTUAL_MEMORY_R0.md",
+      "docs/VISUAL_MEMORY_LAYOUT_R0.md"
+    ]
+  },
+  "compatibility": {
+    "hybrid_carrier_schema": "origami.hybrid-carrier.r0 remains valid",
+    "legacy_memory": "Address/Value/Links carriers remain queryable as summary-level legacy nodes",
+    "legacy_transport": "Render/DecodePNG remain available",
+    "new_transport": "RenderMemory/DecodeMemoryPNG add a declared redundant navigation band",
+    "master_prompt": "not manually modified"
+  },
+  "invariants": [
+    "FALSE_EXACT=0",
+    "UNKNOWN over invented recovery",
+    "address is separate from CID",
+    "active context is separate from total memory",
+    "no implicit global exact-payload scan",
+    "fidelity degrades before budget violation",
+    "visual navigation is redundant and never exactness authority",
+    "42 visual families remain evidence-gated generator-tree candidates",
+    "model specialization remains optional",
+    "carrier target <=500 KB"
+  ],
+  "tests": {
+    "deterministic": [
+      "virtual-memory budgeted query",
+      "fidelity fallback",
+      "working-set eviction",
+      "multi-carrier signature routing",
+      "legacy Value compatibility",
+      "rich memory profile round-trip",
+      "composite PNG -> exact logical memory recovery",
+      "runtime QUERY/EXPAND/SIGNATURE",
+      "formal-contract coherence"
+    ],
+    "native_pending": [
+      "macro/meso/micro visual navigation",
+      "edge following",
+      "resize/degradation",
+      "distractor rejection",
+      "symbol permutation",
+      "cross-model navigation"
+    ]
+  },
+  "promotion": {
+    "virtual_memory_runtime": "eligible after green deterministic CI",
+    "visual_native_profile": "NOT_PROMOTED until held-out model evidence",
+    "specialized_llm": "out of scope; future optional consumer"
+  }
+}

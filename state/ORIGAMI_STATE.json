@@ -2,8 +2,8 @@
   "schema": "origami.state.v2",
   "status_date": "2026-08-29",
   "project": {
-    "version": "6.0.0-alpha.3",
-    "role": "visual/computational representation and state-machine language",
+    "version": "6.0.0-alpha.4",
+    "role": "visual/computational representation, state-machine language and model-agnostic virtual memory",
     "work_system": "Tlaloc is external and optional",
     "status": "EXPERIMENTAL"
   },
@@ -25,7 +25,7 @@
       "contract_id": "origami.hybrid-receiver.r0",
       "document": "docs/PORTABLE_MODEL_EXPERIMENT_R0.md",
       "machine_readable": "spec/HYBRID_RECEIVER_R0.json",
-      "status": "EXPERIMENTAL_NOT_PROMOTED",
+      "status": "EXPERIMENTAL_REFERENCE_MODEL_EVIDENCE_PENDING",
       "primary_mode": "HYBRID",
       "required_sections": ["BOOT", "ROSETTA", "PROGRAM", "INDEX", "MEMORY", "VERIFICATION"],
       "reference_runtime": "internal/receiver",
@@ -33,9 +33,32 @@
       "master_prompt": "generated/MASTER_PROMPT.md",
       "master_prompt_status": "REFERENCE_CANDIDATE"
     },
+    "virtual_memory": {
+      "contract_id": "origami.virtual-memory.r0",
+      "document": "docs/VIRTUAL_MEMORY_R0.md",
+      "machine_readable": "spec/VIRTUAL_MEMORY_R0.json",
+      "introduced": "6.0.0-alpha.4",
+      "status": "EXPERIMENTAL_REFERENCE_IMPLEMENTED",
+      "reference_runtime": "internal/memory",
+      "universal_cli": "cmd/origami-memory",
+      "working_window_token_eq": 4000,
+      "window_semantics": "ACTIVE_MODEL_FACING_INTERFACE_NOT_STORAGE_CAP_NOT_CUMULATIVE_TASK_CAP",
+      "fidelity_order": ["label", "abstract", "summary", "detail", "evidence", "exact"],
+      "multi_carrier": "GRAPH_SIGNATURE_FEDERATION_IMPLEMENTED"
+    },
+    "visual_memory": {
+      "contract_id": "origami.visual-memory-profile.r0",
+      "document": "docs/VISUAL_MEMORY_LAYOUT_R0.md",
+      "machine_readable": "spec/VISUAL_MEMORY_PROFILE_R0.json",
+      "evaluation_contract": "spec/VIRTUAL_MEMORY_NAV_EVAL_R0.json",
+      "introduced": "6.0.0-alpha.4",
+      "status": "DETERMINISTIC_PROJECTION_IMPLEMENTED_NATIVE_PERCEPTION_NOT_PROMOTED",
+      "reference_renderer": "internal/lab/memoryvisual",
+      "carrier_projection": "REDUNDANT_MACRO_MESO_MICRO_BAND_PLUS_EXACT_TRANSPORT"
+    },
     "accessible_memory": {
       "document": "docs/CAPACITY_LAB_R0.md",
-      "status": "EXPERIMENTAL_LAB",
+      "status": "SUPERSEDED_AS_ARCHITECTURE_BY_VIRTUAL_MEMORY_R0_RETAINED_AS_LAB_EVIDENCE",
       "working_window_token_eq": 4000,
       "window_semantics": "ACTIVE_MODEL_FACING_INTERFACE_NOT_STORAGE_CAP_NOT_CUMULATIVE_TASK_CAP"
     }
@@ -60,9 +83,12 @@
         "accessible_memory_lab",
         "dependency_folding",
         "hybrid_receiver",
+        "virtual_memory_runtime",
+        "multi_carrier_federation",
+        "visual_memory_map",
         "installer_lifecycle"
       ],
-      "last_track_change": "CHG-ORIGAMI-0004"
+      "last_track_change": "CHG-ORIGAMI-0005"
     }
   },
   "project_invariants": [
@@ -74,6 +100,10 @@
     "BOOT_PRECEDES_CARRIER_PAYLOAD_INTERPRETATION",
     "ROSETTA_PRECEDES_LOCAL_SYMBOL_EXECUTION",
     "ACTIVE_MODEL_INTERFACE_NE_TOTAL_MEMORY",
+    "ADDRESS_NE_CONTENT_ID",
+    "NO_IMPLICIT_GLOBAL_EXACT_SCAN",
+    "MODEL_SPECIALIZATION_IS_OPTIONAL",
+    "VISUAL_NAVIGATION_NE_EXACTNESS_AUTHORITY",
     "TLALOC_CANDIDATE_NE_ORIGAMI_PROMOTED_ARTIFACT"
   ],
   "ohf_track_invariants": [
@@ -91,5 +121,5 @@
     "UNINSTALL_PRESERVES_AMBIGUOUS_USER_DATA",
     "INSTALLER_NEVER_EDITS_SHELL_PROFILE"
   ],
-  "last_project_change": "CHG-ORIGAMI-0004"
+  "last_project_change": "CHG-ORIGAMI-0005"
 }

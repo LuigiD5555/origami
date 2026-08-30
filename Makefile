@@ -16,6 +16,7 @@ build:
 	go build -trimpath -o bin/origami-hybrid-tool ./cmd/origami-hybrid-tool
 	go build -trimpath -o bin/origami-memory ./cmd/origami-memory
 	go build -trimpath -o bin/origami-memory-scale ./cmd/origami-memory-scale
+	go build -trimpath -o bin/origami-fixed-carrier ./cmd/origami-fixed-carrier
 
 install:
 	./install.sh

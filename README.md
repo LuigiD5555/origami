@@ -17,6 +17,8 @@ ORIGAMI
 │   ├── local graph + GraphSignature federation
 │   ├── bounded ContextBudget / ContextPacket
 │   └── model-agnostic QUERY / EXPAND / SIGNATURE
+├── Memory Scale Lab R0
+│   └── fixed-context 1 -> 10 -> 100 -> 1,000 carrier scaling
 ├── Machine / dynamics / visual projection
 ├── Experimental self-boot receiver
 │   └── BOOT -> ROSETTA -> PROGRAM -> INDEX -> MEMORY -> VERIFICATION
@@ -92,6 +94,37 @@ question
 
 This lets total available knowledge scale independently from the active context budget.
 
+## Memory Scale Lab R0
+
+[`docs/MEMORY_SCALE_LAB_R0.md`](docs/MEMORY_SCALE_LAB_R0.md) and [`spec/MEMORY_SCALE_LAB_R0.json`](spec/MEMORY_SCALE_LAB_R0.json) turn the scaling claim into a reproducible deterministic experiment.
+
+The canonical ladder is:
+
+```text
+1 -> 10 -> 100 -> 1,000 carriers
+```
+
+while the active model-facing budget remains fixed at 4,000 token-equivalent.
+
+The lab reports routing work separately from payload exposure:
+
+```text
+signatures_scanned
+candidate_carriers
+selected_carriers
+metadata_nodes_loaded
+-------------------------
+nodes_touched
+graph_hops
+nodes_unfolded
+tokens_exposed
+irrelevant_tokens_exposed
+```
+
+This prevents a small ContextPacket from hiding an uncontrolled whole-memory scan. It also measures Carrier Top-1, Recall@K, target/evidence accuracy, negative UNKNOWN accuracy, Useful Context Efficiency and Knowledge Scale Degradation.
+
+The deterministic lab does **not** establish LLM quality or Native visual navigation. Its `trace.jsonl` is the stable query/evidence contract that later model campaigns reuse.
+
 ## Visual Memory Layout R0
 
 [`docs/VISUAL_MEMORY_LAYOUT_R0.md`](docs/VISUAL_MEMORY_LAYOUT_R0.md) and [`spec/VISUAL_MEMORY_PROFILE_R0.json`](spec/VISUAL_MEMORY_PROFILE_R0.json) define an experimental visual projection.
@@ -162,9 +195,18 @@ Targeted reopen:
   -budget 800
 ```
 
+Canonical fixed-context scaling run:
+
+```bash
+./bin/origami-memory-scale \
+  -config experiments/memory-scale-r0/config.json \
+  -out runs/memory-scale-r0/report.json \
+  -trace runs/memory-scale-r0/trace.jsonl
+```
+
 `origami-hybrid-tool` also supports `QUERY`, `EXPAND` and `SIGNATURE` when those operations are declared in the model packet.
 
-The reversible `install.sh` remains intentionally scoped to OHF laboratory binaries. `origami-memory` is currently built through `make build` rather than silently expanding that installer contract.
+The reversible `install.sh` remains intentionally scoped to OHF laboratory binaries. `origami-memory` and `origami-memory-scale` are currently built through `make build` rather than silently expanding that installer contract.
 
 ## Semantic and perceptual contracts
 
@@ -181,6 +223,8 @@ UNKNOWN > invented exactness
 address != CID
 active model interface != total memory
 no implicit global exact scan
+routing work must be accounted
+metadata loading must be accounted
 visual navigation != exactness authority
 nominal visual capacity != SAFE perceptual capacity
 perception != resolution != execution != verification
@@ -196,7 +240,7 @@ go vet ./...
 make build
 ```
 
-Deterministic tests validate memory selection, fidelity fallback, federation, composite-PNG exact recovery and runtime operations. They **do not** substitute for held-out Native VLM navigation evidence.
+Deterministic tests validate memory selection, fidelity fallback, federation, fixed-context scaling, composite-PNG exact recovery and runtime operations. They **do not** substitute for held-out LLM or Native VLM evidence.
 
 ## Source of truth
 
@@ -208,9 +252,11 @@ docs/CURRENT_STATE.md
 docs/ARCHITECTURE.md
 docs/VIRTUAL_MEMORY_R0.md
 docs/VISUAL_MEMORY_LAYOUT_R0.md
+docs/MEMORY_SCALE_LAB_R0.md
 spec/VIRTUAL_MEMORY_R0.json
 spec/VISUAL_MEMORY_PROFILE_R0.json
 spec/VIRTUAL_MEMORY_NAV_EVAL_R0.json
+spec/MEMORY_SCALE_LAB_R0.json
 spec/HYBRID_RECEIVER_R0.json
 state/ORIGAMI_STATE.json
 changes/
@@ -221,4 +267,4 @@ receiver/registry/
 
 `6.0.0-alpha.4`
 
-Alpha.4 implements the deterministic Virtual Memory R0 reference path and redundant visual memory projection. Native visual navigation remains experimental and unpromoted pending held-out cross-model evidence.
+Alpha.4 implements the deterministic Virtual Memory R0 reference path and redundant visual memory projection. Memory Scale Lab R0 now tests fixed-context scaling over that architecture. Model-facing quality and Native visual navigation remain experimental and unpromoted pending held-out evidence.

@@ -1,29 +1,35 @@
 {
   "schema": "origami.hybrid-receiver.r0",
   "status": "EXPERIMENTAL_NOT_PROMOTED",
-  "purpose": "A carrier can bootstrap its own local symbol system and bounded micro-machine while remaining usable through native perception, deterministic computation, or both.",
+  "purpose": "A carrier can bootstrap the active canonical Origami visual profile, its concrete ROSETTA bindings and bounded micro-machine while remaining usable through native perception, deterministic computation, or both.",
   "external_receiver_contract": {
-    "master_prompt_role": "universal bootstrap only",
-    "must_not_hardcode_carrier_symbol_meanings": true,
+    "master_prompt_role": "universal read/write bootstrap",
+    "canonical_visual_profile": "origami.canonical-aesthetic.r0",
+    "carrier_specific_aesthetic": false,
+    "must_read_rosetta_even_for_known_profile": true,
     "working_window_token_eq": 4000,
     "unknown_over_guessing": true
   },
   "carrier_sections": [
-    {"id": "BOOT", "required": true, "role": "entry point, section discovery, start state, version and execution hints"},
-    {"id": "ROSETTA", "required": true, "role": "carrier-local physical symbol to semantic token bindings"},
+    {"id": "BOOT", "required": true, "role": "entry point, canonical profile/version discovery, section discovery, start state and execution hints"},
+    {"id": "ROSETTA", "required": true, "role": "self-description of canonical profile/version, active dimensions and concrete visual-token to semantic-role bindings"},
     {"id": "PROGRAM", "required": true, "role": "deterministic micro-agent or micro-automata transition rules"},
     {"id": "INDEX", "required": true, "role": "addressable navigation and dependency discovery"},
     {"id": "MEMORY", "required": true, "role": "represented knowledge or behavior payload"},
-    {"id": "VERIFICATION", "required": true, "role": "proof references, checks and exactness boundaries"},
+    {"id": "VERIFICATION", "required": true, "role": "proof references, checks, semantic roundtrip and exactness boundaries"},
     {"id": "RESIDUAL", "required": false, "role": "explicit irreducible information; never a hidden escape hatch"}
   ],
   "modes": {
     "native": "BOOT + ROSETTA + PROGRAM + INDEX + MEMORY are interpreted from one visual carrier by a model with no undeclared decoder.",
     "computational": "The deterministic Origami runtime exposes bounded operations without requiring the model to visually decode low-level symbols.",
-    "hybrid": "The model uses the carrier for bootstrap/high-level navigation and delegates exact/local mechanical work to the declared Origami runtime. This is the primary target mode."
+    "hybrid": "The model uses the carrier for bootstrap/high-level navigation and delegates exact/local mechanical work to the declared Origami runtime. This is the primary target mode.",
+    "write": "The model/source pipeline emits a semantic/construction specification bound to the canonical visual profile; the deterministic Origami compiler creates and roundtrip-verifies the carrier."
   },
   "semantic_invariants": [
-    "CARRIER_LOCAL_SYMBOLS_HAVE_NO_GLOBAL_MEANING",
+    "ONE_CANONICAL_AESTHETIC_PER_PROFILE_VERSION",
+    "PROFILE_BOUND_SYMBOLS_HAVE_VERSIONED_MEANING",
+    "ROSETTA_RESTATES_AND_SELF_DESCRIBES_ACTIVE_BINDINGS",
+    "ROSETTA_DOES_NOT_LICENSE_PER_DOCUMENT_AESTHETIC_DRIFT",
     "BOOT_PRECEDES_PAYLOAD_INTERPRETATION",
     "ROSETTA_PRECEDES_SYMBOL_EXECUTION",
     "MICRO_AGENTS_ARE_DETERMINISTIC_AND_BOUNDED",
@@ -36,10 +42,12 @@
   ],
   "anti_shortcuts": [
     "Do not encode the source as a plaintext screenshot/poster.",
-    "Do not require the external prompt to contain the private Rosetta mapping.",
+    "Do not invent a private aesthetic for each carrier/document.",
+    "Do not remove ROSETTA merely because the profile is known.",
+    "Do not require the external prompt to contain private carrier bindings.",
     "Do not hide a full-memory scan behind a compact model-facing answer.",
     "Do not let the model silently perform semantics absent from the carrier/runtime.",
     "Do not report a semantic reconstruction as byte-exact without verification."
   ],
-  "cross_model_test": "Keep the external Master Prompt fixed while permuting carrier-local symbol assignments. Correct behavior must follow BOOT/ROSETTA rather than memorized glyph semantics."
+  "cross_model_test": "Keep the external Master Prompt and canonical profile version fixed while varying document semantics and permitted carrier parameters. Correct behavior must follow BOOT/ROSETTA and preserve the canonical aesthetic; future aesthetic revisions require explicit profile-version promotion rather than per-carrier drift."
 }

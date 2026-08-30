@@ -1,0 +1,64 @@
+{
+  "contract_id": "origami.memory-scale-lab.r0",
+  "status": "EXPERIMENTAL_DETERMINISTIC_LAB",
+  "memory_contract": "origami.virtual-memory.r0",
+  "goal": "Measure how available Origami knowledge can grow while the model-facing active context remains fixed.",
+  "canonical_config": "experiments/memory-scale-r0/config.json",
+  "default_scale": {
+    "carrier_counts": [1, 10, 100, 1000],
+    "nodes_per_carrier": 64,
+    "positive_queries_per_scale": 32,
+    "negative_queries_per_scale": 4,
+    "active_context_token_equivalent": 4000,
+    "carrier_limit": 4,
+    "seed": 20260829
+  },
+  "work_accounting": {
+    "routing": [
+      "signatures_scanned",
+      "candidate_carriers",
+      "selected_carriers"
+    ],
+    "metadata": [
+      "metadata_nodes_loaded"
+    ],
+    "unfolding": [
+      "nodes_touched",
+      "graph_hops",
+      "nodes_unfolded",
+      "tokens_exposed",
+      "irrelevant_tokens_exposed"
+    ],
+    "reason": "A bounded ContextPacket is not a valid success if it hides an uncontrolled whole-memory scan or preprocessing step."
+  },
+  "quality_metrics": {
+    "carrier_top1_accuracy": "fraction of positive queries whose target carrier ranks first",
+    "carrier_recall_at_k": "fraction of positive queries whose target carrier is inside the selected carrier set",
+    "target_hit_accuracy": "fraction of positive queries exposing at least one target-carrier item",
+    "evidence_hit_accuracy": "fraction of positive queries exposing target evidence",
+    "negative_unknown_accuracy": "fraction of negative queries that fail closed as UNKNOWN with zero exposed tokens",
+    "useful_context_efficiency": "target-carrier tokens divided by all exposed tokens",
+    "knowledge_scale_degradation": "max(0, 1 - target_hit_accuracy_at_scale / baseline_target_hit_accuracy)",
+    "routing_selectivity": "average selected carriers divided by total carriers",
+    "exposure_fraction": "average unfolded nodes divided by total available nodes"
+  },
+  "hard_invariants": [
+    "FALSE_EXACT=0",
+    "BUDGET_VIOLATIONS=0",
+    "ACTIVE_CONTEXT_HELD_FIXED_ACROSS_SCALE",
+    "ROUTING_WORK_MUST_BE_REPORTED",
+    "METADATA_LOAD_WORK_MUST_BE_REPORTED",
+    "NO_IMPLICIT_GLOBAL_EXACT_SCAN",
+    "NEGATIVE_QUERY_MUST_FAIL_CLOSED",
+    "DETERMINISTIC_SYNTHETIC_FIXTURE_PRECEDES_MODEL_EVALUATION"
+  ],
+  "outputs": {
+    "report": "runs/memory-scale-r0/report.json",
+    "trace": "runs/memory-scale-r0/trace.jsonl"
+  },
+  "promotion_boundary": {
+    "deterministic_runtime": "This lab can establish routing/unfolding behavior and work accounting.",
+    "model_quality": "Not established by this lab; model-facing evaluation consumes the same trace/query cases in a later phase.",
+    "native_visual_navigation": "Not established by this lab."
+  }
+}

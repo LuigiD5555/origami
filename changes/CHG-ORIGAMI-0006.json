@@ -1,0 +1,45 @@
+{
+  "schema": "origami.change-control.r0",
+  "change_id": "CHG-ORIGAMI-0006",
+  "title": "Add deterministic fixed-context Memory Scale Lab R0",
+  "component": "virtual-memory/scale-lab",
+  "status": "implemented_pending_ci",
+  "version": "6.0.0-alpha.4",
+  "before": {
+    "state": "Virtual Memory R0 could federate carriers and build bounded ContextPackets, but there was no canonical experiment that increased total available memory while holding active context fixed and separately accounting for routing, metadata and unfolding work."
+  },
+  "after": {
+    "state": "Memory Scale Lab R0 provides deterministic 1/10/100/1000-carrier fixtures, positive and negative queries, explicit federation work metrics, UCE/KSD/selectivity metrics, per-query JSONL traces and a reproducible CLI.",
+    "artifacts": [
+      "internal/lab/memoryscale/scale.go",
+      "internal/lab/memoryscale/scale_test.go",
+      "cmd/origami-memory-scale/main.go",
+      "experiments/memory-scale-r0/config.json",
+      "spec/MEMORY_SCALE_LAB_R0.json",
+      "docs/MEMORY_SCALE_LAB_R0.md"
+    ]
+  },
+  "federation_accounting": [
+    "signatures_scanned",
+    "candidate_carriers",
+    "selected_carriers",
+    "metadata_nodes_loaded"
+  ],
+  "model_facing_accounting": [
+    "nodes_touched",
+    "graph_hops",
+    "nodes_unfolded",
+    "tokens_exposed",
+    "irrelevant_tokens_exposed"
+  ],
+  "invariants": [
+    "FALSE_EXACT=0",
+    "BUDGET_VIOLATIONS=0",
+    "ACTIVE_CONTEXT_FIXED_ACROSS_SCALE",
+    "NEGATIVE_QUERIES_FAIL_CLOSED",
+    "NO_HIDDEN_WHOLE_MEMORY_SCAN",
+    "ROUTING_AND_METADATA_WORK_REPORTED_SEPARATELY",
+    "DETERMINISTIC_LAB_DOES_NOT_PROMOTE_MODEL_OR_NATIVE_VISUAL_QUALITY"
+  ],
+  "next_boundary": "Run model-facing and real-corpus campaigns over the same trace/query contract after deterministic CI and canonical scale run are green."
+}

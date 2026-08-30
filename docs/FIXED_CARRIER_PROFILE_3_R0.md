@@ -1,14 +1,12 @@
 # Fixed Carrier R2 profile-3 candidate
 
-Status: `EXPERIMENTAL_CONSTRUCTION_SPEC_ONLY`
+Status: `EXPERIMENTAL_RENDERER_IMPLEMENTED_EVIDENCE_PENDING`
 
-`origami.fixed-carrier.r2.profile-3` is the first carrier candidate designed explicitly for Origami Protocol R0.
+`origami.fixed-carrier.r2.profile-3` is the first rendered carrier candidate designed explicitly for Origami Protocol R0.
 
-It does **not** replace profile-2 yet. Profile-1 and profile-2 remain the currently decodable historical/reference profiles.
+It does **not** replace profile-2 yet. Profile-1 and profile-2 remain compatible, and the profile-2 renderer remains the default.
 
-## Goal
-
-Preserve the existing Fixed Carrier envelope while making the protocol read/write path self-described:
+## Physical target
 
 ```text
 640 x 640
@@ -16,63 +14,85 @@ Preserve the existing Fixed Carrier envelope while making the protocol read/writ
 <= 512000 hard maximum
 ```
 
+Profile-3 is rendered in parallel by `internal/fixedcarrier.RenderProfile3` and the `origami-profile3-carrier` CLI. Deterministic roundtrip/size tests are required before this branch can merge.
+
 ## Logical layout
 
 ```text
 T0 BOOT
   protocol/profile identity
-  semantic-first route
+  classify request before selecting a codec
 
-T1 ROSETTA
+T1 ROSETTA + CODEC REGISTRY
   semantic grammar
-  codec registry entry points
-  capability/fallback declaration
+  S0/E0 identity
+  S1/E1 hierarchy
+  S2/E2 superindex
+  core capability declaration
 
 T2 ACTUAL SEMANTIC SUPERINDEX
   bounded real semantic entries
 
-PROGRAM / SEMANTIC MEMORY
-  semantic decoder/encoder procedures and addresses
+PROGRAM
+  self-declared semantic codec procedures
+  S2: T2 -> index
+  E2: index -> T2 Construction IR
+  declared fallbacks only
 
-T3 EXACT / CONTROL
-  CID / hashes / Merkle / residual / exact verification
+T3 / EXACT CONTROL
+  X*/Q* exact codec family
+  CID / hashes / Merkle / residual
+  explicitly not required for T2 semantic navigation
 
 VERIFY
+  S2(E2(index)) ~= index
+  FALSE_EXACT=0
 ```
 
-## Compact codec declaration
+## Read route
 
-The visual carrier must not become a large textual manual. Profile-3 therefore references stable codec IDs such as `S2`/`E2`, while ROSETTA binds those IDs to the active visual profile and any local parameters.
-
-The universal Master Prompt teaches the receiver how to discover and invoke the registry. The carrier declares which procedures are active and how they bind to this message.
-
-## First Native requirement
+For `What is the index?`:
 
 ```text
-Question: What is the index?
-Route: T0 -> T1 -> S2 -> T2
-Exact codec: forbidden unless the question changes to exact verification
+T0 -> T1 -> discover S2 -> T2 -> answer
 ```
 
-## First write requirement
+The receiver must not escalate to X*/T3 merely because the exact plane exists.
+
+## Write route
+
+For a bounded semantic index:
 
 ```text
-Input: bounded semantic index
-Route: Semantic IR -> E2 -> T2 Construction IR
-Roundtrip: S2(E2(index)) ~= index
+Semantic IR -> discover E2 -> T2 Construction IR
+```
+
+A model without a deterministic image compiler may legitimately stop at `CONSTRUCTION_SPEC_ONLY`. A compiler-capable receiver can render profile-3 and verify the result.
+
+## Decoder/encoder rule
+
+The regression rule is **not** `NO DECODER`.
+
+It is:
+
+```text
+SELF_DECLARED_SEMANTIC_CODEC = ALLOWED
+UNDECLARED_EXTERNAL_CODEC_DEPENDENCY = FORBIDDEN
+SEMANTIC_TO_EXACT_ESCALATION_WITHOUT_NEED = FORBIDDEN
 ```
 
 ## Promotion gates
 
-- 8192-byte envelope remains satisfied or an explicit profile-size change is approved;
+- rendered PNG remains 8192 bytes or an explicit profile-size change is approved;
 - profile-1/profile-2 decoding is not regressed;
-- S2 index recovery meets Native evidence gate;
-- E2 index construction meets write gate;
-- S2/E2 roundtrip is non-regressive;
+- deterministic profile-3 render/decode roundtrip passes;
+- S2 index recovery meets held-out Native evidence gate;
+- E2 construction meets held-out write gate;
+- cross-model roundtrip evidence exists;
 - no undeclared external codec dependency;
 - no unnecessary semantic-to-exact escalation;
 - `FALSE_EXACT=0`.
 
-## Current boundary
+## Current evidence boundary
 
-This phase defines and validates the profile construction contract. It does not yet promote profile-3 as the default renderer and does not claim held-out VLM evidence.
+Renderer implementation is not model evidence. Until held-out model trials are imported and scored, profile-3 remains experimental and must not be described as Native-promoted.

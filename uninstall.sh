@@ -12,13 +12,14 @@ sha256_file(){ if command -v sha256sum >/dev/null 2>&1; then sha256sum "$1"|awk 
 do_cmd(){ if ((DRY_RUN)); then printf '[uninstall][DRY-RUN]'; printf ' %q' "$@"; printf '\n'; else "$@"; fi; }
 while (($#)); do case "$1" in --prefix) shift; (($#))||die '--prefix requires path'; PREFIX="$1";; --dry-run) DRY_RUN=1;; --force) FORCE=1;; --legacy) LEGACY=1;; --purge-generated) PURGE_GENERATED=1;; -h|--help) usage; exit 0;; *) die "unknown option: $1";; esac; shift; done
 BIN_DIR="$PREFIX/bin"; STATE_DIR="$PREFIX/share/origami/install-state-v1"; STATE_FILE="$STATE_DIR/manifest.tsv"; BACKUP_DIR="$STATE_DIR/backups"
-legacy(){ for name in ohf-lab ohf-glyphcalc origami-fixed-carrier; do dst="$BIN_DIR/$name"; if [[ -e "$dst.bak" ]]; then do_cmd mv -f "$dst.bak" "$dst"; elif [[ -e "$dst" ]]; then do_cmd rm -f "$dst"; fi; done; }
+NAMES=(ohf-lab ohf-glyphcalc origami-fixed-carrier origami-codec origami-profile3-carrier)
+legacy(){ for name in "${NAMES[@]}"; do dst="$BIN_DIR/$name"; if [[ -e "$dst.bak" ]]; then do_cmd mv -f "$dst.bak" "$dst"; elif [[ -e "$dst" ]]; then do_cmd rm -f "$dst"; fi; done; }
 if [[ ! -f "$STATE_FILE" ]]; then ((LEGACY))&&legacy||die "no tracked Origami installation state found at $STATE_FILE"; else
   declare -A DST=() INSTALLED_SHA=() ORIGINAL_PRESENT=() ORIGINAL_BACKUP=()
   while IFS=$'\t' read -r kind name dst installed_sha original_present backup_name; do [[ "$kind" == BIN ]]||continue; DST["$name"]="$dst"; INSTALLED_SHA["$name"]="$installed_sha"; ORIGINAL_PRESENT["$name"]="$original_present"; ORIGINAL_BACKUP["$name"]="$backup_name"; done < "$STATE_FILE"
-  conflicts=0; for name in ohf-lab ohf-glyphcalc origami-fixed-carrier; do [[ -n "${DST[$name]:-}" ]]||die "manifest missing $name"; dst="${DST[$name]}"; [[ -e "$dst" ]]||continue; [[ "$(sha256_file "$dst")" == "${INSTALLED_SHA[$name]}" ]]||{ warn "$dst changed after installation"; conflicts=$((conflicts+1)); }; done
+  conflicts=0; for name in "${NAMES[@]}"; do [[ -n "${DST[$name]:-}" ]]||die "manifest missing $name"; dst="${DST[$name]}"; [[ -e "$dst" ]]||continue; [[ "$(sha256_file "$dst")" == "${INSTALLED_SHA[$name]}" ]]||{ warn "$dst changed after installation"; conflicts=$((conflicts+1)); }; done
   (( conflicts==0 || FORCE==1 )) || die 'refusing to overwrite/remove modified binaries; use --force after review'
-  for name in ohf-lab ohf-glyphcalc origami-fixed-carrier; do dst="${DST[$name]}"; if [[ "${ORIGINAL_PRESENT[$name]}" == 1 ]]; then backup="$BACKUP_DIR/${ORIGINAL_BACKUP[$name]}"; [[ -f "$backup" ]]||die "missing backup $backup"; log "restore $name"; do_cmd cp -pf "$backup" "$dst"; elif [[ -e "$dst" ]]; then log "remove $name"; do_cmd rm -f "$dst"; fi; done
+  for name in "${NAMES[@]}"; do dst="${DST[$name]}"; if [[ "${ORIGINAL_PRESENT[$name]}" == 1 ]]; then backup="$BACKUP_DIR/${ORIGINAL_BACKUP[$name]}"; [[ -f "$backup" ]]||die "missing backup $backup"; log "restore $name"; do_cmd cp -pf "$backup" "$dst"; elif [[ -e "$dst" ]]; then log "remove $name"; do_cmd rm -f "$dst"; fi; done
   do_cmd rm -rf "$STATE_DIR"
 fi
 if ((PURGE_GENERATED)); then for rel in runs/install-smoke runs/glyphcalc-native-small runs/microbench; do [[ -e "$ROOT/$rel" ]]&&do_cmd rm -rf "$ROOT/$rel"; done; fi

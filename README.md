@@ -1,118 +1,284 @@
-# Origami 6.0.0-alpha.12
+# Origami 6.0.0-alpha.13
 
-Origami is an experimental **visual/computational representation, state-machine language and model-agnostic virtual memory** for complex state, relations, dynamics, selectively accessible knowledge and perceptual emergence.
+Origami is an experimental **self-describing visual/computational communication protocol, state-machine language and model-agnostic virtual memory** for structured state, relations, knowledge and selectively accessible memory.
 
-Origami is independently usable. Development tools can improve it, but they are not hidden runtime requirements.
+Origami is independently usable. Tlaloc, Blueprint Framework, Tonal and other development systems may improve, test or compose it, but they are not hidden runtime requirements.
 
-## What alpha.12 fixes
+## What alpha.13 changes
 
-A real multimodal trial exposed a concrete failure: the model could read the visible Origami bootstrap but could not answer the simple question **“What is the index?”**. Instead it treated the carrier as a binary archive, requested file/decoder access and produced unverified byte, compression and hash claims.
+Alpha.12 corrected a real failure where a multimodal model could read BOOT but treated Origami as a binary archive and failed the simple question **“What is the index?”**. Alpha.13 keeps that semantic-first correction and completes the next architectural step:
 
-Alpha.12 turns that failure into a permanent regression and changes the Native path from **binary-first** to **semantic-first**:
+> Origami carries not only the grammar needed to understand a message, but also declared procedures for reading and writing compatible Origami messages.
 
-```text
-SEMANTIC QUESTION
- -> T0 BOOT
- -> T1 ROSETTA / visual probe
- -> T2 ACTUAL SEMANTIC SUPERINDEX
- -> smallest visible/selective semantic region
- -> answer
-
-EXACT QUESTION
- -> declared exact/control plane or tool when available
- -> verification
-```
-
-The exact/control plane remains useful. It is no longer an implicit prerequisite for semantic navigation.
-
-See `docs/NATIVE_SEMANTIC_NAV_R0.md`, `spec/NATIVE_SEMANTIC_NAV_R0.json` and `experiments/native-semantic-nav-r0/FAILED_TRIAL_001.json`.
-
-## Ecosystem boundary
+The core protocol path is now:
 
 ```text
-Tlaloc             Blueprint Framework           future tools
- behavioral dev        structural dev                 ...
-      \                     |                       /
-       \------ candidates / experiments / evidence -/
-                              |
-                              v
-                           ORIGAMI
-          semantic + visual language / machine / memory
-          owns Master Prompt, ROSETTA, profiles and releases
-                              |
-                              v
-                    standalone portable use
-
-Optional: Tonal may pin/compose the exact development toolchain.
+                         ORIGAMI PROTOCOL
+                                |
+                               T0
+                              BOOT
+                                |
+                               T1
+                             ROSETTA
+                                |
+              +-----------------+-----------------+
+              |                                   |
+       DECODER REGISTRY                    ENCODER REGISTRY
+          S0 ... S6                           E0 ... E6
+              |                                   |
+             READ                                WRITE
+              |                                   |
+              v                                   v
+       T2 / semantic state                 Construction IR
+              |                                   |
+              +-----------------+-----------------+
+                                |
+                         EXACT / CONTROL
+                            X* / Q*
+                                |
+                               T3
+                                |
+                             VERIFY
 ```
 
-Tlaloc is a particularly useful behavioral development kit: it can discover a working procedure through bounded Tlaloque swarms and distill that behavior into prompt candidates. Origami is one possible Tlaloc target, not a Tlaloc subsystem.
-
-## Portable Master Prompt baseline
-
-`generated/MASTER_PROMPT.md` is **Universal Read / Write Bootstrap R3 — semantic-first**.
-
-Its minimum compatibility assumption is intentionally small:
+The reference equation is:
 
 ```text
-Master Prompt
-+ explicit user input
-+ Origami image/carrier when image input is available
+DECODE(ENCODE(S)) ~= S
 ```
 
-It does **not** assume Tlaloc, Tonal, sandbox, Go/Python, filesystem access, a decoder or external tools.
-
-For semantic questions R3 explicitly forbids reconstructing bytes, guessing compression/archive structure or requesting a decoder merely to reach the index/overview. For exact questions, unavailable mechanical verification returns `NOT_VERIFIED` rather than invented exactness.
-
-The registered R3 prompt remains `REFERENCE_CANDIDATE`; architecture and deterministic tests are implemented, but held-out prompt-only VLM evidence is still required.
-
-## READ / WRITE
+The first implemented semantic pair is the superindex path:
 
 ```text
-READ
-carrier/image
- -> BOOT
- -> ROSETTA
- -> classify semantic vs exact question
- -> T2 / visible semantic structure
- -> optional selective expand
- -> semantic answer
-
-WRITE
-source semantics
- -> Semantic IR
- -> Visual Intent
- -> canonical visual profile
- -> ROSETTA
- -> PROGRAM / T2 / MEMORY / VERIFICATION
- -> compiler when available
- -> roundtrip verify
+E2 ENCODE_SUPERINDEX
+S2 READ_SUPERINDEX
+S2(E2(INDEX)) ~= INDEX
 ```
 
-Without tools, READ continues from what the model can genuinely perceive. An unavailable exact/mechanical operation returns `UNKNOWN` or `NOT_VERIFIED`; it is never pretended to have run.
+See `docs/ORIGAMI_PROTOCOL_R0.md`, `docs/CODEC_REGISTRY_R0.md` and `docs/CAPABILITY_NEGOTIATION_R0.md`.
 
-Without a compiler, WRITE may produce a construction specification but must report:
+## The decoder rule
+
+Alpha.13 does **not** define “decoder = bad”.
+
+The actual rule is:
+
+```text
+SELF_DECLARED_SEMANTIC_CODEC = ALLOWED
+UNDECLARED_EXTERNAL_CODEC_DEPENDENCY = FORBIDDEN
+SEMANTIC_NAVIGATION_MUST_NOT_REQUIRE_EXACT_CODEC
+```
+
+For example, the question:
+
+```text
+What is the index?
+```
+
+routes through:
+
+```text
+T0 -> T1 -> discover S2 -> T2 -> answer
+```
+
+It must not require:
+
+```text
+extract every pixel
+ -> bits
+ -> bytes
+ -> decompression
+ -> reconstruct whole source
+ -> finally find the index
+```
+
+Exact/control codecs remain available when the query actually requires exactness.
+
+## The encoder rule
+
+A compatible model can also discover how to express new information in Origami.
+
+For a semantic index:
+
+```text
+Semantic IR
+ -> discover E2
+ -> T2 Construction IR
+ -> deterministic compiler when available
+ -> Origami carrier
+ -> S2 roundtrip verification
+```
+
+A text-only model without an image compiler may stop honestly at:
 
 ```text
 WRITE_STATUS: CONSTRUCTION_SPEC_ONLY
 ```
 
-A textual description or screenshot is not a compiled Origami.
+It must not claim that it produced a verified carrier when it did not actually compile one.
+
+## Master Prompt R4
+
+`generated/MASTER_PROMPT.md` is **Universal Read / Write Bootstrap R4 — protocol/codec aware**.
+
+SHA-256:
+
+```text
+78cbcee8d0f71e1b06e2902c9b9600779e3cd0148251ad9d50623d07969c2a56
+```
+
+R4 is intentionally a small universal handshake. Its role is to teach a model to:
+
+```text
+1. locate BOOT;
+2. read ROSETTA;
+3. discover declared codecs;
+4. inspect available capabilities;
+5. classify the request;
+6. select the smallest sufficient codec;
+7. prefer semantic codecs before exact codecs for semantic work;
+8. READ or WRITE;
+9. return UNKNOWN / NOT_VERIFIED when the required capability is unavailable.
+```
+
+The concrete carrier/profile supplies its own bindings and codec entry points. The Master Prompt does not need to hard-code every future visual channel.
+
+R4 remains `REFERENCE_CANDIDATE` until held-out real-model evidence supports promotion.
+
+## Capability negotiation
+
+Different models may support different portions of Origami.
+
+A receiver can conceptually expose capabilities such as:
+
+```text
+S0 identity       supported
+S1 hierarchy      supported
+S2 superindex     supported
+E0 identity       supported
+E1 hierarchy      supported
+E2 superindex     supported
+X4 residual       unavailable
+MOIRE             unavailable
+```
+
+Failure behavior is explicit:
+
+```text
+unsupported semantic operation -> UNKNOWN
+unsupported exact operation    -> NOT_VERIFIED
+compiler unavailable            -> CONSTRUCTION_SPEC_ONLY
+```
+
+A model is not required to pretend it can execute every advanced channel.
+
+## Fixed Carrier R2
+
+The current default Fixed Carrier remains profile-2. Profile-1 remains decodable for backward compatibility.
+
+```text
+profile-1  legacy deterministic decode
+profile-2  current default semantic-first renderer
+profile-3  protocol-aware experimental renderer
+```
+
+The physical envelope remains:
+
+```text
+640 x 640
+8192 PNG bytes exactly
+hard ceiling: 512000 bytes
+```
+
+The carrier is not the corpus. Corpus growth occurs in canonical/addressable memory rather than by growing the PNG.
+
+### Profile-3
+
+`origami.fixed-carrier.r2.profile-3` is now a real parallel renderer rather than only a construction specification.
+
+It visibly carries:
+
+```text
+T0  protocol BOOT
+T1  ROSETTA + S*/E* codec entry points + capability hints
+T2  actual bounded semantic superindex
+PROGRAM  semantic codec procedure hints
+T3 / EXACT  X*/Q* control/exact plane
+VERIFY  S2(E2(INDEX)) ~= INDEX / FALSE_EXACT=0
+```
+
+Deterministic CI currently proves:
+
+```text
+profile-3 render/decode roundtrip       PASS
+640 x 640                               PASS
+8192-byte frozen PNG envelope           PASS
+profile-1/profile-2 decode regression   PASS
+```
+
+It does **not** yet prove:
+
+```text
+held-out VLM Native S2 index recovery
+held-out VLM E2 write behavior
+cross-model A -> B -> C interoperability
+```
+
+Therefore profile-3 status is:
+
+```text
+EXPERIMENTAL_RENDERER_IMPLEMENTED_EVIDENCE_PENDING
+```
+
+and profile-2 remains the default renderer.
+
+See `docs/FIXED_CARRIER_PROFILE_3_R0.md` and `spec/FIXED_CARRIER_PROFILE_3_R0.json`.
 
 ## Native semantic query routing
 
-The reference routing contract is now explicit:
+Reference routes are now codec-aware:
 
 ```text
-What is this?             -> T0 + T1
-What is the index?        -> T2
+What is this?             -> T0/T1 -> S0
+What is the index?        -> T0/T1 -> S2 -> T2
 What is it about?         -> T2 + visible semantic structure
-Where is topic X?         -> T2 -> selective semantic expansion when available
-Explain topic X           -> T2 -> smallest relevant semantic region
-Quote/hash exact X        -> exact/control plane or declared tool
+Where is topic X?         -> S3 / T2 -> selective semantic expand
+Explain topic X           -> smallest sufficient semantic region
+Quote/hash exact X        -> declared X* exact/control path when available
 ```
 
-`T2` must contain **actual semantic entry points**, not only generic labels such as PAGE/GRAPH/SOURCE. The current Fixed Carrier profile renders a bounded top-level semantic superindex from canonical memory. If only that bounded level is visible, the answer must be marked partial/top-level rather than inventing lower levels.
+`T2` must contain **actual semantic entry points**, not merely generic PAGE/GRAPH/SOURCE categories.
+
+## The alpha.12 failure remains a regression
+
+The failure is preserved at:
+
+`experiments/native-semantic-nav-r0/FAILED_TRIAL_001.json`.
+
+It established:
+
+```text
+BOOT perceived                    yes
+actual semantic index recovered   no
+external mechanical path sought   yes
+unverified exact claims emitted   yes
+```
+
+Alpha.13 refines the lesson: the problem was not the existence of a decoder. The model was being driven toward the **wrong decoder family**. Semantic navigation now has self-declared semantic codecs; exact mechanics remain separate.
+
+## READ / WRITE portability
+
+Minimum compatibility assumption remains intentionally small:
+
+```text
+Master Prompt
++ explicit user input
++ Origami carrier when image input exists
+```
+
+No Tlaloc, Tonal, sandbox, Go/Python, filesystem or hidden runtime is assumed.
+
+A model may use an explicitly available compiler/tool/runtime, but tool-assisted success must not be reported as proof of prompt-only or Native success.
 
 ## Canonical architecture
 
@@ -121,7 +287,6 @@ PDF / IMAGE / TEXT / CONVERSATION / STATE
                     |
                     v
        declared source/ingestion adapter
-          (optional external tooling)
                     |
                     v
               SEMANTIC IR
@@ -130,19 +295,18 @@ PDF / IMAGE / TEXT / CONVERSATION / STATE
        |                          |
        v                          v
 SEMANTIC SPINE R1             WRITER R0
-S_t + C_t + R                visual intents
-Fold / Unfold                     |
-evidence                          v
-       |              CANONICAL VISUAL GRAMMAR R0
+Fold / Unfold                  E* encoders
        |                          |
        |                          v
-       |             ROSETTA + PROGRAM + T2 +
-       |                 MEMORY + VERIFICATION
+       |             CANONICAL VISUAL GRAMMAR R0
+       |                          |
+       |                          v
+       |           ROSETTA + CODEC REGISTRY + T2
+       |                + MEMORY + VERIFICATION
        |                          |
        |                          v
        |                 deterministic compiler
        |                    when available
-       |                          |
        +------------+-------------+
                     |
                     v
@@ -155,7 +319,7 @@ evidence                          v
             compatible model
 ```
 
-External development systems can construct experiments around this path without becoming its semantic authority.
+External development systems can construct experiments around this path without becoming semantic authority.
 
 ## Semantic Spine R1
 
@@ -165,67 +329,26 @@ The deterministic semantic core uses:
 S_(t+1) = F(S_t, C_t, R)
 ```
 
-and preserves distinct `PRESENT`, `ABSENT`, `UNKNOWN`, `INHIBITED`, `CANCELLED` states. It implements declarative contradictions, signed cancellation, higher-order participant rules, finite observation contracts, temporal trajectory observations, semantic Fold and selective Unfold. Observation remains separate from transition.
+and preserves distinct `PRESENT`, `ABSENT`, `UNKNOWN`, `INHIBITED`, `CANCELLED` states. Observation remains separate from transition. Fold preserves unresolved alternatives; selective Unfold records touched addresses.
 
 ## Canonical Visual Grammar R0
 
-The current reference profile is:
+Origami keeps one canonical functional aesthetic per profile version. Current canonical dimensions include geometry, fill/contrast, position, topology, enclosure, scale, repetition, density and limited declarative text.
+
+Experimental candidates include color, numeric structure, interference/moiré/phase, stereo/parallax/depth, temporal/motion-bound structure and emergent multi-layer/multi-instant percepts.
+
+ROSETTA is always present. In alpha.13 it additionally declares or binds:
 
 ```text
-origami.canonical-aesthetic.r0
+semantic roles
+active dimensions
+reveal procedures
+Decoder Registry
+Encoder Registry
+capability/fallback semantics
 ```
 
-Origami has **one canonical functional aesthetic per profile version**. Current canonical dimensions include geometry, fill/contrast, position, topology, enclosure, scale, repetition, density and limited declarative text.
-
-Experimental profile candidates include color, numeric/prime/modular/factorization structure, interference/moiré/phase, stereo/parallax/depth, temporal/motion-bound structure and emergent multi-layer or multi-instant percepts.
-
-These are potential semantic channels, not decoration. They become authoritative only if a later Origami profile adopts them after evidence.
-
-## ROSETTA and reveal procedures
-
-ROSETTA always declares profile ID/version, active dimensions, visual primitive -> semantic-role mappings and approved local parameters/extensions.
-
-For non-static channels it additionally declares a reveal procedure. Experimental operations already represented by Origami contracts include:
-
-```text
-MOIRE
-PHASE_SHIFT
-STEREO_BIND
-PARALLAX_RESOLVE
-KINETIC_REVEAL
-TEMPORAL_INTEGRATE
-```
-
-If the declared reveal condition cannot be established, the result is `UNKNOWN`, not `ABSENT`.
-
-## Writer R0
-
-Writer turns semantic intention into a deterministic construction plan before pixels:
-
-```text
-Semantic IR
- -> Visual Intent Plan
- -> canonical profile binding
- -> ROSETTA
- -> PROGRAM / T2 / MEMORY / VERIFICATION plan
- -> compiler
-```
-
-A useful T2 semantic superindex is now an explicit Writer objective because common semantic questions must be cheap to answer without exact-plane decoding.
-
-Reference planner:
-
-```bash
-./bin/origami-write-plan -in request.json -out plan.json
-```
-
-The roundtrip rule remains:
-
-```text
-DECODE(COMPILE(SEMANTIC_IR)) ~= SEMANTIC_IR
-```
-
-with exact equality for declared identity/address/hash/proof fields.
+Advanced channels are not promoted merely because they are representable.
 
 ## Virtual Memory R0
 
@@ -239,7 +362,7 @@ large / multi-carrier memory
  -> ContextPacket
 ```
 
-Fidelity order remains:
+Fidelity order:
 
 ```text
 label -> abstract -> summary -> detail -> evidence -> exact
@@ -249,84 +372,48 @@ Address is location; CID is content identity. Deep exact payload is reopened sel
 
 ## Evidence Reduction R0
 
-External models/development systems may propose `SUPPORT`, `OPPOSE`, `UNKNOWN`. Origami independently resolves evidence addresses/CIDs/source hashes/fidelity and reduces deterministically to `VERIFIED`, `REJECTED`, `CONFLICT`, `UNKNOWN`.
+External systems may propose `SUPPORT`, `OPPOSE`, `UNKNOWN`. Origami independently resolves evidence addresses/CIDs/source hashes/fidelity and reduces deterministically to `VERIFIED`, `REJECTED`, `CONFLICT`, `UNKNOWN`.
 
 Agent/model confidence is never evidence authority. `VERIFIED_EXACT` requires byte-equal accepted exact evidence.
 
-## Fixed Carrier R2 profile-2
-
-Physical envelope is unchanged:
+## Ecosystem boundary
 
 ```text
-640 x 640
-8192 PNG bytes exactly
-hard current-profile ceiling: 512000 bytes
+Tlaloc             Blueprint Framework           future tools
+ behavioral dev        structural dev                 ...
+      \                     |                       /
+       \------ candidates / experiments / evidence -/
+                              |
+                              v
+                           ORIGAMI
+       owns protocol semantics, ROSETTA, codecs, profiles, releases
+                              |
+                              v
+                    standalone portable use
+
+Optional: Tonal may pin/compose exact revisions.
 ```
 
-Bootstrap is now functionally separated:
-
-```text
-T0  plaintext semantic-first BOOT
-T1  ROSETTA + duplicated visual probe
-T2  actual bounded semantic superindex
-T3  deterministic control/exact record
-VERIFY
-```
-
-The carrier is not the corpus. Corpus growth occurs in canonical/addressable memory, not by enlarging the PNG.
-
-The integration layer no longer blindly truncates routing JSON at 256 bytes. It produces bounded **valid JSON** and prioritizes actual top-level semantic labels for T2.
-
-Profile-1 deterministic decoding remains accepted for backward compatibility. Profile-2 changes the Native semantic route without discarding the exact/control record.
-
-The existing `tlaloc.origami-tools.r2` ABI remains an optional external tool-provider ABI. Its existence does not make Tlaloc mandatory for Origami.
-
-## Perception Promotion R1
-
-Origami can deterministically compare a model's claimed carrier perception against actual carrier ground truth for T0, duplicated probes, Tool Protocol, Address ABI and optional T3. MOCK can validate plumbing but cannot provide empirical model promotion evidence.
-
-The new Native semantic contract adds a different requirement: perceiving BOOT/probes is insufficient if the model still cannot answer through T2.
-
-## Failed-trial discipline
-
-The failed index experiment is preserved rather than overwritten by the new design. It establishes a regression:
-
-```text
-BOOT perceived              = yes
-actual T2 index recovered   = no
-mechanical decoder required = yes
-unverified exact claims     = yes
-```
-
-A future profile may be smaller, denser or visually more sophisticated, but it cannot be promoted as a better Native semantic profile if it recreates this failure.
-
-## How Origami evolves
-
-A development tool may propose changes, but Origami owns adoption:
-
-```text
-Origami profile N
- -> external experiment
- -> candidate prompt/profile + evidence
- -> Origami semantic/visual validation
- -> Origami decides profile/version N+1
-```
-
-Tlaloc can use its swarm-to-prompt playground to search better Master Prompts and representation behaviors. Blueprint Framework or another tool may contribute different development guarantees. Tonal may optionally record which exact toolchain/revisions were used.
+Tlaloc can search/evaluate candidate behavior and cross-model interoperability. Origami decides what is canonical. Tonal records composition/provenance; it does not promote model capability.
 
 ## Hard invariants
 
 ```text
 ORIGAMI OWNS ORIGAMI RELEASES
+PROTOCOL != CARRIER
 MASTER PROMPT IS PORTABLE BASELINE
-SEMANTIC NAVIGATION != MECHANICAL DECODE
-INDEX QUERY ROUTES TO T2
+ROSETTA ALWAYS PRESENT
+ROSETTA DECLARES DECODING SEMANTICS
+ROSETTA DECLARES ENCODING SEMANTICS
+SELF-DECLARED SEMANTIC CODEC IS ALLOWED
+NO UNDECLARED EXTERNAL DECODER DEPENDENCY
+SEMANTIC NAVIGATION MUST NOT REQUIRE EXACT CODEC
+INDEX QUERY ROUTES THROUGH S2/T2
 T2 CONTAINS ACTUAL SEMANTIC ENTRIES
 EXACT PLANE OPTIONAL FOR SEMANTIC NAVIGATION
 NO UNVERIFIED BYTE / HASH / COMPRESSION CLAIMS
 FAILED REAL TRIAL -> REGRESSION
 TOOL-ASSISTED SUCCESS != PROMPT-ONLY SUCCESS
-ROSETTA ALWAYS PRESENT
 ONE CANONICAL AESTHETIC PER PROFILE VERSION
 FAILED REVEAL != SEMANTIC ABSENCE
 SCREENSHOT != ORIGAMI SEMANTIC REPRESENTATION
@@ -341,13 +428,29 @@ UNKNOWN > INVENTED EXACTNESS
 
 ## Evidence still pending
 
-Alpha.12 does **not** claim that the failed experiment already passes after this change. It establishes the corrected architecture and deterministic gates. Still pending:
+Alpha.13 deliberately does **not** claim universal LLM interoperability. Still required:
 
-- repeat the index question on the new profile-2 carrier with held-out real VLMs;
-- measure Native T2 index recovery across multiple models/trials;
-- verify semantic overview/topic-location behavior without undeclared mechanical decoding;
-- test transport degradation of T2 readability;
-- continue Hybrid/exact-plane tests separately.
+- repeat `What is the index?` with profile-3 + R4 on held-out real multimodal models;
+- measure Native `S2` recovery over multiple models/trials;
+- test `E2` write/construction behavior on clean models;
+- test A -> B -> C semantic preservation and drift;
+- verify transport degradation of T1/T2 readability;
+- continue Hybrid/exact-plane tests separately;
+- only then consider profile-3/default-profile promotion.
+
+## Useful commands
+
+```bash
+# semantic codec registry / S2-E2 roundtrip
+go run ./cmd/origami-codec -mode registry -out -
+
+go run ./cmd/origami-codec -mode roundtrip-index -in index.json -out -
+
+# experimental profile-3 carrier
+go run ./cmd/origami-profile3-carrier -mode build -in metadata.json -out origami-profile3.png
+
+go run ./cmd/origami-profile3-carrier -mode decode -in origami-profile3.png
+```
 
 ## Source of truth
 
@@ -356,20 +459,21 @@ VERSION
 state/ORIGAMI_STATE.json
 PROJECT_BOUNDARY.md
 generated/MASTER_PROMPT.md
-docs/DEVELOPMENT_TOOL_BOUNDARY_R0.md
+docs/ORIGAMI_PROTOCOL_R0.md
+docs/CODEC_REGISTRY_R0.md
+docs/CAPABILITY_NEGOTIATION_R0.md
+docs/FIXED_CARRIER_PROFILE_3_R0.md
 docs/NATIVE_SEMANTIC_NAV_R0.md
-docs/CURRENT_STATE.md
 docs/CANONICAL_VISUAL_GRAMMAR_R0.md
 docs/WRITER_R0.md
-docs/SEMANTIC_SPINE_R1.md
-spec/DEVELOPMENT_TOOL_BOUNDARY_R0.json
-spec/NATIVE_SEMANTIC_NAV_R0.json
-spec/FIXED_CARRIER_R2.json
-spec/CANONICAL_VISUAL_GRAMMAR_R0.json
-spec/WRITER_R0.json
+spec/ORIGAMI_PROTOCOL_R0.json
+spec/CODEC_REGISTRY_R0.json
+spec/CAPABILITY_NEGOTIATION_R0.json
+spec/FIXED_CARRIER_PROFILE_3_R0.json
 experiments/native-semantic-nav-r0/FAILED_TRIAL_001.json
+changes/CHG-ORIGAMI-0015.json
 ```
 
 ## Version
 
-`6.0.0-alpha.12`
+`6.0.0-alpha.13`

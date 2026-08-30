@@ -20,6 +20,7 @@ build:
 	go build -trimpath -o bin/origami-reduce ./cmd/origami-reduce
 	go build -trimpath -o bin/origami-ingest ./cmd/origami-ingest
 	go build -trimpath -o bin/origami-system ./cmd/origami-system
+	go build -trimpath -o bin/origami-perception-eval ./cmd/origami-perception-eval
 
 install:
 	./install.sh

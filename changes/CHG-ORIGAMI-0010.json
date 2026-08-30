@@ -1,0 +1,46 @@
+{
+  "schema": "origami.change-control.r0",
+  "change_id": "CHG-ORIGAMI-0010",
+  "title": "Reconstruct deterministic perception promotion evaluator on top of Semantic Spine R1",
+  "component": "perception/perception-promotion-r1",
+  "status": "implemented_reference_real_model_evidence_pending",
+  "before": {
+    "version": "6.0.0-alpha.7",
+    "state": "Fixed Carrier R2, Perception Lab assets and strict perception/verification boundaries existed, but the previously described cross-model promotion evaluator had not actually been published. Mechanical mock success and empirical model promotion therefore lacked one canonical per-trial Origami evaluator contract."
+  },
+  "after": {
+    "version": "6.0.0-alpha.8",
+    "state": "Origami deterministically compares model observations against the actual Fixed Carrier T0, duplicated visual probes, tool protocol, address ABI and optional T3 machine record. MOCK trials can exercise the complete harness but cannot become promotion-eligible. Hybrid trial eligibility is intentionally independent from Native T3 trial eligibility.",
+    "artifacts": [
+      "internal/promotion/",
+      "cmd/origami-perception-eval/",
+      "spec/PERCEPTION_PROMOTION_R1.json",
+      "docs/PERCEPTION_PROMOTION_R1.md"
+    ]
+  },
+  "ownership": {
+    "origami": "deterministic per-trial carrier/perception evaluation",
+    "tlaloc": "cross-model campaigns, repeated trials, transport variants, routing benchmarks and real model/tool loops",
+    "tonal": "aggregate stack support promotion and immutable composition evidence"
+  },
+  "preserved_work": [
+    "SEMANTIC_SPINE_R1",
+    "FIXED_CARRIER_R2",
+    "PERCEPTION_LAB_P0_P6",
+    "VIRTUAL_MEMORY_R0",
+    "MEMORY_SCALE_LAB_R0",
+    "TLALOC_CANONICAL_MEMORY_R2",
+    "TONAL_FIXED_CARRIER_R2_CANDIDATE_GATES"
+  ],
+  "hard_invariants": [
+    "MOCK_NE_EMPIRICAL_PROMOTION",
+    "SINGLE_TRIAL_NE_SUPPORTED",
+    "HYBRID_SUPPORTED_NE_NATIVE_VISUAL_SUPPORTED",
+    "HYBRID_TRIAL_DOES_NOT_REQUIRE_T3",
+    "PRIVATE_GROUND_TRUTH_NE_MODEL_INPUT",
+    "VISUAL_PROBE_MUST_BE_READ_FROM_IMAGE",
+    "DUPLICATED_PROBES_MUST_AGREE",
+    "PERCEPTION_NE_SEMANTIC_AUTHORITY",
+    "FALSE_EXACT=0"
+  ]
+}

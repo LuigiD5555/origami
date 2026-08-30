@@ -1,0 +1,68 @@
+{
+  "contract_id": "origami.perception-promotion.r1",
+  "status": "EXPERIMENTAL_REFERENCE_IMPLEMENTED",
+  "fixed_carrier_contract": "origami.fixed-carrier.r2",
+  "semantic_spine_contract": "origami.semantic-spine.r1",
+  "purpose": "Evaluate what a target model claims to have perceived from a Fixed Carrier against deterministic carrier ground truth without leaking private evaluator state to the model and without confusing mechanical harness success with empirical promotion.",
+  "model_input_boundary": {
+    "native_strict": ["UNIVERSAL_MASTER_PROMPT", "ONE_CARRIER_IMAGE", "USER_QUERY"],
+    "forbidden_model_inputs": ["PRIVATE_EVALUATOR_MANIFEST", "GROUND_TRUTH_DECODE", "PRIVATE_REGISTRY", "CANONICAL_T3_RECORD", "EXPECTED_PROBE_BITS"],
+    "hybrid_additional_interface": "DECLARED_TOOL_ABI_ONLY"
+  },
+  "observation_schema": "origami.perception-observation.r1",
+  "observation_fields": [
+    "model",
+    "trial",
+    "transport",
+    "evidence_kind",
+    "boot_text",
+    "probe_top",
+    "probe_bottom",
+    "tool_protocol",
+    "address_abi",
+    "optional_t3"
+  ],
+  "evidence_kinds": {
+    "MOCK": "May validate harness/mechanical plumbing only. Never satisfies an empirical promotion gate.",
+    "REAL_MODEL": "Eligible as one empirical trial only when deterministic checks pass. One trial never equals stack support."
+  },
+  "deterministic_checks": [
+    "T0_BOOT",
+    "T1_PROBE_TOP",
+    "T1_PROBE_BOTTOM",
+    "T1_PROBE_DUPLICATION",
+    "TOOL_PROTOCOL",
+    "ADDRESS_ABI",
+    "OPTIONAL_T3_MACHINE_RECORD"
+  ],
+  "hybrid_trial": {
+    "requires": ["REAL_MODEL", "T0_BOOT", "T1_PROBE_TOP", "T1_PROBE_BOTTOM", "T1_PROBE_DUPLICATION", "TOOL_PROTOCOL", "ADDRESS_ABI"],
+    "does_not_require": ["T3_MACHINE_RECORD"],
+    "meaning": "The model demonstrated the visual BOOT/probe entry and negotiated the correct external tool/address interface for this trial."
+  },
+  "native_t3_trial": {
+    "requires": ["REAL_MODEL", "HYBRID_MECHANICAL_PASS", "T3_MACHINE_RECORD"],
+    "meaning": "The model additionally reproduced the deterministic T3 machine record for this trial. This remains separate from general Native visual support."
+  },
+  "promotion_ownership": {
+    "origami": "DETERMINISTIC_TRIAL_EVALUATION_AND_SEMANTIC_VALIDATION",
+    "tlaloc": "CROSS_MODEL_CAMPAIGN_ORCHESTRATION_TRANSPORT_VARIANTS_AND_REAL_TOOL_LOOPS",
+    "tonal": "STACK_COMPOSITION_AND_SUPPORTED_STATUS_PROMOTION"
+  },
+  "hard_invariants": [
+    "MOCK_NE_EMPIRICAL_PROMOTION",
+    "SINGLE_TRIAL_NE_SUPPORTED",
+    "HYBRID_SUPPORTED_NE_NATIVE_VISUAL_SUPPORTED",
+    "HYBRID_TRIAL_DOES_NOT_REQUIRE_T3",
+    "PRIVATE_GROUND_TRUTH_NE_MODEL_INPUT",
+    "VISUAL_PROBE_MUST_BE_READ_FROM_IMAGE",
+    "DUPLICATED_PROBES_MUST_AGREE",
+    "TOOL_PROTOCOL_MATCH_REQUIRED",
+    "ADDRESS_ABI_MATCH_REQUIRED",
+    "PERCEPTION_NE_SEMANTIC_AUTHORITY",
+    "FALSE_EXACT=0"
+  ],
+  "reference_runtime": "internal/promotion",
+  "reference_cli": "cmd/origami-perception-eval",
+  "campaign_requirements_delegated_to_tlaloc_tonal": true
+}

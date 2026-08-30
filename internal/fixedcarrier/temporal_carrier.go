@@ -222,7 +222,7 @@ func drawSimpleLine(img *image.Gray, x0, y0, x1, y1 int) {
 	dy := -absInt(y1-y0); sy := -1; if y0 < y1 { sy = 1 }
 	err := dx + dy
 	for {
-		if image.Pt(x0,y0).In(img.Bounds()) { img.SetGray(x0,y0, image.Black.Gray16().ToGray8()) }
+		if image.Pt(x0,y0).In(img.Bounds()) { fill(img, x0, y0, 1, 1, 0) }
 		if x0 == x1 && y0 == y1 { break }
 		e2 := 2*err
 		if e2 >= dy { err += dy; x0 += sx }

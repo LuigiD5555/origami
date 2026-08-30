@@ -165,34 +165,26 @@ func drawProfile3T0(img *image.Gray) {
 }
 
 func drawProfile3T1(img *image.Gray, probe string) {
-	drawText(img, 24, 132, 1, "T1 ROSETTA + CODEC REGISTRY", 0)
-	drawText(img, 24, 144, 1, "GRAMMAR NODE=ENTRY LINK=RELATION BOX=SCOPE", 0)
-	drawText(img, 24, 156, 1, "READ  S0 ID | S1 HIER | S2 INDEX", 0)
-	drawText(img, 332, 156, 1, "WRITE E0 ID | E1 HIER | E2 INDEX", 0)
-	drawText(img, 24, 170, 1, "CAP CORE=SEMANTIC READ+WRITE | EXACT OPTIONAL", 0)
+	drawText(img, 24, 132, 1, "T1 ROSETTA + CODECS", 0)
+	drawText(img, 24, 146, 1, "READ S0 ID  S1 HIER  S2 INDEX", 0)
+	drawText(img, 318, 146, 1, "WRITE E0 ID  E1 HIER  E2 INDEX", 0)
+	drawText(img, 24, 160, 1, "CORE SEMANTIC R/W | EXACT OPTIONAL", 0)
 	drawProbeRow(img, 184, probe)
 }
 
 func drawProfile3ProgramExact(img *image.Gray, rec []byte) {
 	box(img, 14, 296, 194, 252, 0)
-	drawText(img, 24, 304, 1, "PROGRAM / SELF CODECS", 0)
-	drawText(img, 24, 324, 1, "S2: READ T2 -> INDEX", 0)
-	drawText(img, 24, 340, 1, "E2: INDEX -> T2 IR", 0)
-	drawText(img, 24, 356, 1, "S* BEFORE X* FOR SEMANTIC", 0)
-	drawText(img, 24, 372, 1, "STOP WHEN SUFFICIENT", 0)
-	drawText(img, 24, 404, 1, "FALLBACK: DECLARED ONLY", 0)
-	drawText(img, 24, 420, 1, "UNSUPPORTED -> UNKNOWN", 0)
-	drawText(img, 24, 436, 1, "NO EXTERNAL HIDDEN CODEC", 0)
+	drawText(img, 24, 304, 1, "PROGRAM", 0)
+	drawText(img, 24, 324, 1, "S2: T2 -> INDEX", 0)
+	drawText(img, 24, 340, 1, "E2: INDEX -> T2", 0)
+	drawText(img, 24, 356, 1, "SEMANTIC: S* BEFORE X*", 0)
+	drawText(img, 24, 380, 1, "UNSUPPORTED -> UNKNOWN", 0)
 
 	box(img, 432, 296, 194, 252, 0)
-	drawText(img, 442, 304, 1, "EXACT / CONTROL", 0)
-	drawText(img, 442, 324, 1, "X*: READ EXACT", 0)
-	drawText(img, 442, 340, 1, "Q*: WRITE EXACT", 0)
-	drawText(img, 442, 372, 1, "CID", 0)
-	drawText(img, 442, 388, 1, "HASH", 0)
-	drawText(img, 442, 404, 1, "MERKLE", 0)
-	drawText(img, 442, 420, 1, "RESIDUAL", 0)
-	drawText(img, 442, 452, 1, "NOT NEEDED FOR T2", 0)
+	drawText(img, 442, 304, 1, "EXACT X*/Q* OPTIONAL", 0)
+	drawText(img, 442, 326, 1, "CID HASH MERKLE", 0)
+	drawText(img, 442, 342, 1, "RESIDUAL VERIFY", 0)
+	drawText(img, 442, 366, 1, "NOT NEEDED FOR T2", 0)
 
 	box(img, GridX-5, GridY-5, GridBits*Cell+10, GridBits*Cell+10, 0)
 	bit := 0

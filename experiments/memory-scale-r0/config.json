@@ -1,0 +1,10 @@
+{
+  "carrier_counts": [1, 10, 100, 1000],
+  "nodes_per_carrier": 64,
+  "positive_queries_per_scale": 32,
+  "negative_queries_per_scale": 4,
+  "budget_tokens": 4000,
+  "reserve_tokens": 0,
+  "carrier_limit": 4,
+  "seed": 20260829
+}

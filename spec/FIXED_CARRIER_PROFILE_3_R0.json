@@ -1,12 +1,18 @@
 {
   "profile_id": "origami.fixed-carrier.r2.profile-3",
-  "status": "EXPERIMENTAL_CONSTRUCTION_SPEC_ONLY",
+  "status": "EXPERIMENTAL_RENDERER_IMPLEMENTED_EVIDENCE_PENDING",
   "base_schema": "origami.fixed-carrier.r2",
   "protocol_contract": "origami.protocol.r0",
   "codec_contract": "origami.codec-registry.r0",
   "capability_contract": "origami.capability-negotiation.r0",
   "geometry": {"width":640,"height":640},
   "transport": {"target_png_bytes":8192,"hard_max_png_bytes":512000},
+  "renderer": {
+    "implementation": "internal/fixedcarrier.RenderProfile3",
+    "cli": "cmd/origami-profile3-carrier",
+    "parallel_to_profile_2": true,
+    "default_renderer": false
+  },
   "logical_zones": [
     {"id":"T0","role":"BOOT_PROTOCOL_PROFILE_AND_ENTRYPOINT"},
     {"id":"T1","role":"ROSETTA_CODEC_ENTRYPOINTS_AND_CAPABILITY_DECLARATION"},
@@ -24,6 +30,13 @@
     "profile_1_remains_decodable": true,
     "profile_2_remains_decodable": true,
     "profile_3_default_renderer": false
+  },
+  "evidence_state": {
+    "deterministic_renderer_roundtrip": "REQUIRED_BY_CI",
+    "held_out_native_s2": "PENDING_EXTERNAL_MODEL_TRIALS",
+    "held_out_native_e2": "PENDING_EXTERNAL_MODEL_TRIALS",
+    "cross_model_interop": "PENDING_EXTERNAL_MODEL_TRIALS",
+    "promotion": false
   },
   "promotion_requires": [
     "TARGET_8192_BYTES_OR_EXPLICIT_PROFILE_SIZE_CHANGE",

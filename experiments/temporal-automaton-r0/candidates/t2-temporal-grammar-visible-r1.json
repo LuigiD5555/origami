@@ -1,0 +1,13 @@
+{
+  "schema": "origami.experimental-candidate.r0",
+  "id": "t2-temporal-grammar-visible-r1",
+  "mutations": [
+    {
+      "kind": "TEMPORAL_STRUCTURE",
+      "target": "T2_SEMANTIC_TEMPORAL_SUPERGRAPH",
+      "value": "VISIBLE_RULE_MICROGRAMMAR_R1",
+      "rationale": "Real manual DeepSeek evidence recovered BOOT/ROSETTA, cells and initial states but did not recover declared causal rules or synchronous final-state simulation. Expose rule preconditions and state transitions in T2 while preserving the exact TemporalProgram.",
+      "experimental": true
+    }
+  ]
+}

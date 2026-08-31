@@ -193,7 +193,11 @@ func applyTemporalCandidateMutation(img *image.Gray, decoded TemporalCarrierDeco
 		drawSimpleLine(img, 18, 136, 10, 128)
 		drawSimpleLine(img, 10, 128, 18, 120)
 	case "TEMPORAL_STRUCTURE":
-		emphasizeTemporalCheckpoints(img, decoded)
+		if target == "T2_SEMANTIC_TEMPORAL_SUPERGRAPH" && value == "VISIBLE_RULE_MICROGRAMMAR_R1" {
+			drawTemporalRuleMicrogrammar(img, decoded)
+		} else {
+			emphasizeTemporalCheckpoints(img, decoded)
+		}
 	case "NUMERIC_STRUCTURE":
 		drawText(img, 40, 376, 1, "0", 0)
 		drawText(img, 176, 376, 1, "1", 0)

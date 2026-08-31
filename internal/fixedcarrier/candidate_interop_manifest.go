@@ -90,11 +90,9 @@ func TemporalVisibleTextManifest(decoded TemporalCarrierDecoded, mutations []Can
 			SemanticFact{Key:"SYNCHRONOUS_EXECUTION_FIDELITY.HEADER_TEXT",Value:SyncFidelityHeaderTextR1},
 			SemanticFact{Key:"SYNCHRONOUS_EXECUTION_FIDELITY.STEP1_TEXT",Value:SyncFidelityStep1TextR1},
 			SemanticFact{Key:"SYNCHRONOUS_EXECUTION_FIDELITY.STEP2_TEXT",Value:SyncFidelityStep2TextR1},
-			SemanticFact{Key:"SYNCHRONOUS_EXECUTION_FIDELITY.STEP2B_TEXT",Value:SyncFidelityStep2BTextR1},
 			SemanticFact{Key:"SYNCHRONOUS_EXECUTION_FIDELITY.STEP3_TEXT",Value:SyncFidelityStep3TextR1},
 			SemanticFact{Key:"SYNCHRONOUS_EXECUTION_FIDELITY.STEP4_TEXT",Value:SyncFidelityStep4TextR1},
 			SemanticFact{Key:"SYNCHRONOUS_EXECUTION_FIDELITY.NO_ORDER_TEXT",Value:SyncFidelityNoOrderTextR1},
-			SemanticFact{Key:"SYNCHRONOUS_EXECUTION_FIDELITY.NO_CASCADE_TEXT",Value:SyncFidelityNoCascadeTextR1},
 			SemanticFact{Key:"SYNCHRONOUS_EXECUTION_FIDELITY.NEXT_TEXT",Value:SyncFidelityNextTextR1},
 			SemanticFact{Key:"SYNCHRONOUS_EXECUTION_FIDELITY.STOP_TEXT",Value:SyncFidelityStopTextR1},
 		)

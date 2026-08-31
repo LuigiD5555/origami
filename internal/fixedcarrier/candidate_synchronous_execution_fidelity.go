@@ -56,8 +56,10 @@ func BuildSynchronousExecutionFidelityCandidate(parentPNG []byte, id string) ([]
 }
 
 func drawSynchronousExecutionFidelityR1(img *image.Gray) {
-	fill(img, 18, 420, 190, 92, 0xff)
-	box(img, 18, 420, 190, 92, 0)
+	// Erase the complete inherited R6 checklist, including its lower rows, then
+	// redraw a lower-entropy R7 protocol inside the same frozen left-side lane.
+	fill(img, 18, 420, 190, 154, 0xff)
+	box(img, 18, 420, 190, 154, 0)
 	drawText(img, 24, 426, 1, SyncFidelityHeaderTextR1, 0)
 	drawText(img, 24, 442, 1, SyncFidelityStep1TextR1, 0)
 	drawText(img, 24, 456, 1, SyncFidelityStep2TextR1, 0)

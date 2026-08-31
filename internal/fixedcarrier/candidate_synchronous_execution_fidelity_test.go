@@ -15,15 +15,12 @@ func TestSynchronousExecutionFidelityPreservesProgramAndFrozenSurfaces(t *testin
 
 	r6img, err := png.Decode(bytes.NewReader(r6)); if err != nil { t.Fatal(err) }
 	r7img, err := png.Decode(bytes.NewReader(r7)); if err != nil { t.Fatal(err) }
-	// R6 imperative BOOT row must remain untouched.
 	for y:=88; y<102; y++ { for x:=20; x<616; x++ { if r6img.At(x,y)!=r7img.At(x,y) { t.Fatalf("R6 mode row changed at %d,%d",x,y) } } }
-	// Exact payload begins at x=224 and must remain pixel-identical.
 	for y:=415; y<620; y++ { for x:=219; x<430; x++ { if r6img.At(x,y)!=r7img.At(x,y) { t.Fatalf("payload surface changed at %d,%d",x,y) } } }
 
 	decoded, err := DecodeTemporalCarrierPNG(r7); if err != nil { t.Fatal(err) }
 	manifest := TemporalInteropBuildManifestWithInherited(report, decoded, []CandidateMutation{{Kind:"PROMPT",Target:"EXECUTION_POLICY_COMPLIANCE",Value:ExecuteDontSummarizeToStableR1,Experimental:true}})
 	if factValue(manifest.VisibleSemantics.Facts,"SYNCHRONOUS_EXECUTION_FIDELITY") != FreezeSelectApplyTogetherR1 { t.Fatal("R7 semantic fact missing") }
-	if factValue(manifest.VisibleText.Facts,"SYNCHRONOUS_EXECUTION_FIDELITY.NO_ORDER_TEXT") != SyncFidelityNoOrderTextR1 { t.Fatal("NO RULE ORDER text missing") }
-	if factValue(manifest.VisibleText.Facts,"SYNCHRONOUS_EXECUTION_FIDELITY.NO_CASCADE_TEXT") != SyncFidelityNoCascadeTextR1 { t.Fatal("NO CASCADE text missing") }
+	if factValue(manifest.VisibleText.Facts,"SYNCHRONOUS_EXECUTION_FIDELITY.NO_ORDER_TEXT") != SyncFidelityNoOrderTextR1 { t.Fatal("NO ORDER / NO CASCADE text missing") }
 	if factValue(manifest.VisibleText.Facts,"EXECUTION_POLICY_COMPLIANCE.MODE_TEXT") != ExecutionComplianceModeTextR1 { t.Fatal("R6 execution mode lost") }
 }

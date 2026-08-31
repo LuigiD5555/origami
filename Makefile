@@ -27,6 +27,7 @@ build:
 	go build -trimpath -o bin/origami-automaton ./cmd/origami-automaton
 	go build -trimpath -o bin/origami-temporal ./cmd/origami-temporal
 	go build -trimpath -o bin/origami-temporal-carrier ./cmd/origami-temporal-carrier
+	go build -trimpath -o bin/origami-candidate-build ./cmd/origami-candidate-build
 
 install:
 	./install.sh

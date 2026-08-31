@@ -23,7 +23,7 @@ func TestExecutionPolicyCandidatePreservesGrammarAndProgram(t *testing.T){
 	if manifest.Schema!=InteropBuildManifestSchemaR1{t.Fatalf("schema=%q",manifest.Schema)}
 	if manifest.VisibleSemantics.ProgramSHA256!=meta.ProgramSHA256{t.Fatal("manifest program sha drift")}
 	if factValue(manifest.VisibleSemantics.Facts,"EXECUTION_POLICY")!="EXECUTE_VISIBLE_RULES_TO_STABLE_R1"{t.Fatalf("execution policy missing: %#v",manifest.VisibleSemantics.Facts)}
-	if factValue(manifest.VisibleSemantics.Facts,"RULE.r1-b-on-a.REQUIRES")!="A=ACTIVE"{t.Fatalf("R1 semantic drift: %#v",manifest.VisibleSemantics.Facts)}
+	if factValue(manifest.VisibleSemantics.Facts,"RULE.r1.REQUIRES")!="A=ACTIVE"{t.Fatalf("R1 semantic drift: %#v",manifest.VisibleSemantics.Facts)}
 }
 
 func TestSemanticManifestBaselineHasNoExecutionPolicy(t *testing.T){

@@ -25,6 +25,8 @@ jobs:
         run: bash tests/test-formal-contracts.sh
       - name: Temporal contract coherence
         run: bash tests/test-temporal-contracts.sh
+      - name: Candidate builder coherence
+        run: bash tests/test-candidate-builder.sh
       - name: Test
         run: go test ./...
       - name: Vet
@@ -43,6 +45,7 @@ jobs:
           go build ./cmd/origami-automaton
           go build ./cmd/origami-temporal
           go build ./cmd/origami-temporal-carrier
+          go build ./cmd/origami-candidate-build
       - name: Run temporal automaton reference
         run: bash tests/test-temporal-reference.sh
       - name: Run deterministic reference experiment

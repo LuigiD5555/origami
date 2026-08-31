@@ -37,6 +37,7 @@ type InteropBuildManifest struct {
 	ArtifactBytes int `json:"artifact_bytes"`
 	ProgramSHA256 string `json:"program_sha256"`
 	PayloadSHA256 string `json:"payload_sha256,omitempty"`
+	InheritedMutations []InteropMutation `json:"inherited_mutations,omitempty"`
 	AppliedMutations []InteropMutation `json:"applied_mutations"`
 	VisibleSemantics SemanticManifest `json:"visible_semantics"`
 }
@@ -50,20 +51,11 @@ func TemporalSemanticManifest(decoded TemporalCarrierDecoded, mutations []Candid
 		{Key:"SYNC_SEMANTICS",Value:"ALL_SELECTED_RULES_USE_SAME_PRE_STEP_SNAPSHOT"},
 		{Key:"EXECUTION_POLICY",Value:"NONE"},
 	}
-	for _,c:=range decoded.Program.Automaton.Cells{
-		facts=append(facts,SemanticFact{Key:"CELL."+c.ID+".INITIAL",Value:c.InitialState})
-	}
+	for _,c:=range decoded.Program.Automaton.Cells{facts=append(facts,SemanticFact{Key:"CELL."+c.ID+".INITIAL",Value:c.InitialState})}
 	for _,r:=range decoded.Program.Automaton.Rules{
-		req:=make([]string,0,len(r.Requires))
-		for _,p:=range r.Requires{req=append(req,p.CellID+"="+p.State)}
-		sort.Strings(req)
+		req:=make([]string,0,len(r.Requires));for _,p:=range r.Requires{req=append(req,p.CellID+"="+p.State)};sort.Strings(req)
 		from:=r.FromState;if strings.TrimSpace(from)==""{from="*"}
-		facts=append(facts,
-			SemanticFact{Key:"RULE."+r.ID+".TARGET",Value:r.TargetCell},
-			SemanticFact{Key:"RULE."+r.ID+".FROM",Value:from},
-			SemanticFact{Key:"RULE."+r.ID+".TO",Value:r.ToState},
-			SemanticFact{Key:"RULE."+r.ID+".REQUIRES",Value:strings.Join(req,"&")},
-		)
+		facts=append(facts,SemanticFact{Key:"RULE."+r.ID+".TARGET",Value:r.TargetCell},SemanticFact{Key:"RULE."+r.ID+".FROM",Value:from},SemanticFact{Key:"RULE."+r.ID+".TO",Value:r.ToState},SemanticFact{Key:"RULE."+r.ID+".REQUIRES",Value:strings.Join(req,"&")})
 	}
 	for _,e:=range decoded.Program.Automaton.Edges{facts=append(facts,SemanticFact{Key:"EDGE."+e.From+"->"+e.To,Value:e.Kind})}
 	for _,m:=range mutations{
@@ -76,9 +68,13 @@ func TemporalSemanticManifest(decoded TemporalCarrierDecoded, mutations []Candid
 }
 
 func TemporalInteropBuildManifest(report CandidateBuildReport, decoded TemporalCarrierDecoded) InteropBuildManifest {
-	mut:=make([]InteropMutation,0,len(report.AppliedMutations))
-	for _,m:=range report.AppliedMutations{mut=append(mut,InteropMutation{Kind:m.Kind,Target:m.Target,Value:m.Value})}
-	return InteropBuildManifest{Schema:InteropBuildManifestSchemaR1,CandidateID:report.CandidateID,RendererVersion:CandidateBuildReportSchema,ArtifactSHA256:report.CandidateSHA256,ArtifactBytes:report.PNGBytes,ProgramSHA256:report.CandidateProgramSHA256,AppliedMutations:mut,VisibleSemantics:TemporalSemanticManifest(decoded,report.AppliedMutations)}
+	return TemporalInteropBuildManifestWithInherited(report,decoded,nil)
+}
+
+func TemporalInteropBuildManifestWithInherited(report CandidateBuildReport, decoded TemporalCarrierDecoded, inherited []CandidateMutation) InteropBuildManifest {
+	toInterop:=func(in []CandidateMutation)[]InteropMutation{out:=make([]InteropMutation,0,len(in));for _,m:=range in{out=append(out,InteropMutation{Kind:m.Kind,Target:m.Target,Value:m.Value})};return out}
+	all:=append([]CandidateMutation(nil),inherited...);all=append(all,report.AppliedMutations...)
+	return InteropBuildManifest{Schema:InteropBuildManifestSchemaR1,CandidateID:report.CandidateID,RendererVersion:CandidateBuildReportSchema,ArtifactSHA256:report.CandidateSHA256,ArtifactBytes:report.PNGBytes,ProgramSHA256:report.CandidateProgramSHA256,InheritedMutations:toInterop(inherited),AppliedMutations:toInterop(report.AppliedMutations),VisibleSemantics:TemporalSemanticManifest(decoded,all)}
 }
 
 func setFact(facts *[]SemanticFact,key,value string){for i:=range *facts{if (*facts)[i].Key==key{(*facts)[i].Value=value;return}};*facts=append(*facts,SemanticFact{Key:key,Value:value})}

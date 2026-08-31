@@ -14,15 +14,13 @@ const FreezeSelectApplyTogetherR1 = "FREEZE_SELECT_APPLY_TOGETHER_R1"
 
 const (
 	SyncFidelityHeaderTextR1 = "SYNC: FREEZE > SELECT > APPLY"
-	SyncFidelityStep1TextR1  = "1 FREEZE PRE-STEP SNAPSHOT"
-	SyncFidelityStep2TextR1  = "2 FIREABLE IFF:"
-	SyncFidelityStep2BTextR1 = "  WHEN TRUE + TARGET=REQUIRE"
+	SyncFidelityStep1TextR1  = "1 FREEZE PRE-STEP"
+	SyncFidelityStep2TextR1  = "2 FIRE IF WHEN+TARGET=REQUIRE"
 	SyncFidelityStep3TextR1  = "3 SELECT ALL FIREABLE"
-	SyncFidelityStep4TextR1  = "4 APPLY ALL SETS TOGETHER"
-	SyncFidelityNoOrderTextR1 = "NO RULE ORDER"
-	SyncFidelityNoCascadeTextR1 = "NO CASCADE INSIDE STEP"
-	SyncFidelityNextTextR1 = "NEXT USES UPDATED SNAPSHOT"
-	SyncFidelityStopTextR1 = "STOP WHEN ZERO RULES FIRE"
+	SyncFidelityStep4TextR1  = "4 APPLY SETS TOGETHER"
+	SyncFidelityNoOrderTextR1 = "5 NO ORDER / NO CASCADE"
+	SyncFidelityNextTextR1 = "6 NEXT=UPDATED SNAPSHOT"
+	SyncFidelityStopTextR1 = "7 STOP IF ZERO FIREABLE"
 )
 
 // BuildSynchronousExecutionFidelityCandidate is the deterministic R7 materializer.
@@ -60,18 +58,14 @@ func BuildSynchronousExecutionFidelityCandidate(parentPNG []byte, id string) ([]
 }
 
 func drawSynchronousExecutionFidelityR1(img *image.Gray) {
-	// R7 intentionally reuses only R6's left execution guidance panel. The
-	// imperative BOOT row, T2 microgrammar, timeline and exact payload stay frozen.
-	fill(img, 18, 420, 190, 154, 0xff)
-	box(img, 18, 420, 190, 154, 0)
+	fill(img, 18, 420, 190, 126, 0xff)
+	box(img, 18, 420, 190, 126, 0)
 	drawText(img, 24, 426, 1, SyncFidelityHeaderTextR1, 0)
-	drawText(img, 24, 440, 1, SyncFidelityStep1TextR1, 0)
-	drawText(img, 24, 453, 1, SyncFidelityStep2TextR1, 0)
-	drawText(img, 24, 466, 1, SyncFidelityStep2BTextR1, 0)
-	drawText(img, 24, 479, 1, SyncFidelityStep3TextR1, 0)
-	drawText(img, 24, 492, 1, SyncFidelityStep4TextR1, 0)
-	drawText(img, 24, 508, 1, SyncFidelityNoOrderTextR1, 0)
-	drawText(img, 24, 521, 1, SyncFidelityNoCascadeTextR1, 0)
-	drawText(img, 24, 538, 1, SyncFidelityNextTextR1, 0)
-	drawText(img, 24, 555, 1, SyncFidelityStopTextR1, 0)
+	drawText(img, 24, 442, 1, SyncFidelityStep1TextR1, 0)
+	drawText(img, 24, 456, 1, SyncFidelityStep2TextR1, 0)
+	drawText(img, 24, 470, 1, SyncFidelityStep3TextR1, 0)
+	drawText(img, 24, 484, 1, SyncFidelityStep4TextR1, 0)
+	drawText(img, 24, 500, 1, SyncFidelityNoOrderTextR1, 0)
+	drawText(img, 24, 516, 1, SyncFidelityNextTextR1, 0)
+	drawText(img, 24, 532, 1, SyncFidelityStopTextR1, 0)
 }

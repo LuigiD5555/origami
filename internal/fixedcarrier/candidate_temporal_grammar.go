@@ -12,6 +12,14 @@ import (
 // visually explicit enough for a VLM to simulate the declared automaton without
 // inferring dynamics from graph topology alone.
 func drawTemporalRuleMicrogrammar(img *image.Gray, decoded TemporalCarrierDecoded) {
+	drawTemporalRuleMicrogrammarWithCellLabels(img, decoded, func(id string) string { return id })
+}
+
+// drawTemporalRuleMicrogrammarWithCellLabels keeps rule semantics sourced from
+// structured IR while allowing an experimental renderer to change only the
+// visible identity label of a cell. The canonical cell IDs inside TemporalProgram
+// are never rewritten.
+func drawTemporalRuleMicrogrammarWithCellLabels(img *image.Gray, decoded TemporalCarrierDecoded, label func(string) string) {
 	p := decoded.Program
 
 	// Preserve dense two-row T2 layouts instead of overwriting cells. The current
@@ -40,7 +48,7 @@ func drawTemporalRuleMicrogrammar(img *image.Gray, decoded TemporalCarrierDecode
 		if len(r.Requires) > 0 {
 			parts := make([]string, 0, len(r.Requires))
 			for _, pred := range r.Requires {
-				parts = append(parts, shortLabel(pred.CellID, 10)+"="+shortLabel(pred.State, 10))
+				parts = append(parts, shortLabel(label(pred.CellID), 16)+"="+shortLabel(pred.State, 10))
 			}
 			req = strings.Join(parts, "&")
 		}
@@ -48,7 +56,7 @@ func drawTemporalRuleMicrogrammar(img *image.Gray, decoded TemporalCarrierDecode
 		if strings.TrimSpace(from) == "" {
 			from = "*"
 		}
-		line := fmt.Sprintf("IF %s => %s:%s>%s", req, shortLabel(r.TargetCell, 10), shortLabel(from, 10), shortLabel(r.ToState, 10))
+		line := fmt.Sprintf("IF %s => %s:%s>%s", req, shortLabel(label(r.TargetCell), 16), shortLabel(from, 10), shortLabel(r.ToState, 10))
 		drawText(img, 28, y, 1, shortLabel(line, 94), 0)
 		y += 12
 		visible++

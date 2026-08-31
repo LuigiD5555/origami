@@ -42,7 +42,7 @@ type CandidateBuildReport struct {
 	ExactProgramPreserved  bool                `json:"exact_program_preserved"`
 	PNGBytes               int                 `json:"png_bytes"`
 	Width                  int                 `json:"width"`
-	Height                  int                 `json:"height"`
+	Height                 int                 `json:"height"`
 	AppliedMutations       []CandidateMutation `json:"applied_mutations"`
 }
 
@@ -201,6 +201,8 @@ func applyTemporalCandidateMutation(img *image.Gray, decoded TemporalCarrierDeco
 	case "TEMPORAL_STRUCTURE":
 		if target == "T2_SEMANTIC_TEMPORAL_SUPERGRAPH" && value == "VISIBLE_RULE_MICROGRAMMAR_R1" {
 			drawTemporalRuleMicrogrammar(img, decoded)
+		} else if target == "FROM_STATE_PRECONDITION_VISIBILITY" && value == VisibleFromStatePreconditionR1 {
+			drawVisibleFromStatePreconditionR1(img, decoded)
 		} else {
 			emphasizeTemporalCheckpoints(img, decoded)
 		}

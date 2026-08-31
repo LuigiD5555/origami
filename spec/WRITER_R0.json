@@ -8,46 +8,56 @@
   "protocol_contract": "origami.protocol.r0",
   "codec_contract": "origami.codec-registry.r0",
   "capability_contract": "origami.capability-negotiation.r0",
-  "purpose": "Allow a compatible model or deterministic toolchain to construct a new Origami message from source/document semantics using the active canonical profile and its declared Encoder Registry, including a useful T2 semantic superindex, instead of inventing an ad-hoc aesthetic or relying on hidden writer logic.",
+  "automaton_contract": "origami.automaton-model.r0",
+  "temporal_program_contract": "origami.temporal-program.r0",
+  "temporal_graph_contract": "origami.temporal-graph.r0",
+  "temporal_codec_contract": "origami.temporal-codec.r0",
+  "purpose": "Allow a compatible model or deterministic toolchain to construct a new Origami message from source/document/behavior semantics using the active canonical profile and its declared Encoder Registry, including useful T2 semantic/temporal routes, instead of inventing an ad-hoc aesthetic or relying on hidden writer logic.",
   "modes": ["READ", "WRITE"],
   "write_flow": [
-    "INGEST_SOURCE_OR_CANONICAL_DOCUMENT_IR",
+    "INGEST_SOURCE_BEHAVIOR_OR_CANONICAL_IR",
     "DERIVE_OR_ACCEPT_SEMANTIC_IR",
+    "DERIVE_OPTIONAL_AUTOMATON_AND_TEMPORAL_PROGRAM_IR",
     "DECLARE_VISUAL_INTENTS",
     "READ_ACTIVE_ROSETTA",
     "DISCOVER_ENCODER_REGISTRY",
     "NEGOTIATE_WRITE_CAPABILITIES",
     "SELECT_SMALLEST_SUFFICIENT_ENCODERS",
     "BIND_INTENTS_TO_CANONICAL_DIMENSIONS",
-    "GENERATE_PROGRAM_AND_ACTUAL_T2_SEMANTIC_INDEX",
+    "GENERATE_PROGRAM_AND_ACTUAL_T2_SEMANTIC_TEMPORAL_INDEX",
     "GENERATE_MEMORY_AND_VERIFICATION",
     "EMIT_CONSTRUCTION_IR",
     "COMPILE_CANONICAL_CARRIER_WHEN_AVAILABLE",
     "SELF_VERIFY",
-    "ROUNDTRIP_SEMANTIC_CHECK"
+    "ROUNDTRIP_SEMANTIC_AND_TEMPORAL_CHECK"
   ],
   "source_policy": {
     "pdf_to_png_screenshot_forbidden": true,
     "raw_text_poster_forbidden": true,
-    "source_may_be_pdf_image_text_or_document_ir": true,
+    "source_may_be_pdf_image_text_document_ir_behavior_trace_or_automaton_ir": true,
     "semantic_extraction_may_use_external_development_or_ingestion_system": true,
+    "behavior_distillation_may_use_external_development_system": true,
     "final_visual_compilation_authority": "ORIGAMI_CANONICAL_PROFILE"
   },
-  "visual_intent_classes": ["IDENTITY","HIERARCHY","RELATION","DEPENDENCY","SCOPE","IMPORTANCE","STATE","UNCERTAINTY","EVIDENCE","VERIFICATION","ADDRESSABILITY","TEMPORAL_ORDER","REDUNDANCY","ROUTING"],
+  "visual_intent_classes": ["IDENTITY","HIERARCHY","RELATION","DEPENDENCY","SCOPE","IMPORTANCE","STATE","UNCERTAINTY","EVIDENCE","VERIFICATION","ADDRESSABILITY","TEMPORAL_ORDER","AUTOMATON_CELL","TRANSITION","EVENT","CHECKPOINT","REDUNDANCY","ROUTING"],
   "construction_spec": {
     "required": ["schema","profile_id","source_identity","semantic_commitment","visual_intents","rosetta","encoder_selection","sections","verification_plan"],
     "profile_id": "origami.canonical-aesthetic.r0",
     "carrier_local_style_override": false,
-    "t2_requirement": "BOUNDED_ACTUAL_SEMANTIC_ENTRY_POINTS_FOR_COMMON_NATIVE_QUERIES",
+    "t2_requirement": "BOUNDED_ACTUAL_SEMANTIC_AND_OPTIONAL_TEMPORAL_ENTRY_POINTS_FOR_COMMON_NATIVE_QUERIES",
     "generic_category_only_t2_forbidden": true
   },
   "encoder_registry": {
     "semantic_core": ["E0","E1","E2"],
     "semantic_extended": ["E3","E4","E5","E6"],
+    "temporal_optional": ["ET0","ET1","ET2","ET3","ET4","ET5","ET6"],
     "exact_control": ["Q0","Q1","Q2","Q3","Q4","Q5"],
     "semantic_encoder_must_not_hide_exact_dependency": true,
+    "temporal_encoder_must_not_hide_exact_trace_dependency": true,
     "undeclared_external_encoder_forbidden": true,
-    "first_mandatory_write_gate": "E2_ENCODE_SUPERINDEX"
+    "first_mandatory_write_gate": "E2_ENCODE_SUPERINDEX",
+    "first_temporal_write_gate": "ET0_ENCODE_AUTOMATON",
+    "timeline_write_gate": "ET2_ENCODE_TIMELINE"
   },
   "rosetta_generation": {
     "must_include_profile_id": true,
@@ -58,6 +68,8 @@
     "must_bind_semantic_roles_to_encoder_ids": true,
     "must_include_capability_requirements_and_fallbacks": true,
     "must_include_any_experimental_extension": true,
+    "temporal_automaton_binding_required_when_present": true,
+    "temporal_automaton_binding_fields": ["automaton_role","temporal_decoder_id","temporal_encoder_id","update_mode","schedule","checkpoint_semantics","failure_state"],
     "promoted_perceptual_binding_must_include_reveal_procedure": true,
     "reveal_procedure_fields": ["operation","required_inputs","observation_condition","trajectory_if_needed","integration_window_if_needed","fallback_if_any","failure_state"],
     "must_not_depend_on_private_prompt_state": true
@@ -71,6 +83,19 @@
     "semantic_index_write_must_not_require_exact_plane_encode": true,
     "bounded_top_level_index_allowed": true,
     "missing_index_behavior": "UNKNOWN_NOT_BINARY_FALLBACK"
+  },
+  "temporal_write_rule": {
+    "optional_for_core": true,
+    "automaton_encoder": "ET0",
+    "automaton_decoder_pair": "ST0",
+    "timeline_encoder": "ET2",
+    "timeline_decoder_pair": "ST2",
+    "fold_encoder": "ET5",
+    "step_decoder": "ST6",
+    "default_trace_mode": "CHECKPOINT_PLUS_DELTA",
+    "global_frame_sequence_required": false,
+    "roundtrip": "REPLAY(DECODE_TEMPORAL(ENCODE_TEMPORAL(T))) ~= T",
+    "unsupported_behavior": "CONSTRUCTION_SPEC_ONLY_OR_UNKNOWN"
   },
   "perceptual_write_rule": {
     "static_primitive_reveal_optional": true,
@@ -91,6 +116,7 @@
     "exact_parts": "IDENTITY_ADDRESS_HASH_AND_VERIFICATION_FIELDS_REQUIRE_EXACT_MATCH_WHEN_PRESENT",
     "semantic_parts": "SEMANTIC_EQUIVALENCE_UNDER_DECLARED_CANONICALIZATION",
     "native_navigation_parts": "S2(E2(INDEX)) must recover the declared bounded semantic entry points without exact/control-plane codecs",
+    "temporal_parts": "ST0(ET0(AUTOMATON)) must preserve the declared automaton and ST2(ET2(TIMELINE)) followed by deterministic replay must preserve the declared temporal behavior",
     "perceptual_parts": "A promoted non-static channel must reproduce its declared semantic result under its declared observation/reveal contract; inability to satisfy the reveal condition is UNKNOWN rather than absence.",
     "failure_state": "INVALID_CARRIER"
   },
@@ -98,10 +124,13 @@
     "WRITE_USES_CANONICAL_VISUAL_PROFILE",
     "ROSETTA_IS_REQUIRED_IN_READ_AND_WRITE",
     "ROSETTA_DECLARES_ENCODING_SEMANTICS",
+    "ROSETTA_DECLARES_TEMPORAL_AUTOMATON_SEMANTICS_WHEN_PRESENT",
     "MODEL_DOES_NOT_DEFINE_A_NEW_AESTHETIC_PER_DOCUMENT",
     "T2_CONTAINS_ACTUAL_SEMANTIC_ENTRIES",
     "SEMANTIC_INDEX_NE_EXACT_PLANE_DECODE",
     "SEMANTIC_INDEX_WRITE_NE_EXACT_PLANE_ENCODE",
+    "TEMPORAL_PROGRAM_NE_LITERAL_VIDEO",
+    "TEMPORAL_WRITE_NE_EXACT_TRACE_REQUIREMENT",
     "NO_UNDECLARED_EXTERNAL_ENCODER_DEPENDENCY",
     "PROMOTED_PERCEPTUAL_CHANNEL_REQUIRES_REVEAL_PROCEDURE",
     "FAILED_REVEAL_NE_SEMANTIC_ABSENCE",
@@ -113,5 +142,6 @@
   ],
   "reference_runtime": "internal/writer",
   "reference_codec_runtime": "internal/codec",
+  "reference_temporal_runtime": ["internal/automaton","internal/temporal"],
   "reference_cli": "cmd/origami-write-plan"
 }

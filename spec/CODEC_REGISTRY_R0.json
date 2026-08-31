@@ -20,6 +20,17 @@
     {"id":"E5","operation":"ENCODE_CLUSTER","pair":"S5","exact":false},
     {"id":"E6","operation":"SEMANTIC_FOLD","pair":"S6","exact":false}
   ],
+  "extensions": {
+    "temporal": {
+      "contract": "origami.temporal-codec.r0",
+      "required_for_core": false,
+      "read_capabilities": ["SEMANTIC_READ", "TEMPORAL_READ"],
+      "write_capabilities": ["SEMANTIC_WRITE", "TEMPORAL_WRITE"],
+      "decoder_family": ["ST0","ST1","ST2","ST3","ST4","ST5","ST6"],
+      "encoder_family": ["ET0","ET1","ET2","ET3","ET4","ET5","ET6"],
+      "first_executable_pairs": ["ST0_ET0", "ST2_ET2"]
+    }
+  },
   "exact_decoders": ["X0_RESOLVE_ADDRESS","X1_READ_CID","X2_VERIFY_HASH","X3_VERIFY_MERKLE","X4_DECODE_RESIDUAL","X5_EXACT_RECOVERY"],
   "exact_encoders": ["Q0_ASSIGN_ADDRESS","Q1_CREATE_CID","Q2_HASH_CONTENT","Q3_BUILD_MERKLE","Q4_ENCODE_RESIDUAL","Q5_BUILD_VERIFICATION"],
   "selection": {
@@ -30,7 +41,8 @@
   "roundtrip": {
     "required_for_semantic_pairs": true,
     "first_required_pair": "S2_E2",
-    "equation": "S_n(E_n(S)) ~= S"
+    "equation": "S_n(E_n(S)) ~= S",
+    "temporal_extension_equation": "ST_n(ET_n(T)) ~= T"
   },
   "failure_states": ["UNKNOWN","NOT_VERIFIED","CONSTRUCTION_SPEC_ONLY","INVALID_CARRIER"],
   "hard_invariants": [
@@ -39,6 +51,7 @@
     "S_CODEC_DOES_NOT_HIDE_X_DEPENDENCY",
     "E_CODEC_DOES_NOT_HIDE_Q_DEPENDENCY",
     "PAIRED_SEMANTIC_CODEC_HAS_ROUNDTRIP_GATE",
+    "TEMPORAL_EXTENSION_IS_OPTIONAL_FOR_CORE",
     "UNSUPPORTED_CODEC_RETURNS_DECLARED_FAILURE_STATE",
     "FALSE_EXACT=0"
   ]

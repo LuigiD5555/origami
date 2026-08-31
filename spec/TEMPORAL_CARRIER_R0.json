@@ -1,0 +1,42 @@
+{
+  "contract_id": "origami.temporal-carrier.r0",
+  "status": "EXPERIMENTAL_REFERENCE_IMPLEMENTATION",
+  "profile_id": "origami.temporal-carrier.r0.profile-1",
+  "purpose": "Demonstrate a self-contained temporal Origami where a bounded graph automaton is visible semantically and the exact Temporal Program is recoverable from the same image.",
+  "envelope": {
+    "width": 640,
+    "height": 640,
+    "png_bytes": 8192,
+    "program_record_bytes": 512,
+    "compressed_program_capacity_bytes": 462,
+    "oversize_behavior": "FAIL_BUILD"
+  },
+  "semantic_plane": {
+    "boot": true,
+    "rosetta": "BOX_CELL_ARROW_TRANSITION_RING_CHECKPOINT_X_TIME",
+    "t2": "VISIBLE_AUTOMATON_GRAPH",
+    "timeline": "VISIBLE_STEP_AXIS_WITH_CHECKPOINTS",
+    "max_visible_cells_reference": 8,
+    "max_visible_rules_reference": 8,
+    "exact_plane_required_for_semantic_navigation": false
+  },
+  "exact_plane": {
+    "encoding": "ZLIB_CANONICAL_TEMPORAL_PROGRAM_JSON",
+    "integrity": ["SHA256", "CRC32"],
+    "self_contained": true,
+    "external_sidecar_allowed": false
+  },
+  "claims": {
+    "small_structured_program_can_be_fully_self_contained": true,
+    "arbitrary_program_guaranteed_to_fit": false,
+    "native_vlm_temporal_readability_promoted": false
+  },
+  "hard_invariants": [
+    "SEMANTIC_GRAPH_AND_EXACT_PROGRAM_SHARE_ONE_IMAGE",
+    "SEMANTIC_QUERY_NE_EXACT_PAYLOAD_DECODE",
+    "OVERSIZE_PROGRAM_FAILS_INSTEAD_OF_EXTERNALIZING",
+    "PNG_BYTES_EQ_8192",
+    "COMPRESSIBILITY_DEPENDS_ON_STRUCTURE",
+    "FALSE_EXACT=0"
+  ]
+}

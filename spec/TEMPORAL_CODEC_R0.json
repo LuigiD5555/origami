@@ -1,0 +1,40 @@
+{
+  "contract_id": "origami.temporal-codec.r0",
+  "status": "EXPERIMENTAL_REFERENCE_IMPLEMENTATION",
+  "purpose": "Declare read/write codec entrypoints for graph automata and temporal programs.",
+  "decoder_family": [
+    "ST0_READ_AUTOMATON",
+    "ST1_READ_CELL",
+    "ST2_READ_TIMELINE",
+    "ST3_LOCATE_EVENT",
+    "ST4_READ_TRANSITION",
+    "ST5_UNFOLD_TEMPORAL_REGION",
+    "ST6_SIMULATE_DECLARED_STEP"
+  ],
+  "encoder_family": [
+    "ET0_ENCODE_AUTOMATON",
+    "ET1_ENCODE_CELL",
+    "ET2_ENCODE_TIMELINE",
+    "ET3_ENCODE_EVENT",
+    "ET4_ENCODE_TRANSITION",
+    "ET5_FOLD_TEMPORAL_REGION",
+    "ET6_ENCODE_CHECKPOINT"
+  ],
+  "roundtrip": [
+    "ST0(ET0(AUTOMATON))~=AUTOMATON",
+    "ST2(ET2(TIMELINE))~=TIMELINE",
+    "REPLAY(ET5(TRACE))~=TRACE"
+  ],
+  "capability_behavior": {
+    "unsupported_semantic_temporal": "UNKNOWN",
+    "unsupported_exact_temporal": "NOT_VERIFIED",
+    "unavailable_compiler": "CONSTRUCTION_SPEC_ONLY"
+  },
+  "hard_invariants": [
+    "TEMPORAL_CODEC_IS_SELF_DECLARED",
+    "SIMULATE_STEP_USES_ONLY_DECLARED_STATE_RULES_GRAPH_AND_CONTEXT",
+    "SEMANTIC_TEMPORAL_CODEC_NE_EXACT_TRACE_CODEC",
+    "NO_UNDECLARED_EXTERNAL_TEMPORAL_DECODER",
+    "FALSE_EXACT=0"
+  ]
+}

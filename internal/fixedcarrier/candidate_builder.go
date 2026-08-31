@@ -42,7 +42,7 @@ type CandidateBuildReport struct {
 	ExactProgramPreserved  bool                `json:"exact_program_preserved"`
 	PNGBytes               int                 `json:"png_bytes"`
 	Width                  int                 `json:"width"`
-	Height                 int                 `json:"height"`
+	Height                  int                 `json:"height"`
 	AppliedMutations       []CandidateMutation `json:"applied_mutations"`
 }
 
@@ -184,6 +184,10 @@ func applyTemporalCandidateMutation(img *image.Gray, decoded TemporalCarrierDeco
 		drawArrowTip(img, 320, 110, 320, 124)
 		if target == "T1_TO_T2_ENTRY_ROUTE" && value == "EXPLICIT_DIRECTIONAL_ANCHOR" { drawText(img, 332, 112, 1, "T2", 0) }
 	case "REDUNDANCY":
+		if target == "CELL_IDENTITY_ENCODING" && value == VisibleCellIdentityRedundancyR1 {
+			drawVisibleCellIdentityRedundancyR1(img, decoded)
+			break
+		}
 		drawText(img, 584, 92, 1, "T2", 0)
 		drawText(img, 584, 120, 1, "T2", 0)
 	case "CHANNEL_ROLE":

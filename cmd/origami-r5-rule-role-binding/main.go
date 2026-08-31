@@ -46,7 +46,7 @@ func main() {
 	inherited := []fixedcarrier.CandidateMutation{grammarMutation,execMutation,identityMutation,fromMutation}
 	build := fixedcarrier.TemporalInteropBuildManifestWithInherited(report,decoded,inherited)
 	build.VisibleSemantics.Facts = setFact(build.VisibleSemantics.Facts,"RULE_ROLE_BINDING",fixedcarrier.VisibleRuleRoleBindingR1)
-	build.VisibleText.Facts = roleVisibleText(decoded)
+	build.VisibleText = roleVisibleText(decoded)
 	parentDecoded, err := fixedcarrier.DecodeTemporalCarrierPNG(fromCarrier); must(err)
 	parentSemantics := fixedcarrier.TemporalSemanticManifest(parentDecoded,inherited)
 	trace, err := temporal.Run(program); must(err)

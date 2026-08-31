@@ -16,9 +16,9 @@ const (
 	SyncFidelityHeaderTextR1 = "SYNC: FREEZE > SELECT > APPLY"
 	SyncFidelityStep1TextR1  = "1 FREEZE PRE-STEP"
 	SyncFidelityStep2TextR1  = "2 FIRE IFF WHEN+TARGET=REQUIRE"
-	SyncFidelityStep3TextR1  = "3 SELECT ALL; APPLY TOGETHER"
-	SyncFidelityNoOrderTextR1 = "4 NO ORDER; NO CASCADE"
-	SyncFidelityStopTextR1 = "5 NEXT; STOP IF ZERO FIRE"
+	SyncFidelityStep3TextR1  = "3 SELECT ALL | APPLY TOGETHER"
+	SyncFidelityNoOrderTextR1 = "4 NO ORDER | NO CASCADE"
+	SyncFidelityStopTextR1 = "5 NEXT | STOP IF ZERO FIRE"
 )
 
 // BuildSynchronousExecutionFidelityCandidate is the deterministic R7 materializer.

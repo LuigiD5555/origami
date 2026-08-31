@@ -50,8 +50,11 @@ func TestCellIdentityRedundancyR1ChangesOnlyVisibleIdentity(t *testing.T){
 	// Canonical semantic rule identities remain raw A/B/C.
 	if factValue(manifest.VisibleSemantics.Facts,"RULE.r1.REQUIRES")!="A=ACTIVE"{t.Fatal("R3 rewrote canonical rule precondition")}
 	if factValue(manifest.VisibleSemantics.Facts,"RULE.r1.TARGET")!="B"{t.Fatal("R3 rewrote canonical rule target")}
+	if factValue(manifest.VisibleSemantics.Facts,"RULE.r4.REQUIRES")!="C=ACTIVE"{t.Fatal("R3 rewrote canonical r4 precondition")}
+	if factValue(manifest.VisibleSemantics.Facts,"RULE.r4.TARGET")!="B"{t.Fatal("R3 rewrote canonical r4 target")}
 	if factValue(manifest.VisibleText.Facts,"CELL.A.LABEL")!="CELL A[01]"{t.Fatalf("visible A label missing: %#v",manifest.VisibleText.Facts)}
 	if factValue(manifest.VisibleText.Facts,"RULE.r1.TEXT")!="IF A[01]=ACTIVE => B[02]:IDLE>ACTIVE"{t.Fatalf("visible r1 text=%q",factValue(manifest.VisibleText.Facts,"RULE.r1.TEXT"))}
+	if factValue(manifest.VisibleText.Facts,"RULE.r4.TEXT")!="IF C[03]=ACTIVE => B[02]:ACTIVE>DONE"{t.Fatalf("visible r4 text=%q",factValue(manifest.VisibleText.Facts,"RULE.r4.TEXT"))}
 	if factValue(manifest.VisibleText.Facts,"EXECUTION_POLICY.TEXT")!=ExecuteVisibleRulesToStableTextR1{t.Fatal("R3 lost frozen execution directive")}
 }
 

@@ -47,6 +47,7 @@ jobs:
           go build ./cmd/origami-temporal-carrier
           go build ./cmd/origami-candidate-build
           go build ./cmd/origami-r3-cell-identity
+          go build ./cmd/origami-r4-from-state
       - name: Build R3 cell identity specimen
         run: go run ./cmd/origami-r3-cell-identity -out evidence/r3-cell-identity
       - name: Upload R3 cell identity specimen
@@ -54,6 +55,15 @@ jobs:
         with:
           name: R3-cell-identity-redundancy-r1
           path: evidence/r3-cell-identity/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Build R4 from-state specimen
+        run: go run ./cmd/origami-r4-from-state -out evidence/r4-from-state
+      - name: Upload R4 from-state specimen
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: R4-from-state-precondition-visible-r1
+          path: evidence/r4-from-state/
           if-no-files-found: error
           retention-days: 30
       - name: Run temporal automaton reference

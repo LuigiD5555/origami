@@ -12,14 +12,8 @@ import (
 )
 
 func main() {
-	if len(os.Args) > 1 && os.Args[1] == "capabilities" {
-		writeJSON(fixedcarrier.TemporalCandidateCapabilities())
-		return
-	}
-	if len(os.Args) > 1 && os.Args[1] == "semantic-manifest" {
-		semanticManifest(os.Args[2:])
-		return
-	}
+	if len(os.Args) > 1 && os.Args[1] == "capabilities" { writeJSON(fixedcarrier.TemporalCandidateCapabilities()); return }
+	if len(os.Args) > 1 && os.Args[1] == "semantic-manifest" { semanticManifest(os.Args[2:]); return }
 	args := os.Args[1:]
 	if len(args) > 0 && args[0] == "build" { args = args[1:] }
 	fs := flag.NewFlagSet("origami-candidate-build", flag.ExitOnError)
@@ -27,6 +21,7 @@ func main() {
 	out := fs.String("out", env("TLALOC_OUTPUT_PNG"), "candidate PNG output")
 	id := fs.String("id", env("TLALOC_CANDIDATE_ID"), "candidate id")
 	mutationsRaw := fs.String("mutations-json", env("TLALOC_MUTATIONS_JSON"), "JSON array of experimental mutations")
+	inheritedRaw := fs.String("inherited-mutations-json", "[]", "mutations already represented by the parent carrier")
 	specPath := fs.String("spec", "", "optional full CandidateSpec JSON")
 	reportPath := fs.String("report", "", "optional legacy build report JSON output")
 	interopPath := fs.String("interop-report", "", "optional origami.candidate-build-manifest.r1 output")
@@ -41,6 +36,7 @@ func main() {
 		mutations, err := fixedcarrier.ParseCandidateMutationsJSON(*mutationsRaw); die(err)
 		spec = fixedcarrier.CandidateSpec{Schema:fixedcarrier.CandidateSpecSchema,ID:*id,Mutations:mutations}
 	}
+	inherited,err:=fixedcarrier.ParseCandidateMutationsJSON(*inheritedRaw);die(err)
 	parentBytes, err := os.ReadFile(*parent); die(err)
 	candidate, report, err := fixedcarrier.BuildTemporalCandidate(parentBytes, spec); die(err)
 	if err := os.WriteFile(*out, candidate, 0o644); err != nil { die(err) }
@@ -48,7 +44,7 @@ func main() {
 	if *reportPath != "" { die(os.WriteFile(*reportPath,encoded,0o644)) }
 	if *interopPath != "" {
 		decoded,err:=fixedcarrier.DecodeTemporalCarrierPNG(candidate);die(err)
-		interop:=fixedcarrier.TemporalInteropBuildManifest(report,decoded)
+		interop:=fixedcarrier.TemporalInteropBuildManifestWithInherited(report,decoded,inherited)
 		b,err:=json.MarshalIndent(interop,"","  ");die(err);die(os.WriteFile(*interopPath,append(b,'\n'),0o644))
 	}
 	_, err = os.Stdout.Write(encoded); die(err)

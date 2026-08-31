@@ -27,8 +27,11 @@ printf '[roundtrip] case 2: remove binaries that did not exist before install\n'
 P2="$TMP/prefix2"
 "$ROOT/install.sh" --prefix "$P2" --skip-tests --skip-smoke >/dev/null
 [[ -x "$P2/bin/ohf-lab" && -x "$P2/bin/ohf-glyphcalc" ]]
+[[ -x "$P2/bin/origami-candidate-build" ]]
+"$P2/bin/origami-candidate-build" capabilities | grep -q 'origami.experimental-candidate.r0.capabilities'
 "$ROOT/uninstall.sh" --prefix "$P2" >/dev/null
 [[ ! -e "$P2/bin/ohf-lab" && ! -e "$P2/bin/ohf-glyphcalc" ]]
+[[ ! -e "$P2/bin/origami-candidate-build" ]]
 printf '[roundtrip] REMOVE_NEW_BINARIES=PASS\n'
 
 printf '[roundtrip] case 3: modified binary stops default uninstall before changes\n'
@@ -41,9 +44,9 @@ if "$ROOT/uninstall.sh" --prefix "$P3" >/dev/null 2>&1; then
   exit 1
 fi
 [[ "$(sha "$P3/bin/ohf-lab")" == "$MOD_SHA" ]]
-[[ -e "$P3/bin/ohf-glyphcalc" ]]
+[[ -e "$P3/bin/origami-candidate-build" ]]
 "$ROOT/uninstall.sh" --prefix "$P3" --force >/dev/null
-[[ ! -e "$P3/bin/ohf-lab" && ! -e "$P3/bin/ohf-glyphcalc" ]]
+[[ ! -e "$P3/bin/ohf-lab" && ! -e "$P3/bin/origami-candidate-build" ]]
 printf '[roundtrip] MODIFIED_BINARY_GUARD=PASS\n'
 
 printf '[roundtrip] case 4: reinstall preserves original rollback point\n'
@@ -59,6 +62,7 @@ B2="$(sha "$P4/bin/ohf-glyphcalc")"
 "$ROOT/uninstall.sh" --prefix "$P4" >/dev/null
 [[ "$(sha "$P4/bin/ohf-lab")" == "$B1" ]]
 [[ "$(sha "$P4/bin/ohf-glyphcalc")" == "$B2" ]]
+[[ ! -e "$P4/bin/origami-candidate-build" ]]
 printf '[roundtrip] REINSTALL_ROLLBACK_POINT=PASS\n'
 
 printf 'INSTALL_UNINSTALL_ROUNDTRIP=PASS\n'

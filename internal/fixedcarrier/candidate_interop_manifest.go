@@ -21,21 +21,47 @@ type InteropBuildManifest struct { Schema string `json:"schema"`; CandidateID st
 func TemporalSemanticManifest(decoded TemporalCarrierDecoded, mutations []CandidateMutation) SemanticManifest {
 	facts:=[]SemanticFact{{Key:"PROGRAM_ID",Value:decoded.Program.ID},{Key:"AUTOMATON_ID",Value:decoded.Program.Automaton.ID},{Key:"MAX_STEPS",Value:fmt.Sprintf("%d",decoded.Program.MaxSteps)},{Key:"CHECKPOINT_EVERY",Value:fmt.Sprintf("%d",decoded.Program.CheckpointEvery)},{Key:"SYNC_SEMANTICS",Value:"ALL_SELECTED_RULES_USE_SAME_PRE_STEP_SNAPSHOT"},{Key:"EXECUTION_POLICY",Value:"NONE"}}
 	for _,c:=range decoded.Program.Automaton.Cells{facts=append(facts,SemanticFact{Key:"CELL."+c.ID+".INITIAL",Value:c.InitialState},SemanticFact{Key:"VISIBLE_CELL_ID_"+c.ID,Value:c.ID})}
-	for _,r:=range decoded.Program.Automaton.Rules{req:=make([]string,0,len(r.Requires));for _,p:=range r.Requires{req=append(req,p.CellID+"="+p.State)};sort.Strings(req);from:=r.FromState;if strings.TrimSpace(from)==""{from="*"};facts=append(facts,SemanticFact{Key:"RULE."+r.ID+".TARGET",Value:r.TargetCell},SemanticFact{Key:"RULE."+r.ID+".FROM",Value:from},SemanticFact{Key:"RULE."+r.ID+".TO",Value:r.ToState},SemanticFact{Key:"RULE."+r.ID+".REQUIRES",Value:strings.Join(req,"&")})}
+	for _,r:=range decoded.Program.Automaton.Rules{
+		req:=make([]string,0,len(r.Requires));for _,p:=range r.Requires{req=append(req,p.CellID+"="+p.State)};sort.Strings(req)
+		from:=r.FromState;if strings.TrimSpace(from)==""{from="*"}
+		facts=append(facts,SemanticFact{Key:"RULE."+r.ID+".TARGET",Value:r.TargetCell},SemanticFact{Key:"RULE."+r.ID+".FROM",Value:from},SemanticFact{Key:"RULE."+r.ID+".TO",Value:r.ToState},SemanticFact{Key:"RULE."+r.ID+".REQUIRES",Value:strings.Join(req,"&")})
+	}
 	for _,e:=range decoded.Program.Automaton.Edges{facts=append(facts,SemanticFact{Key:"EDGE."+e.From+"->"+e.To,Value:e.Kind})}
-	for _,m:=range mutations{t:=strings.ToUpper(strings.TrimSpace(m.Target));v:=strings.ToUpper(strings.TrimSpace(m.Value));if t=="EXECUTION_POLICY"&&v=="EXECUTE_VISIBLE_RULES_TO_STABLE_R1"{setFact(&facts,"EXECUTION_POLICY","EXECUTE_VISIBLE_RULES_TO_STABLE_R1")};if t=="T2_SEMANTIC_TEMPORAL_SUPERGRAPH"&&v=="VISIBLE_RULE_MICROGRAMMAR_R1"{setFact(&facts,"TEMPORAL_GRAMMAR","VISIBLE_RULE_MICROGRAMMAR_R1")};if t=="CELL_IDENTITY_ENCODING"&&v==VisibleCellIdentityRedundancyR1{labels:=temporalVisibleCellLabels(decoded,true);for _,c:=range decoded.Program.Automaton.Cells{setFact(&facts,"VISIBLE_CELL_ID_"+c.ID,labels[c.ID])}};if t=="FROM_STATE_PRECONDITION_VISIBILITY"&&v==VisibleFromStatePreconditionR1{setFact(&facts,"FROM_STATE_PRECONDITION_VISIBILITY",VisibleFromStatePreconditionR1)}}
-	sort.Slice(facts,func(i,j int)bool{if facts[i].Key==facts[j].Key{return facts[i].Value<facts[j].Value};return facts[i].Key<facts[j].Key});return SemanticManifest{Schema:SemanticManifestSchemaR1,ProgramSHA256:decoded.ProgramSHA256,Facts:facts}
+	for _,m:=range mutations{
+		t:=strings.ToUpper(strings.TrimSpace(m.Target));v:=strings.ToUpper(strings.TrimSpace(m.Value))
+		if t=="EXECUTION_POLICY"&&v=="EXECUTE_VISIBLE_RULES_TO_STABLE_R1"{setFact(&facts,"EXECUTION_POLICY","EXECUTE_VISIBLE_RULES_TO_STABLE_R1")}
+		if t=="T2_SEMANTIC_TEMPORAL_SUPERGRAPH"&&v=="VISIBLE_RULE_MICROGRAMMAR_R1"{setFact(&facts,"TEMPORAL_GRAMMAR","VISIBLE_RULE_MICROGRAMMAR_R1")}
+		if t=="CELL_IDENTITY_ENCODING"&&v==VisibleCellIdentityRedundancyR1{labels:=temporalVisibleCellLabels(decoded,true);for _,c:=range decoded.Program.Automaton.Cells{setFact(&facts,"VISIBLE_CELL_ID_"+c.ID,labels[c.ID])}}
+		if t=="FROM_STATE_PRECONDITION_VISIBILITY"&&v==VisibleFromStatePreconditionR1{setFact(&facts,"FROM_STATE_PRECONDITION_VISIBILITY",VisibleFromStatePreconditionR1)}
+		if t=="RULE_ROLE_BINDING"&&v==VisibleRuleRoleBindingR1{setFact(&facts,"RULE_ROLE_BINDING",VisibleRuleRoleBindingR1)}
+		if t=="EXECUTION_POLICY_COMPLIANCE"&&v==ExecuteDontSummarizeToStableR1{setFact(&facts,"EXECUTION_POLICY_COMPLIANCE",ExecuteDontSummarizeToStableR1)}
+	}
+	sort.Slice(facts,func(i,j int)bool{if facts[i].Key==facts[j].Key{return facts[i].Value<facts[j].Value};return facts[i].Key<facts[j].Key})
+	return SemanticManifest{Schema:SemanticManifestSchemaR1,ProgramSHA256:decoded.ProgramSHA256,Facts:facts}
 }
 
 func TemporalVisibleTextManifest(decoded TemporalCarrierDecoded, mutations []CandidateMutation) VisibleTextManifest {
 	redundant:=hasCandidateMutation(mutations,"CELL_IDENTITY_ENCODING",VisibleCellIdentityRedundancyR1)
 	grammar:=hasCandidateMutation(mutations,"T2_SEMANTIC_TEMPORAL_SUPERGRAPH","VISIBLE_RULE_MICROGRAMMAR_R1")
 	explicitFrom:=hasCandidateMutation(mutations,"FROM_STATE_PRECONDITION_VISIBILITY",VisibleFromStatePreconditionR1)
+	roleBinding:=hasCandidateMutation(mutations,"RULE_ROLE_BINDING",VisibleRuleRoleBindingR1)
 	execute:=hasCandidateMutation(mutations,"EXECUTION_POLICY","EXECUTE_VISIBLE_RULES_TO_STABLE_R1")
+	executionCompliance:=hasCandidateMutation(mutations,"EXECUTION_POLICY_COMPLIANCE",ExecuteDontSummarizeToStableR1)
 	labels:=temporalVisibleCellLabels(decoded,redundant)
 	facts:=[]SemanticFact{}
 	for _,c:=range decoded.Program.Automaton.Cells{facts=append(facts,SemanticFact{Key:"CELL."+c.ID+".LABEL",Value:"CELL "+labels[c.ID]},SemanticFact{Key:"CELL."+c.ID+".INITIAL_TEXT",Value:c.InitialState})}
-	if explicitFrom {
+
+	if roleBinding {
+		facts=append(facts,SemanticFact{Key:"TEMPORAL_GRAMMAR.SYNC_TEXT",Value:"EACH STEP: TEST ALL CONDITIONS ON SAME PRE-STEP SNAPSHOT"})
+		if len(decoded.Program.Automaton.Cells)<=4{
+			for i,r:=range decoded.Program.Automaton.Rules{
+				if i>=4{break}
+				req:="TRUE";if len(r.Requires)>0{parts:=make([]string,0,len(r.Requires));for _,p:=range r.Requires{parts=append(parts,shortLabel(labels[p.CellID],16)+"="+shortLabel(p.State,10))};req=strings.Join(parts,"&")}
+				from:=r.FromState;if strings.TrimSpace(from)==""{from="*"}
+				facts=append(facts,SemanticFact{Key:"RULE."+r.ID+".WHEN_TEXT",Value:strings.ToUpper(r.ID)+" WHEN "+req},SemanticFact{Key:"RULE."+r.ID+".ROLE_TEXT",Value:"TARGET "+shortLabel(labels[r.TargetCell],16)+" | REQUIRE "+shortLabel(from,10)+" | SET "+shortLabel(r.ToState,10)})
+			}
+		}
+	} else if explicitFrom {
 		facts=append(facts,SemanticFact{Key:"TEMPORAL_GRAMMAR.SYNC_TEXT",Value:"EACH STEP: TEST ALL CONDITIONS ON SAME PRE-STEP SNAPSHOT"})
 		if len(decoded.Program.Automaton.Cells)<=4{for i,r:=range decoded.Program.Automaton.Rules{if i>=6{break};req:="TRUE";if len(r.Requires)>0{parts:=make([]string,0,len(r.Requires));for _,p:=range r.Requires{parts=append(parts,shortLabel(labels[p.CellID],16)+"="+shortLabel(p.State,10))};req=strings.Join(parts,"&")};from:=r.FromState;if strings.TrimSpace(from)==""{from="*"};line:=fmt.Sprintf("IF %s AND %s=%s THEN %s -> %s",req,shortLabel(labels[r.TargetCell],16),shortLabel(from,10),shortLabel(labels[r.TargetCell],16),shortLabel(r.ToState,10));facts=append(facts,SemanticFact{Key:"RULE."+r.ID+".TEXT",Value:shortLabel(line,94)})}}
 	} else if grammar {
@@ -43,7 +69,20 @@ func TemporalVisibleTextManifest(decoded TemporalCarrierDecoded, mutations []Can
 		if len(decoded.Program.Automaton.Cells)<=4{for i,r:=range decoded.Program.Automaton.Rules{if i>=6{break};req:="TRUE";if len(r.Requires)>0{parts:=make([]string,0,len(r.Requires));for _,p:=range r.Requires{parts=append(parts,shortLabel(labels[p.CellID],16)+"="+shortLabel(p.State,10))};req=strings.Join(parts,"&")};from:=r.FromState;if strings.TrimSpace(from)==""{from="*"};line:=fmt.Sprintf("IF %s => %s:%s>%s",req,shortLabel(labels[r.TargetCell],16),shortLabel(from,10),shortLabel(r.ToState,10));facts=append(facts,SemanticFact{Key:"RULE."+r.ID+".TEXT",Value:shortLabel(line,94)})}}
 	}
 	if execute{facts=append(facts,SemanticFact{Key:"EXECUTION_POLICY.TEXT",Value:ExecuteVisibleRulesToStableTextR1})}
-	sort.Slice(facts,func(i,j int)bool{return facts[i].Key<facts[j].Key});return VisibleTextManifest{Schema:VisibleTextManifestSchemaR1,ProgramSHA256:decoded.ProgramSHA256,Facts:facts}
+	if executionCompliance{
+		facts=append(facts,
+			SemanticFact{Key:"EXECUTION_POLICY_COMPLIANCE.MODE_TEXT",Value:ExecutionComplianceModeTextR1},
+			SemanticFact{Key:"EXECUTION_POLICY_COMPLIANCE.STEP1_TEXT",Value:ExecutionComplianceStep1TextR1},
+			SemanticFact{Key:"EXECUTION_POLICY_COMPLIANCE.STEP2_TEXT",Value:ExecutionComplianceStep2TextR1},
+			SemanticFact{Key:"EXECUTION_POLICY_COMPLIANCE.STEP3_TEXT",Value:ExecutionComplianceStep3TextR1},
+			SemanticFact{Key:"EXECUTION_POLICY_COMPLIANCE.STEP4_TEXT",Value:ExecutionComplianceStep4TextR1},
+			SemanticFact{Key:"EXECUTION_POLICY_COMPLIANCE.STEP5_TEXT",Value:ExecutionComplianceStep5TextR1},
+			SemanticFact{Key:"EXECUTION_POLICY_COMPLIANCE.STEP6_TEXT",Value:ExecutionComplianceStep6TextR1},
+			SemanticFact{Key:"EXECUTION_POLICY_COMPLIANCE.STOP_TEXT",Value:ExecutionComplianceStopTextR1},
+		)
+	}
+	sort.Slice(facts,func(i,j int)bool{return facts[i].Key<facts[j].Key})
+	return VisibleTextManifest{Schema:VisibleTextManifestSchemaR1,ProgramSHA256:decoded.ProgramSHA256,Facts:facts}
 }
 
 func TemporalInteropBuildManifest(report CandidateBuildReport, decoded TemporalCarrierDecoded) InteropBuildManifest { return TemporalInteropBuildManifestWithInherited(report,decoded,nil) }

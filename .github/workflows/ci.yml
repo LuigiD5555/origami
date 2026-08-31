@@ -46,6 +46,16 @@ jobs:
           go build ./cmd/origami-temporal
           go build ./cmd/origami-temporal-carrier
           go build ./cmd/origami-candidate-build
+          go build ./cmd/origami-r3-cell-identity
+      - name: Build R3 cell identity specimen
+        run: go run ./cmd/origami-r3-cell-identity -out evidence/r3-cell-identity
+      - name: Upload R3 cell identity specimen
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: R3-cell-identity-redundancy-r1
+          path: evidence/r3-cell-identity/
+          if-no-files-found: error
+          retention-days: 30
       - name: Run temporal automaton reference
         run: bash tests/test-temporal-reference.sh
       - name: Run deterministic reference experiment

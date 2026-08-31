@@ -172,11 +172,14 @@ func applyTemporalCandidateMutation(img *image.Gray, decoded TemporalCarrierDeco
 	value := strings.ToUpper(strings.TrimSpace(m.Value))
 	switch kind {
 	case "PROMPT":
+		if target == "EXECUTION_POLICY" && value == "EXECUTE_VISIBLE_RULES_TO_STABLE_R1" {
+			drawExecuteToStableDirective(img)
+			break
+		}
 		text := "READ DECLARED ROUTE FIRST"
 		if target == "ROSETTA.S2.READ_SUPERINDEX" && value == "DECLARE_T2_LOCATION_BEFORE_DECODE" { text = "S2: LOCATE T2 BEFORE DECODE" }
 		drawText(img, 24, 92, 1, shortLabel(text, 38), 0)
 	case "LAYOUT":
-		// A visible route from the BOOT/ROSETTA box to the T2 semantic plane.
 		drawSimpleLine(img, 320, 110, 320, 118)
 		drawArrowTip(img, 320, 110, 320, 124)
 		if target == "T1_TO_T2_ENTRY_ROUTE" && value == "EXPLICIT_DIRECTIONAL_ANCHOR" { drawText(img, 332, 112, 1, "T2", 0) }
@@ -187,7 +190,6 @@ func applyTemporalCandidateMutation(img *image.Gray, decoded TemporalCarrierDeco
 		box(img, 18, 114, 604, 198, 0)
 		drawText(img, 470, 120, 1, "SEM ROUTE", 0)
 	case "PRIMITIVE":
-		// Distinct four-point marker beside the active semantic target region.
 		drawSimpleLine(img, 18, 120, 26, 128)
 		drawSimpleLine(img, 26, 128, 18, 136)
 		drawSimpleLine(img, 18, 136, 10, 128)

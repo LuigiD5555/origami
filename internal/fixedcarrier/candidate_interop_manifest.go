@@ -35,6 +35,7 @@ func TemporalSemanticManifest(decoded TemporalCarrierDecoded, mutations []Candid
 		if t=="FROM_STATE_PRECONDITION_VISIBILITY"&&v==VisibleFromStatePreconditionR1{setFact(&facts,"FROM_STATE_PRECONDITION_VISIBILITY",VisibleFromStatePreconditionR1)}
 		if t=="RULE_ROLE_BINDING"&&v==VisibleRuleRoleBindingR1{setFact(&facts,"RULE_ROLE_BINDING",VisibleRuleRoleBindingR1)}
 		if t=="EXECUTION_POLICY_COMPLIANCE"&&v==ExecuteDontSummarizeToStableR1{setFact(&facts,"EXECUTION_POLICY_COMPLIANCE",ExecuteDontSummarizeToStableR1)}
+		if t=="SYNCHRONOUS_EXECUTION_FIDELITY"&&v==FreezeSelectApplyTogetherR1{setFact(&facts,"SYNCHRONOUS_EXECUTION_FIDELITY",FreezeSelectApplyTogetherR1)}
 	}
 	sort.Slice(facts,func(i,j int)bool{if facts[i].Key==facts[j].Key{return facts[i].Value<facts[j].Value};return facts[i].Key<facts[j].Key})
 	return SemanticManifest{Schema:SemanticManifestSchemaR1,ProgramSHA256:decoded.ProgramSHA256,Facts:facts}
@@ -47,6 +48,7 @@ func TemporalVisibleTextManifest(decoded TemporalCarrierDecoded, mutations []Can
 	roleBinding:=hasCandidateMutation(mutations,"RULE_ROLE_BINDING",VisibleRuleRoleBindingR1)
 	execute:=hasCandidateMutation(mutations,"EXECUTION_POLICY","EXECUTE_VISIBLE_RULES_TO_STABLE_R1")
 	executionCompliance:=hasCandidateMutation(mutations,"EXECUTION_POLICY_COMPLIANCE",ExecuteDontSummarizeToStableR1)
+	syncFidelity:=hasCandidateMutation(mutations,"SYNCHRONOUS_EXECUTION_FIDELITY",FreezeSelectApplyTogetherR1)
 	labels:=temporalVisibleCellLabels(decoded,redundant)
 	facts:=[]SemanticFact{}
 	for _,c:=range decoded.Program.Automaton.Cells{facts=append(facts,SemanticFact{Key:"CELL."+c.ID+".LABEL",Value:"CELL "+labels[c.ID]},SemanticFact{Key:"CELL."+c.ID+".INITIAL_TEXT",Value:c.InitialState})}
@@ -70,15 +72,31 @@ func TemporalVisibleTextManifest(decoded TemporalCarrierDecoded, mutations []Can
 	}
 	if execute{facts=append(facts,SemanticFact{Key:"EXECUTION_POLICY.TEXT",Value:ExecuteVisibleRulesToStableTextR1})}
 	if executionCompliance{
+		facts=append(facts,SemanticFact{Key:"EXECUTION_POLICY_COMPLIANCE.MODE_TEXT",Value:ExecutionComplianceModeTextR1})
+		if !syncFidelity {
+			facts=append(facts,
+				SemanticFact{Key:"EXECUTION_POLICY_COMPLIANCE.STEP1_TEXT",Value:ExecutionComplianceStep1TextR1},
+				SemanticFact{Key:"EXECUTION_POLICY_COMPLIANCE.STEP2_TEXT",Value:ExecutionComplianceStep2TextR1},
+				SemanticFact{Key:"EXECUTION_POLICY_COMPLIANCE.STEP3_TEXT",Value:ExecutionComplianceStep3TextR1},
+				SemanticFact{Key:"EXECUTION_POLICY_COMPLIANCE.STEP4_TEXT",Value:ExecutionComplianceStep4TextR1},
+				SemanticFact{Key:"EXECUTION_POLICY_COMPLIANCE.STEP5_TEXT",Value:ExecutionComplianceStep5TextR1},
+				SemanticFact{Key:"EXECUTION_POLICY_COMPLIANCE.STEP6_TEXT",Value:ExecutionComplianceStep6TextR1},
+				SemanticFact{Key:"EXECUTION_POLICY_COMPLIANCE.STOP_TEXT",Value:ExecutionComplianceStopTextR1},
+			)
+		}
+	}
+	if syncFidelity {
 		facts=append(facts,
-			SemanticFact{Key:"EXECUTION_POLICY_COMPLIANCE.MODE_TEXT",Value:ExecutionComplianceModeTextR1},
-			SemanticFact{Key:"EXECUTION_POLICY_COMPLIANCE.STEP1_TEXT",Value:ExecutionComplianceStep1TextR1},
-			SemanticFact{Key:"EXECUTION_POLICY_COMPLIANCE.STEP2_TEXT",Value:ExecutionComplianceStep2TextR1},
-			SemanticFact{Key:"EXECUTION_POLICY_COMPLIANCE.STEP3_TEXT",Value:ExecutionComplianceStep3TextR1},
-			SemanticFact{Key:"EXECUTION_POLICY_COMPLIANCE.STEP4_TEXT",Value:ExecutionComplianceStep4TextR1},
-			SemanticFact{Key:"EXECUTION_POLICY_COMPLIANCE.STEP5_TEXT",Value:ExecutionComplianceStep5TextR1},
-			SemanticFact{Key:"EXECUTION_POLICY_COMPLIANCE.STEP6_TEXT",Value:ExecutionComplianceStep6TextR1},
-			SemanticFact{Key:"EXECUTION_POLICY_COMPLIANCE.STOP_TEXT",Value:ExecutionComplianceStopTextR1},
+			SemanticFact{Key:"SYNCHRONOUS_EXECUTION_FIDELITY.HEADER_TEXT",Value:SyncFidelityHeaderTextR1},
+			SemanticFact{Key:"SYNCHRONOUS_EXECUTION_FIDELITY.STEP1_TEXT",Value:SyncFidelityStep1TextR1},
+			SemanticFact{Key:"SYNCHRONOUS_EXECUTION_FIDELITY.STEP2_TEXT",Value:SyncFidelityStep2TextR1},
+			SemanticFact{Key:"SYNCHRONOUS_EXECUTION_FIDELITY.STEP2B_TEXT",Value:SyncFidelityStep2BTextR1},
+			SemanticFact{Key:"SYNCHRONOUS_EXECUTION_FIDELITY.STEP3_TEXT",Value:SyncFidelityStep3TextR1},
+			SemanticFact{Key:"SYNCHRONOUS_EXECUTION_FIDELITY.STEP4_TEXT",Value:SyncFidelityStep4TextR1},
+			SemanticFact{Key:"SYNCHRONOUS_EXECUTION_FIDELITY.NO_ORDER_TEXT",Value:SyncFidelityNoOrderTextR1},
+			SemanticFact{Key:"SYNCHRONOUS_EXECUTION_FIDELITY.NO_CASCADE_TEXT",Value:SyncFidelityNoCascadeTextR1},
+			SemanticFact{Key:"SYNCHRONOUS_EXECUTION_FIDELITY.NEXT_TEXT",Value:SyncFidelityNextTextR1},
+			SemanticFact{Key:"SYNCHRONOUS_EXECUTION_FIDELITY.STOP_TEXT",Value:SyncFidelityStopTextR1},
 		)
 	}
 	sort.Slice(facts,func(i,j int)bool{return facts[i].Key<facts[j].Key})

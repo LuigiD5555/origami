@@ -119,7 +119,9 @@ func DecodeTemporalCarrierPNG(data []byte) (TemporalCarrierDecoded, error) {
 func zlibBest(in []byte) ([]byte, error) {
 	var b bytes.Buffer
 	w, err := zlib.NewWriterLevel(&b, zlib.BestCompression)
-	if err != nil { return nil, err }
+	if err != nil {
+		return nil, err
+	}
 	if _, err := w.Write(in); err != nil { return nil, err }
 	if err := w.Close(); err != nil { return nil, err }
 	return b.Bytes(), nil
@@ -133,7 +135,9 @@ func zlibDecode(in []byte) ([]byte, error) {
 
 func drawTemporalBoot(img *image.Gray) {
 	box(img, 14, 12, 612, 98, 0)
-	drawText(img, 24, 20, 2, "ORIGAMI TEMPORAL CARRIER R0", 0)
+	// Keep the title to the right of the top-left orientation marker. The old
+	// x=24 placement allowed the marker to overwrite the leading "OR" glyphs.
+	drawText(img, 52, 20, 2, "ORIGAMI TEMPORAL CARRIER R0", 0)
 	drawText(img, 24, 48, 1, "T1 ROSETTA: BOX=CELL ARROW=TRANSITION RING=CHECKPOINT X=TIME", 0)
 	drawText(img, 24, 62, 1, "READ: T2 GRAPH > ST* | WRITE: ET* > GRAPH+TIMELINE", 0)
 	drawText(img, 24, 76, 1, "SEMANTIC FILM != VIDEO | EXACT PROGRAM BELOW | FALSE EXACT 0", 0)

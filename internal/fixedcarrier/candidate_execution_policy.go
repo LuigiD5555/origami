@@ -6,10 +6,8 @@ import "image"
 // author or rewrite automaton rules; those remain sourced from structured IR and
 // the existing temporal rule microgrammar.
 func drawExecuteToStableDirective(img *image.Gray) {
-	// Keep the rule microgrammar band (y=202..314) untouched. Place a compact
-	// directive immediately above the timeline.
-	fill(img, 360, 286, 252, 34, 0xff)
-	box(img, 360, 286, 252, 34, 0)
-	drawText(img, 366, 292, 1, "EXECUTE: INIT > APPLY ALL SAME PRE-STEP > NEXT", 0)
-	drawText(img, 366, 304, 1, "REPEAT UNTIL UNCHANGED > REPORT STABLE STATE", 0)
+	// Keep the semantic graph and rule microgrammar untouched. The canonical BOOT
+	// leaves a free final row at y=92 for experimental protocol guidance.
+	fill(img, 20, 88, 596, 14, 0xff)
+	drawText(img, 24, 92, 1, "EXEC: INIT > APPLY ALL SAME PRE-STEP > NEXT > REPEAT UNTIL UNCHANGED > REPORT STABLE", 0)
 }

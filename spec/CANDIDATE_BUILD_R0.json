@@ -1,0 +1,52 @@
+{
+  "schema": "origami.experimental-candidate-build.r0",
+  "status": "EXPERIMENTAL_IMPLEMENTED_EVIDENCE_PENDING",
+  "purpose": "Compile declarative experimental visual mutations against a verified temporal carrier while preserving the embedded exact TemporalProgram.",
+  "candidate_schema": "origami.experimental-candidate.r0",
+  "parent_profiles": [
+    "origami.temporal-carrier.r0.profile-1"
+  ],
+  "supported_mutation_kinds": [
+    "PROMPT",
+    "CHANNEL_ROLE",
+    "PRIMITIVE",
+    "LAYOUT",
+    "REDUNDANCY",
+    "NUMERIC_STRUCTURE",
+    "TEMPORAL_STRUCTURE"
+  ],
+  "unsupported_in_r0": [
+    "COLOR_USAGE",
+    "INTERFERENCE_STRUCTURE",
+    "DEPTH_STRUCTURE",
+    "EMERGENT_STRUCTURE"
+  ],
+  "invariants": [
+    "CANDIDATE_MUTATIONS_ARE_EXPERIMENTAL",
+    "PARENT_TEMPORAL_CARRIER_MUST_DECODE_BEFORE_MUTATION",
+    "EXACT_TEMPORAL_PROGRAM_SHA_MUST_BE_IDENTICAL_AFTER_BUILD",
+    "EXACT_PROGRAM_PLANE_MUST_NOT_BE_MUTATED",
+    "OUTPUT_PNG_BYTES_EQ_8192",
+    "OUTPUT_DIMENSIONS_EQ_640x640",
+    "UNSUPPORTED_MUTATION_FAILS_EXPLICITLY",
+    "NO_HIDDEN_SIDECAR",
+    "TLALOC_MAY_REQUEST_MUTATIONS_BUT_ORIGAMI_OWNS_PIXEL_COMPILATION",
+    "CANDIDATE_BUILD_SUCCESS_NE_NATIVE_VLM_IMPROVEMENT"
+  ],
+  "tlaloc_build_hook": {
+    "command": "origami-candidate-build",
+    "environment": [
+      "TLALOC_CANDIDATE_ID",
+      "TLALOC_OUTPUT_PNG",
+      "TLALOC_MUTATIONS_JSON",
+      "TLALOC_PARENT_SPECIMEN_ID",
+      "TLALOC_PARENT_PNG"
+    ]
+  },
+  "verification": {
+    "before": "DecodeTemporalCarrierPNG(parent)",
+    "after": "DecodeTemporalCarrierPNG(candidate)",
+    "required_equal_field": "program_sha256"
+  },
+  "authority": "ORIGAMI_OWNS_REPRESENTATION_TLALOC_ONLY_REQUESTS_AND_EVALUATES_EXPERIMENTAL_MUTATIONS"
+}

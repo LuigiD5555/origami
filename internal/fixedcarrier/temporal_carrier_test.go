@@ -22,6 +22,7 @@ func temporalCarrierFixture() temporal.Program {
 				{ID:"r1",TargetCell:"B",FromState:"IDLE",ToState:"ACTIVE",Requires:[]automaton.Predicate{{CellID:"A",State:"ACTIVE"}}},
 				{ID:"r2",TargetCell:"A",FromState:"ACTIVE",ToState:"DONE",Requires:[]automaton.Predicate{{CellID:"B",State:"ACTIVE"}}},
 				{ID:"r3",TargetCell:"C",FromState:"IDLE",ToState:"ACTIVE",Requires:[]automaton.Predicate{{CellID:"B",State:"ACTIVE"}}},
+				{ID:"r4",TargetCell:"B",FromState:"ACTIVE",ToState:"DONE",Requires:[]automaton.Predicate{{CellID:"C",State:"ACTIVE"}}},
 			},
 		},
 		MaxSteps: 6, CheckpointEvery: 2,
@@ -41,6 +42,7 @@ func TestTemporalCarrierSelfContainedRoundtrip(t *testing.T) {
 	if string(a) != string(b) { t.Fatal("program roundtrip drift") }
 	trace, err := temporal.Run(decoded.Program); if err != nil { t.Fatal(err) }
 	if err := temporal.VerifyReplay(p, trace); err != nil { t.Fatal(err) }
+	if trace.Final["A"]!="DONE" || trace.Final["B"]!="DONE" || trace.Final["C"]!="ACTIVE" { t.Fatalf("unexpected stable state: %#v",trace.Final) }
 }
 
 func TestTemporalCarrierRejectsOversizeProgram(t *testing.T) {

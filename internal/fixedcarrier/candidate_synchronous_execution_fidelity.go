@@ -13,11 +13,11 @@ import (
 const FreezeSelectApplyTogetherR1 = "FREEZE_SELECT_APPLY_TOGETHER_R1"
 
 const (
-	SyncFidelityHeaderTextR1 = "SYNC STEP = FREEZE > SELECT > APPLY"
+	SyncFidelityHeaderTextR1 = "SYNC: FREEZE > SELECT > APPLY"
 	SyncFidelityStep1TextR1  = "1 FREEZE PRE-STEP SNAPSHOT"
-	SyncFidelityStep2TextR1  = "2 RULE FIREABLE ONLY IF"
+	SyncFidelityStep2TextR1  = "2 FIREABLE IFF:"
 	SyncFidelityStep2BTextR1 = "  WHEN TRUE + TARGET=REQUIRE"
-	SyncFidelityStep3TextR1  = "3 SELECT ALL FIREABLE RULES"
+	SyncFidelityStep3TextR1  = "3 SELECT ALL FIREABLE"
 	SyncFidelityStep4TextR1  = "4 APPLY ALL SETS TOGETHER"
 	SyncFidelityNoOrderTextR1 = "NO RULE ORDER"
 	SyncFidelityNoCascadeTextR1 = "NO CASCADE INSIDE STEP"

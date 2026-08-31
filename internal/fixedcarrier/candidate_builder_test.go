@@ -47,6 +47,33 @@ func TestTemporalCandidateBuildSupportsTemporalAndNumericSignals(t *testing.T) {
 	if report.CandidateProgramSHA256 != parentMeta.ProgramSHA256 { t.Fatal("temporal mutation touched exact program") }
 }
 
+func TestVisibleRuleMicrogrammarIsDistinctAndPreservesExactProgram(t *testing.T) {
+	parent, parentMeta, err := RenderTemporalCarrier(temporalCarrierFixture())
+	if err != nil { t.Fatal(err) }
+
+	microSpec := CandidateSpec{Schema:CandidateSpecSchema,ID:"t2-temporal-grammar-visible-r1",Mutations:[]CandidateMutation{
+		{Kind:"TEMPORAL_STRUCTURE",Target:"T2_SEMANTIC_TEMPORAL_SUPERGRAPH",Value:"VISIBLE_RULE_MICROGRAMMAR_R1",Experimental:true},
+	}}
+	micro, report, err := BuildTemporalCandidate(parent, microSpec)
+	if err != nil { t.Fatal(err) }
+	if len(micro) != FixedPNGBytes { t.Fatalf("expected %d-byte candidate, got %d",FixedPNGBytes,len(micro)) }
+	if bytes.Equal(parent,micro) { t.Fatal("visible rule microgrammar must change visual pixels") }
+	if !report.ExactProgramPreserved { t.Fatal("visible rule microgrammar must preserve exact program") }
+	if report.ParentProgramSHA256 != parentMeta.ProgramSHA256 || report.CandidateProgramSHA256 != parentMeta.ProgramSHA256 {
+		t.Fatalf("visible rule microgrammar changed TemporalProgram SHA: %#v",report)
+	}
+	decoded, err := DecodeTemporalCarrierPNG(micro)
+	if err != nil { t.Fatal(err) }
+	if decoded.ProgramSHA256 != parentMeta.ProgramSHA256 { t.Fatal("decoded candidate exact program drift") }
+
+	checkpointSpec := CandidateSpec{Schema:CandidateSpecSchema,ID:"checkpoint-only",Mutations:[]CandidateMutation{
+		{Kind:"TEMPORAL_STRUCTURE",Target:"TEMPORAL_ROUTING",Value:"EXPLICIT_PHASE_EVENT_CHECKPOINT_STRUCTURE",Experimental:true},
+	}}
+	checkpointOnly, _, err := BuildTemporalCandidate(parent,checkpointSpec)
+	if err != nil { t.Fatal(err) }
+	if bytes.Equal(micro,checkpointOnly) { t.Fatal("visible rule microgrammar must not collapse to the legacy checkpoint-only temporal mutation") }
+}
+
 func TestTemporalCandidateRejectsUnsupportedMutation(t *testing.T) {
 	parent, _, err := RenderTemporalCarrier(temporalCarrierFixture())
 	if err != nil { t.Fatal(err) }

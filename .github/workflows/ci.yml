@@ -49,6 +49,7 @@ jobs:
           go build ./cmd/origami-r3-cell-identity
           go build ./cmd/origami-r4-from-state
           go build ./cmd/origami-r5-rule-role-binding
+          go build ./cmd/origami-r6-execution-compliance
       - name: Build R3 cell identity specimen
         run: go run ./cmd/origami-r3-cell-identity -out evidence/r3-cell-identity
       - name: Upload R3 cell identity specimen
@@ -74,6 +75,15 @@ jobs:
         with:
           name: R5-rule-role-binding-unseen-rules-r1
           path: evidence/r5-rule-role-binding/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Build R6 cross-model execution compliance specimen
+        run: go run ./cmd/origami-r6-execution-compliance -out evidence/r6-execution-compliance
+      - name: Upload R6 cross-model execution compliance specimen
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: R6-execution-policy-compliance-cross-model-r1
+          path: evidence/r6-execution-compliance/
           if-no-files-found: error
           retention-days: 30
       - name: Run temporal automaton reference

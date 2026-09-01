@@ -1,0 +1,370 @@
+[
+  {
+    "id": "ORIGAMI.CORE.STATE_SEMANTICS",
+    "statement": "Execute semantic state transitions with explicit context, declarative rules, distinct statuses, and observation separated from transition authority.",
+    "status": "implemented",
+    "evidence": [
+      "test:internal/core:TestADV002ContextParticipatesInTransition",
+      "test:internal/core:TestADV003RulesAreDataWithStableProvenance",
+      "test:internal/core:TestADV004SemanticStatusesRemainDistinct",
+      "test:internal/core:TestADV005ObservationDoesNotRewriteTransition"
+    ],
+    "version_introduced": "6.0.0-alpha.6",
+    "last_checked": "2026-09-01",
+    "notes": "The claim covers deterministic engine behavior, not Native VLM interpretation."
+  },
+  {
+    "id": "ORIGAMI.CORE.SELECTIVE_UNFOLD",
+    "statement": "Preserve unresolved alternatives during folding and selectively unfold only the declared dependency closure.",
+    "status": "implemented",
+    "evidence": [
+      "test:internal/core:TestADV006FoldPreservesUnresolvedAlternatives",
+      "test:internal/core:TestADV007SelectiveUnfoldReadsOnlyDependencyClosure",
+      "test:internal/memory:TestManagerUsesBoundedSelectiveUnfolding"
+    ],
+    "version_introduced": "6.0.0-alpha.7",
+    "last_checked": "2026-09-01",
+    "notes": "Selective unfolding is tested independently from claims about perceptual access to a carrier."
+  },
+  {
+    "id": "ORIGAMI.EVIDENCE.DETERMINISTIC_REDUCTION",
+    "statement": "Reduce addressed evidence deterministically while preserving verified conflicts and refusing unsupported or inexact conclusions.",
+    "status": "implemented",
+    "evidence": [
+      "test:internal/evidence:TestReducerVerifiesClaimFromAddressedEvidence",
+      "test:internal/evidence:TestReducerIsOrderDeterministic",
+      "test:internal/evidence:TestReducerPreservesVerifiedConflict",
+      "test:internal/evidence:TestReducerReturnsUnknownForUnverifiedEvidence",
+      "test:internal/evidence:TestReducerClaimsExactnessOnlyForByteEqualExactEvidence"
+    ],
+    "version_introduced": "6.0.0-alpha.6",
+    "last_checked": "2026-09-01",
+    "notes": "Evidence reduction keeps exactness and semantic support as separate gates."
+  },
+  {
+    "id": "ORIGAMI.DOCUMENT.EXACT_SOURCE_IDENTITY",
+    "statement": "Ingest source blocks with hash-bound exact identity while keeping layout geometry separate from semantic authority.",
+    "status": "implemented",
+    "evidence": [
+      "test:internal/document:TestSourceBlockExactnessIsHashBound",
+      "test:internal/document:TestLayoutJSONPreservesImageOrPDFGeometryWithoutGrantingSemantics",
+      "test:internal/integration:TestEndToEndExactSourceToCanonicalSemanticMemory"
+    ],
+    "version_introduced": "6.0.0-alpha.7",
+    "last_checked": "2026-09-01",
+    "notes": "The exact plane is independently verifiable and does not grant semantic meaning to layout metadata."
+  },
+  {
+    "id": "ORIGAMI.MEMORY.VIRTUAL_CONTEXT",
+    "statement": "Provide bounded virtual semantic memory with selective expansion, fidelity downgrade, federation, and token-budget eviction.",
+    "status": "implemented",
+    "evidence": [
+      "test:internal/memory:TestManagerUsesBoundedSelectiveUnfolding",
+      "test:internal/memory:TestExpandDowngradesFidelityBeforeExceedingBudget",
+      "test:internal/memory:TestFederationRanksCarrierSignaturesBeforeLocalSearch",
+      "test:internal/memory:TestWorkingSetEvictsLeastRecentlyUsedByTokenBudget"
+    ],
+    "version_introduced": "6.0.0-alpha.4",
+    "last_checked": "2026-09-01",
+    "notes": "The implementation provides bounded access mechanics; it does not prove a remote model can use them natively."
+  },
+  {
+    "id": "ORIGAMI.MEMORY.SCALE_HARNESS",
+    "statement": "Run deterministic memory-scale scenarios while bounding metadata loading to selected carriers.",
+    "status": "implemented",
+    "evidence": [
+      "test:internal/lab/memoryscale:TestRunPreservesAccuracyWhileKnowledgeScales",
+      "test:internal/lab/memoryscale:TestMetadataLoadingIsBoundedBySelectedCarriers",
+      "test:internal/lab/memoryscale:TestConfigRejectsUnsafeOrAmbiguousRanges"
+    ],
+    "version_introduced": "6.0.0-alpha.4",
+    "last_checked": "2026-09-01",
+    "notes": "Synthetic scale-harness results are implementation evidence, not a real-corpus benchmark."
+  },
+  {
+    "id": "ORIGAMI.CARRIER.FIXED_R2",
+    "statement": "Encode and decode a self-contained 640 by 640 PNG with an exactly 8192-byte frozen envelope and corpus-independent carrier size.",
+    "status": "implemented",
+    "evidence": [
+      "test:internal/fixedcarrier:TestR2RoundTripFrozenSizeAndBootBinding",
+      "test:internal/fixedcarrier:TestCarrierSizeDoesNotGrowWithCorpusOrEntropy",
+      "test:internal/fixedcarrier:TestSemanticIndexComesFromActualCarrierHint",
+      "test:internal/fixedcarrier:TestSemanticIndexDoesNotTreatBinaryNoiseAsMeaning"
+    ],
+    "version_introduced": "6.0.0-alpha.5",
+    "last_checked": "2026-09-01",
+    "notes": "This is a deterministic carrier contract; it does not claim recovery by an external model."
+  },
+  {
+    "id": "ORIGAMI.CARRIER.PROFILE_3",
+    "statement": "Render and decode fixed-carrier profile 3 without regressing profile 1 or profile 2 decoding.",
+    "status": "implemented",
+    "evidence": [
+      "test:internal/fixedcarrier:TestProfile3RoundTripFrozenSize",
+      "test:internal/fixedcarrier:TestDecodeAnyAcceptsProfile2AndProfile3",
+      "test:internal/fixedcarrier:TestProfile3DeclaresRequiredZones"
+    ],
+    "version_introduced": "6.0.0-alpha.13",
+    "last_checked": "2026-09-01",
+    "notes": "Native S2 and E2 model evidence remains pending."
+  },
+  {
+    "id": "ORIGAMI.SEMANTIC_SPINE.R1",
+    "statement": "Expose canonical semantic graph and trajectory queries without requiring LLM reconstruction and preserve reference relation semantics.",
+    "status": "implemented",
+    "evidence": [
+      "test:internal/integration:TestCoreSemanticGraphAndTrajectoryAreDirectlyQueryableWithoutLLMReconstruction",
+      "test:internal/integration:TestCoreR1MatchesReferenceR0ForAtomicRequiresRelation",
+      "test:internal/integration:TestCoreR1MatchesReferenceR0ForAtomicExcludesRelation"
+    ],
+    "version_introduced": "6.0.0-alpha.7",
+    "last_checked": "2026-09-01",
+    "notes": "Direct queryability is established for the Go runtime, not for prompt-only image interpretation."
+  },
+  {
+    "id": "ORIGAMI.PROMOTION.EVIDENCE_GATES",
+    "statement": "Gate promotion on declared evidence and prevent mock, incomplete, or wrong-probe observations from becoming verified semantic claims.",
+    "status": "implemented",
+    "evidence": [
+      "test:internal/promotion:TestMockCanPassMechanicallyButNeverPromote",
+      "test:internal/promotion:TestRealModelNativeT3TrialRequiresAllT3Fields",
+      "test:internal/promotion:TestWrongProbeProvesImageChallengeFailed",
+      "test:internal/integration:TestPerceptionObservationCannotDirectlyBecomeVerifiedSemanticEvidence"
+    ],
+    "version_introduced": "6.0.0-alpha.8",
+    "last_checked": "2026-09-01",
+    "notes": "Promotion policy is deterministic; successful real-model campaigns must still be recorded separately."
+  },
+  {
+    "id": "ORIGAMI.WRITER.CANONICAL_PLANNING",
+    "statement": "Plan semantic visual output deterministically against one canonical profile and reject unsupported or ambiguous intents.",
+    "status": "implemented",
+    "evidence": [
+      "test:internal/writer:TestPlanUsesOneCanonicalProfile",
+      "test:internal/writer:TestPlanDeterministicAcrossMapOrder",
+      "test:internal/writer:TestUnknownHintAddressRejected",
+      "test:internal/writer:TestArbitraryIntentRejected"
+    ],
+    "version_introduced": "6.0.0-alpha.9",
+    "last_checked": "2026-09-01",
+    "notes": "Temporal intent currently uses the tested static fallback until its channel is promoted."
+  },
+  {
+    "id": "ORIGAMI.PROTOCOL.CODEC_REGISTRY",
+    "statement": "Negotiate declared semantic codecs and perform the required S2 and E2 semantic roundtrip without requiring exact-plane capability.",
+    "status": "implemented",
+    "evidence": [
+      "test:internal/codec:TestReferenceRegistryValid",
+      "test:internal/codec:TestSemanticCodecDoesNotRequireExactCapability",
+      "test:internal/codec:TestSelectS2WithSemanticReadOnly",
+      "test:internal/codec:TestS2E2RoundTrip"
+    ],
+    "version_introduced": "6.0.0-alpha.13",
+    "last_checked": "2026-09-01",
+    "notes": "Registry and reference codecs are implemented; cross-model interoperability is not asserted."
+  },
+  {
+    "id": "ORIGAMI.RECEIVER.REFERENCE_IMPORT",
+    "statement": "Validate receiver artifacts, preserve reference-only candidates before promotion, and import Tlaloc candidates without granting physical-symbol authority.",
+    "status": "implemented",
+    "evidence": [
+      "test:internal/receiver:TestPromotedArtifactRequiresCleanEvidence",
+      "test:internal/receiver:TestReferenceCandidateMayExistBeforePromotionEvidence",
+      "test:internal/receiver:TestImportTlalocCandidateDoesNotBindPhysicalSymbols",
+      "test:internal/receiver:TestImportTlalocCandidateRejectsShortTraceHash"
+    ],
+    "version_introduced": "6.0.0-alpha.3",
+    "last_checked": "2026-09-01",
+    "notes": "Origami retains authority over representation and promotion."
+  },
+  {
+    "id": "ORIGAMI.REFERENCE.DETERMINISTIC_ENGINE",
+    "statement": "Execute the bounded reference semantics deterministically, enumerate the declared class, and reject contradictions or broken dependency folds.",
+    "status": "implemented",
+    "evidence": [
+      "test:internal/reference:TestDeterministic",
+      "test:internal/reference:TestContradiction",
+      "test:internal/reference:TestEnumeration",
+      "test:internal/reference:TestDependencyFoldRejectsBrokenPath"
+    ],
+    "version_introduced": "6.0.0-alpha.3",
+    "last_checked": "2026-09-01",
+    "notes": "Unsupported advanced semantics fail explicitly in the reference phase instead of being inferred."
+  },
+  {
+    "id": "ORIGAMI.CAPACITY.BOUNDED_NAVIGATION",
+    "statement": "Enforce bounded superindex navigation and return unknown instead of falling back to a global scan.",
+    "status": "implemented",
+    "evidence": [
+      "test:internal/lab/capacity:TestSuperIndexDoesNotGlobalScan",
+      "test:internal/lab/capacity:TestWorkingWindowIsEnforced",
+      "test:internal/lab/capacity:TestUnknownDoesNotFallbackToScan"
+    ],
+    "version_introduced": "6.0.0-alpha.4",
+    "last_checked": "2026-09-01",
+    "notes": "The bounded-navigation harness does not establish Native VLM addressing performance."
+  },
+  {
+    "id": "ORIGAMI.DIMENSIONAL.DVR_PSS",
+    "statement": "Validate the dimensional visual register and require explicit pair evidence before declaring perceptual orthogonality or safe promoted capacity.",
+    "status": "implemented",
+    "evidence": [
+      "test:internal/lab/dimensional:TestDefaultRegistryAndNominalCapacity",
+      "test:internal/lab/dimensional:TestValidateDVR",
+      "test:internal/lab/dimensional:TestOrthogonalityRequiresExplicitPass",
+      "test:internal/lab/dimensional:TestPromotedSafeCapacityStillNeedsPairEvidence"
+    ],
+    "version_introduced": "unknown",
+    "last_checked": "2026-09-01",
+    "notes": "Nominal codebook capacity is not promoted safe capacity. Introduction predates the current VERSION history."
+  },
+  {
+    "id": "ORIGAMI.HYBRID.BOUNDED_RUNTIME",
+    "statement": "Query, expand, follow, and verify a hybrid carrier through bounded runtime operations without scanning on a missing lookup.",
+    "status": "implemented",
+    "evidence": [
+      "test:internal/lab/hybridruntime:TestRuntimeVirtualQueryExpandAndSignatureFromCompositePNG",
+      "test:internal/lab/hybridruntime:TestRuntimeLookupFollowAndVerifyFromPNG",
+      "test:internal/lab/hybridruntime:TestRuntimeMissingLookupReturnsUnknownWithoutScan"
+    ],
+    "version_introduced": "6.0.0-alpha.4",
+    "last_checked": "2026-09-01",
+    "notes": "This claim is limited to the deterministic runtime path."
+  },
+  {
+    "id": "ORIGAMI.TEMPORAL.AUTOMATON_RUNTIME",
+    "statement": "Execute deterministic semantic graph automata and temporal programs with trace generation, checkpoint seek, and replay verification.",
+    "status": "implemented",
+    "evidence": [
+      "test:internal/automaton:TestPropagation",
+      "test:internal/automaton:TestPriorityThenRuleID",
+      "test:internal/temporal:TestRunSeekReplay",
+      "test:internal/temporal:TestSeekDetectsCorruptDelta",
+      "test:internal/codec:TestTimelineRoundtripReplay"
+    ],
+    "version_introduced": "6.0.0-alpha.14",
+    "last_checked": "2026-09-01",
+    "notes": "The runtime represents semantic temporal state, not literal video frames."
+  },
+  {
+    "id": "ORIGAMI.TEMPORAL.SELF_CONTAINED_CARRIER",
+    "statement": "Roundtrip an exact temporal program through the fixed self-contained carrier and reject programs that exceed its frozen envelope.",
+    "status": "implemented",
+    "evidence": [
+      "test:internal/fixedcarrier:TestTemporalCarrierSelfContainedRoundtrip",
+      "test:internal/fixedcarrier:TestTemporalCarrierRejectsOversizeProgram",
+      "test:internal/codec:TestAutomatonRoundtrip"
+    ],
+    "version_introduced": "6.0.0-alpha.14",
+    "last_checked": "2026-09-01",
+    "notes": "Arbitrary unstructured temporal data is outside the fixed-envelope claim."
+  },
+  {
+    "id": "ORIGAMI.TEMPORAL.CAUSAL_TRACE",
+    "statement": "Preserve parallel causal frontiers and reject cyclic or unknown-parent causal traces.",
+    "status": "implemented",
+    "evidence": [
+      "test:internal/temporal:TestCausalTraceFrontiersPreserveParallelBranches",
+      "test:internal/temporal:TestCausalTraceRejectsCycle",
+      "test:internal/temporal:TestCausalTraceRejectsUnknownParent"
+    ],
+    "version_introduced": "6.0.0-alpha.15",
+    "last_checked": "2026-09-01",
+    "notes": "This records executable causal trace semantics, not cross-model temporal interpretation."
+  },
+  {
+    "id": "ORIGAMI.CANDIDATE.EXPERIMENTAL_BUILDER",
+    "statement": "Compile supported experimental representation mutations while preserving the parent temporal program and frozen carrier envelope.",
+    "status": "implemented",
+    "evidence": [
+      "test:internal/fixedcarrier:TestTemporalCandidateBuildPreservesExactProgram",
+      "test:internal/fixedcarrier:TestTemporalCandidateBuildSupportsTemporalAndNumericSignals",
+      "test:internal/fixedcarrier:TestTemporalCandidateRejectsUnsupportedMutation",
+      "test:internal/fixedcarrier:TestTemporalCandidateRejectsParentMismatch"
+    ],
+    "version_introduced": "6.0.0-alpha.15",
+    "last_checked": "2026-09-01",
+    "notes": "A successful build remains experimental and does not establish model improvement or promotion."
+  },
+  {
+    "id": "ORIGAMI.LAB.EXPERIMENT_IDENTITY",
+    "statement": "Derive canonical content-addressed ExperimentID and RunID values from a captured experiment specification and environment.",
+    "status": "designed",
+    "evidence": [],
+    "version_introduced": "unknown",
+    "last_checked": "2026-09-01",
+    "notes": "Implementation code is present, but no go test demonstrates this contract; see ORIGAMI-DISCREPANCY-003."
+  },
+  {
+    "id": "ORIGAMI.LAB.ARTIFACT_HASHING",
+    "statement": "Store experiment artifacts by verified SHA-256 identity and retain their provenance in a normalized run record.",
+    "status": "designed",
+    "evidence": [],
+    "version_introduced": "unknown",
+    "last_checked": "2026-09-01",
+    "notes": "The package and design exist, but the complete claim lacks an associated go test; see ORIGAMI-DISCREPANCY-003."
+  },
+  {
+    "id": "ORIGAMI.LAB.FAILURE_TO_REGRESSION",
+    "statement": "Convert a captured model failure into a reproducible regression fixture linked to its originating run.",
+    "status": "designed",
+    "evidence": [],
+    "version_introduced": "unknown",
+    "last_checked": "2026-09-01",
+    "notes": "The R3.10-LAB documentation describes this path, but no go test establishes the end-to-end contract."
+  },
+  {
+    "id": "ORIGAMI.GLYPH_CALCULUS.LOCAL_RUNTIME",
+    "statement": "Execute the Glyph Calculus pipeline through a tested local runtime and record reproducible reconstruction evidence.",
+    "status": "designed",
+    "evidence": [],
+    "version_introduced": "unknown",
+    "last_checked": "2026-09-01",
+    "notes": "Historical local artifacts exist, but internal/lab/glyphcalc has no go test and its run folder is not a normalized Run Record."
+  },
+  {
+    "id": "ORIGAMI.MICROISA.SAFE_PROFILE",
+    "statement": "Promote a SAFE_MICRO_ISA profile only from measured native-model evidence under the declared protocol.",
+    "status": "designed",
+    "evidence": [],
+    "version_introduced": "unknown",
+    "last_checked": "2026-09-01",
+    "notes": "The profiler and protocol are present, but native evidence and an associated go test are absent."
+  },
+  {
+    "id": "ORIGAMI.CONTEXT_SIMD.SAFE_WIDTH",
+    "statement": "Establish Context SIMD safe width from explicit perceptual orthogonality evidence rather than nominal codebook capacity.",
+    "status": "designed",
+    "evidence": [],
+    "version_introduced": "unknown",
+    "last_checked": "2026-09-01",
+    "notes": "Bundle and checking code exists, but native-model safe-width evidence remains pending."
+  },
+  {
+    "id": "ORIGAMI.PERCEPTION.NATIVE_CHANNEL_EXECUTION",
+    "statement": "Demonstrate held-out Native VLM interpretation of the declared Origami perceptual channels without undeclared decoder or filesystem access.",
+    "status": "designed",
+    "evidence": [],
+    "version_introduced": "6.0.0-alpha.2",
+    "last_checked": "2026-09-01",
+    "notes": "Mechanical renderers and evaluators are implemented, but they do not constitute native perceptual evidence."
+  },
+  {
+    "id": "ORIGAMI.BOOK.CARRIER_RECOVERY",
+    "statement": "Recover the referenced book corpus from its compact carrier and verify the recovered bytes by hash in a normalized model run.",
+    "status": "designed",
+    "evidence": [],
+    "version_introduced": "unknown",
+    "last_checked": "2026-09-01",
+    "notes": "The evidence plan reports a 7.55 MB to approximately 474 KB success, but published main has no matching normalized run_id or directly traceable artifact; see ORIGAMI-DISCREPANCY-002."
+  },
+  {
+    "id": "ORIGAMI.ADDRESSING.PAGE_RESOLVE",
+    "statement": "Resolve a requested logical book page to the correct physical source offset without assuming a constant printed-page offset.",
+    "status": "designed",
+    "evidence": [],
+    "version_introduced": "unknown",
+    "last_checked": "2026-09-01",
+    "notes": "A historical failure artifact exists but does not satisfy the normalized run_id requirement for evidenced_failing; see ORIGAMI-DISCREPANCY-004."
+  }
+]

@@ -1,0 +1,106 @@
+[
+  {
+    "id": "ORIGAMI-DISCREPANCY-001",
+    "status": "pending",
+    "summary": "Published version metadata disagrees across authoritative-looking files.",
+    "observed": [
+      "VERSION declares 6.0.0-alpha.15.",
+      "README.md declares 6.0.0-alpha.13.",
+      "state/ORIGAMI_STATE.json declares 6.0.0-alpha.13 and omits the alpha.14 and alpha.15 state."
+    ],
+    "sources": [
+      "VERSION",
+      "README.md",
+      "state/ORIGAMI_STATE.json",
+      "CHANGE_CONTROL_6.0.0-alpha.14.md",
+      "CHANGE_CONTROL_6.0.0-alpha.15.md"
+    ],
+    "closure_condition": "Choose the canonical version authority and synchronize every generated or descriptive version surface to it.",
+    "last_checked": "2026-09-01"
+  },
+  {
+    "id": "ORIGAMI-DISCREPANCY-002",
+    "status": "pending",
+    "summary": "The evidence plan reports successful book recovery, but the published repository does not contain a traceable normalized run for that result.",
+    "observed": [
+      "docs/EVIDENCE_PLAN.md in Tonal reports a 7.55 MB source, an approximately 474 KB carrier, successful recovery, and a correct hash.",
+      "No matching run_id, normalized Run Record, or directly traceable artifact with those measurements was found on Origami main."
+    ],
+    "sources": [
+      "tonal-origami/docs/EVIDENCE_PLAN.md#45-trabajo-inicial-concreto",
+      "runs/"
+    ],
+    "closure_condition": "Import or reproduce the trial as an immutable Run Record with source hash, carrier hash and size, recovered hash, environment hash, and replay command.",
+    "related_claims": [
+      "ORIGAMI.BOOK.CARRIER_RECOVERY"
+    ],
+    "last_checked": "2026-09-01"
+  },
+  {
+    "id": "ORIGAMI-DISCREPANCY-003",
+    "status": "pending",
+    "summary": "R3.10-LAB documentation describes several facilities as implemented, but their packages lack direct go test coverage required by the claims ledger.",
+    "observed": [
+      "docs/ohf/R310_LAB_CURRENT_STATE.md describes deterministic experiment identity, artifact storage, failure-to-regression plumbing, Glyph Calculus, SAFE_MICRO_ISA, and Context SIMD as implemented foundations.",
+      "internal/lab/runid, internal/lab/artifact, internal/lab/glyphcalc, and internal/lab/microisa report no test files under go test ./....",
+      "Existing historical artifacts do not replace the ledger requirement that implemented status be backed by a running Go test."
+    ],
+    "sources": [
+      "docs/ohf/R310_LAB_CURRENT_STATE.md",
+      "internal/lab/runid/",
+      "internal/lab/artifact/",
+      "internal/lab/glyphcalc/",
+      "internal/lab/microisa/"
+    ],
+    "closure_condition": "Add focused Go tests for each asserted contract or narrow the R3.10-LAB status document so that it matches the demonstrated surface.",
+    "related_claims": [
+      "ORIGAMI.LAB.EXPERIMENT_IDENTITY",
+      "ORIGAMI.LAB.ARTIFACT_HASHING",
+      "ORIGAMI.LAB.FAILURE_TO_REGRESSION",
+      "ORIGAMI.GLYPH_CALCULUS.LOCAL_RUNTIME",
+      "ORIGAMI.MICROISA.SAFE_PROFILE",
+      "ORIGAMI.CONTEXT_SIMD.SAFE_WIDTH"
+    ],
+    "last_checked": "2026-09-01"
+  },
+  {
+    "id": "ORIGAMI-DISCREPANCY-004",
+    "status": "pending",
+    "summary": "The known logical-addressing failure is preserved as a historical trial but is not a normalized evidenced_failing run.",
+    "observed": [
+      "experiments/native-semantic-nav-r0/FAILED_TRIAL_001.json records a valid negative observation and blocks native semantic-navigation promotion.",
+      "The record has a trial_id but no run_id, env_hash, variable_axis, model identity, sampling block, or replay command required by the evidence plan."
+    ],
+    "sources": [
+      "experiments/native-semantic-nav-r0/FAILED_TRIAL_001.json",
+      "tonal-origami/docs/EVIDENCE_PLAN.md#5-capa-2--run-record"
+    ],
+    "closure_condition": "Reproduce or migrate the failure into the immutable Run Record layout without rewriting the historical artifact, then reference its run_id from the claim.",
+    "related_claims": [
+      "ORIGAMI.ADDRESSING.PAGE_RESOLVE",
+      "ORIGAMI.PERCEPTION.NATIVE_CHANNEL_EXECUTION"
+    ],
+    "last_checked": "2026-09-01"
+  },
+  {
+    "id": "ORIGAMI-DISCREPANCY-005",
+    "status": "pending",
+    "summary": "Historical run folders contain useful artifacts but do not implement the normalized Run Record layout.",
+    "observed": [
+      "runs/glyphcalc-native-small and the comparison run folders contain manifests, checksums, images, or expected observations.",
+      "runs/index.jsonl is absent and the folders do not contain immutable records with run_id, env_hash, variable_axis, complete model metadata, outcome, and replay fields."
+    ],
+    "sources": [
+      "runs/glyphcalc-native-small/",
+      "runs/comparison-baseline-r0/",
+      "runs/comparison-r7-grammar/",
+      "tonal-origami/docs/EVIDENCE_PLAN.md#55-layout"
+    ],
+    "closure_condition": "Create normalized immutable Run Records for reproducible trials and an index.jsonl; retain the original folders as referenced artifacts.",
+    "related_claims": [
+      "ORIGAMI.GLYPH_CALCULUS.LOCAL_RUNTIME",
+      "ORIGAMI.PERCEPTION.NATIVE_CHANNEL_EXECUTION"
+    ],
+    "last_checked": "2026-09-01"
+  }
+]

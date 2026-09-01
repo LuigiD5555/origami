@@ -23,6 +23,8 @@ jobs:
         run: bash tests/test-gatekeeper.sh
       - name: Formal contract coherence
         run: bash tests/test-formal-contracts.sh
+      - name: Claims ledger coherence
+        run: bash tests/test-claims.sh
       - name: Temporal contract coherence
         run: bash tests/test-temporal-contracts.sh
       - name: Candidate builder coherence

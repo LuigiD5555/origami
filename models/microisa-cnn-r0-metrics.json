@@ -1,0 +1,9 @@
+{
+  "val_accuracy": {
+    "shape": 1.0,
+    "holes": 1.0,
+    "direction": 1.0,
+    "frames": 1.0
+  },
+  "parameters": 24480
+}

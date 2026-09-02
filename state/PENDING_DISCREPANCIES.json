@@ -1,24 +1,5 @@
 [
   {
-    "id": "ORIGAMI-DISCREPANCY-001",
-    "status": "pending",
-    "summary": "Published version metadata disagrees across authoritative-looking files.",
-    "observed": [
-      "VERSION declares 6.0.0-alpha.15.",
-      "README.md declares 6.0.0-alpha.13.",
-      "state/ORIGAMI_STATE.json declares 6.0.0-alpha.13 and omits the alpha.14 and alpha.15 state."
-    ],
-    "sources": [
-      "VERSION",
-      "README.md",
-      "state/ORIGAMI_STATE.json",
-      "CHANGE_CONTROL_6.0.0-alpha.14.md",
-      "CHANGE_CONTROL_6.0.0-alpha.15.md"
-    ],
-    "closure_condition": "Choose the canonical version authority and synchronize every generated or descriptive version surface to it.",
-    "last_checked": "2026-09-01"
-  },
-  {
     "id": "ORIGAMI-DISCREPANCY-002",
     "status": "pending",
     "summary": "The evidence plan reports successful book recovery, but the published repository does not contain a traceable normalized run for that result.",

@@ -1,0 +1,35 @@
+{
+  "schema": "origami.behavior-recipe.r0",
+  "id": "find-number-r0",
+  "boot": "read recipe then execute one declared step at a time",
+  "output_contract": "NUMBER OR UNKNOWN",
+  "steps": [
+    {
+      "id": "locate",
+      "capability": "LOCATE_REGION",
+      "instruction": "find the region named TARGET",
+      "input_ref": "IMAGE",
+      "output_ref": "REGION",
+      "on_success": "read",
+      "on_unknown": "UNKNOWN"
+    },
+    {
+      "id": "read",
+      "capability": "READ_SHORT_TEXT",
+      "instruction": "read only the selected region",
+      "input_ref": "REGION",
+      "output_ref": "TEXT",
+      "on_success": "extract",
+      "on_unknown": "UNKNOWN"
+    },
+    {
+      "id": "extract",
+      "capability": "EXTRACT_NUMBER",
+      "instruction": "return the first relevant number",
+      "input_ref": "TEXT",
+      "output_ref": "NUMBER",
+      "on_unknown": "UNKNOWN",
+      "halt": true
+    }
+  ]
+}

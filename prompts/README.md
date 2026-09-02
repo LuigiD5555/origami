@@ -26,10 +26,6 @@ receiver/registry/r0/manifest.json
 
 It is `REFERENCE_CANDIDATE`, not yet PROMOTED. Tlaloc may discover improved candidates through receiver distillation; Origami remains responsible for validating and storing promoted artifacts.
 
-## `OHF_R2_MASTER_PROMPT.txt`
+## Historical prompts
 
-**Status: LEGACY / OHF R2 ONLY.**
-
-It is retained for reproducibility of the older binary-grid ZIP carrier and must not be treated as the current Origami 6.x semantic contract, the current OHF R3.10-LAB Native profile, or the Hybrid Receiver bootstrap.
-
-Current OHF-LAB Native fixtures are generated/tested through laboratory commands and blind-bundle boundaries. Generated receiver prompts remain derived artifacts rather than an alternate source of Origami semantics.
+The old OHF R2 master prompt is no longer carried in the active tree. Git history remains sufficient for archaeology/reproducibility; current work uses `generated/MASTER_PROMPT.md` plus carrier-local BOOT/ROSETTA/PROGRAM semantics.

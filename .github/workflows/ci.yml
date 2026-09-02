@@ -48,6 +48,7 @@ jobs:
           go build ./cmd/origami-temporal
           go build ./cmd/origami-temporal-carrier
           go build ./cmd/origami-candidate-build
+          go build ./cmd/origami-behavior-image
           go build ./cmd/origami-r3-cell-identity
           go build ./cmd/origami-r4-from-state
           go build ./cmd/origami-r5-rule-role-binding

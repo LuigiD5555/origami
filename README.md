@@ -1,12 +1,16 @@
-# Origami 6.0.0-alpha.13
+# Origami 6.0.0-alpha.15
 
 Origami is an experimental **self-describing visual/computational communication protocol, state-machine language and model-agnostic virtual memory** for structured state, relations, knowledge and selectively accessible memory.
 
 Origami is independently usable. Tlaloc, Blueprint Framework, Tonal and other development systems may improve, test or compose it, but they are not hidden runtime requirements.
 
-## What alpha.13 changes
+Current maintained surface: [`docs/ACTIVE_SURFACE.md`](docs/ACTIVE_SURFACE.md).
 
-Alpha.12 corrected a real failure where a multimodal model could read BOOT but treated Origami as a binary archive and failed the simple question **“What is the index?”**. Alpha.13 keeps that semantic-first correction and completes the next architectural step:
+## What alpha.15 means now
+
+Alpha.13 established the self-describing read/write protocol and codec registry. Alpha.14 added executable temporal graph automata and a self-contained temporal carrier. Alpha.15 added the Origami-owned experimental candidate compiler and the current causal-trace foundations used for Tlaloc interoperability. The active direction is now also testing whether tiny VLMs can execute **visible precompiled microinstructions** rather than inventing a plan at runtime; see [`docs/BEHAVIOR_IN_IMAGE_R0.md`](docs/BEHAVIOR_IN_IMAGE_R0.md).
+
+The durable protocol principle remains:
 
 > Origami carries not only the grammar needed to understand a message, but also declared procedures for reading and writing compatible Origami messages.
 
@@ -457,6 +461,7 @@ go run ./cmd/origami-profile3-carrier -mode decode -in origami-profile3.png
 ```text
 VERSION
 state/ORIGAMI_STATE.json
+docs/ACTIVE_SURFACE.md
 PROJECT_BOUNDARY.md
 generated/MASTER_PROMPT.md
 docs/ORIGAMI_PROTOCOL_R0.md
@@ -466,6 +471,7 @@ docs/FIXED_CARRIER_PROFILE_3_R0.md
 docs/NATIVE_SEMANTIC_NAV_R0.md
 docs/CANONICAL_VISUAL_GRAMMAR_R0.md
 docs/WRITER_R0.md
+docs/BEHAVIOR_IN_IMAGE_R0.md
 spec/ORIGAMI_PROTOCOL_R0.json
 spec/CODEC_REGISTRY_R0.json
 spec/CAPABILITY_NEGOTIATION_R0.json
@@ -476,4 +482,4 @@ changes/CHG-ORIGAMI-0015.json
 
 ## Version
 
-`6.0.0-alpha.13`
+`6.0.0-alpha.15`

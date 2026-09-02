@@ -1,0 +1,18 @@
+{
+  "contract_id": "origami.behavior-recipe.r0",
+  "status": "EXPERIMENTAL_LAB",
+  "max_steps": 8,
+  "control_flow": "FORWARD_ONLY",
+  "failure_route": "UNKNOWN",
+  "required_step_fields": ["id", "capability", "instruction"],
+  "optional_step_fields": ["input_ref", "output_ref", "on_success", "on_unknown", "halt"],
+  "invariants": [
+    "NO_HIDDEN_ANSWER_IN_RECIPE",
+    "UNKNOWN_FAILS_CLOSED",
+    "VISIBLE_RECIPE_NE_VERIFIED_OUTPUT",
+    "MODEL_EVIDENCE_REQUIRED_FOR_PROMOTION"
+  ],
+  "reference_runtime": "internal/lab/behaviorimage",
+  "renderer_cli": "cmd/origami-behavior-image",
+  "example": "experiments/behavior-in-image-r0/recipes/find-number-r0.json"
+}

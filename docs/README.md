@@ -1,4 +1,4 @@
-# OHF documentation map
+# Origami documentation map
 
 The documentation is split deliberately so that architectural ideas, current implementation status and historical material do not become mixed together.
 
@@ -12,6 +12,8 @@ The documentation is split deliberately so that architectural ideas, current imp
 
 ## Specialized documents
 
+- [`ACTIVE_SURFACE.md`](ACTIVE_SURFACE.md) — maintained code/protocol/lab surface.
+- [`BEHAVIOR_IN_IMAGE_R0.md`](BEHAVIOR_IN_IMAGE_R0.md) — visible precompiled microinstruction experiment.
 - [`DIMENSIONAL_VISUAL_REGISTER.md`](DIMENSIONAL_VISUAL_REGISTER.md) — DVR/PSS, scope-aware capacity and perceptual orthogonality.
 - [`DVR_PSS_EXECUTION_REPORT.md`](DVR_PSS_EXECUTION_REPORT.md) — local validation evidence for `CHG-DVR-0001`.
 - [`GLYPH_CALCULUS_PROTOCOL.md`](GLYPH_CALCULUS_PROTOCOL.md)
@@ -19,13 +21,9 @@ The documentation is split deliberately so that architectural ideas, current imp
 - [`GLYPH_CALCULUS_RESULTS.md`](GLYPH_CALCULUS_RESULTS.md)
 - [`MICROISA_CONTEXT_SIMD_PROTOCOL.md`](MICROISA_CONTEXT_SIMD_PROTOCOL.md)
 
-## Foundation document
+## Historical material
 
-[`SCIENTIFIC_FOUNDATIONS.md`](SCIENTIFIC_FOUNDATIONS.md) is the longer scientific/architectural research document. It remains useful for information theory, MDL, grammar/graph folding, SuperIndex, selective unfolding and verification concepts. Its historical status statements should be interpreted through `CURRENT_STATE.md`, which is the canonical human-readable status document.
-
-## Legacy
-
-[`LEGACY_R2.md`](LEGACY_R2.md) explains the older R2 binary-grid ZIP baseline and why it remains in the repository only for reproducibility.
+Historical R2/OHF prompt and foundation files have been removed from the active tree. Git history remains the archive. Current experiments should use the contracts, state ledgers and quickstarts listed above.
 
 ## Machine-readable truth
 

@@ -23,6 +23,7 @@ ohf-glyphcalc
 *.pem
 
 # Editor / OS / temporary
+__pycache__/
 *.tmp
 .DS_Store
 .idea/

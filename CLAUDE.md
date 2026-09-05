@@ -10,7 +10,7 @@ Origami must remain independently measurable: Tonal integration is a use case, n
 
 ## Shared North Star
 
-The Tonal ecosystem investigates whether complex, reliable behavior can emerge from composition of small, bounded, verifiable and reusable capabilities instead of requiring one increasingly complex general-purpose model.
+The Tonal ecosystem investigates whether complex, reliable behavior can emerge from composition of small, bounded, verifiable and reusable machinery plus selectively invoked external cognition instead of requiring one increasingly complex general-purpose model.
 
 Origami's contribution is representation efficiency, bounded access, transport, addressability and selective unfolding while preserving explicit semantic/exactness boundaries.
 
@@ -18,8 +18,8 @@ Origami's contribution is representation efficiency, bounded access, transport, 
 
 - **Tonal**: complete heterogeneous runtime and research system.
 - **Tlaloc**: capability foundry and Behavior Lab.
-- **Tlaloque**: bounded typed measurable capability.
-- **Parrot**: one probabilistic Tlaloque; no system-level authority.
+- **Tlaloque**: bounded typed measurable reusable machinery produced/qualified through Tlaloc.
+- **Parrot**: Tonal's singular external probabilistic cognition interface; **not a Tlaloque** and no system-level authority.
 - **Shponglese**: semantic operational IR whose meaning must be codec-independent.
 - **Origami**: representation/carrier/memory substrate that may encode Shponglese or other semantic structures.
 
@@ -29,9 +29,7 @@ Shponglese answers: **what does the operational structure mean?**
 
 Origami answers: **how can that structure be represented, transported, addressed or selectively unfolded?**
 
-Do not bind Shponglese semantics to a specific visual primitive, image profile or Origami codec.
-
-The same Shponglese program should remain comparable across text, JSON, binary and Origami representations.
+Do not bind Shponglese semantics to a specific visual primitive, image profile or Origami codec. The same Shponglese program should remain comparable across text, JSON, binary and Origami representations.
 
 ## Evidence discipline
 
@@ -67,9 +65,7 @@ Read in this order:
 
 `docs/CURRENT_STATE.md` serves a machine-checked claims function as well as human documentation. Do not replace it with a narrative summary; use `CURRENT_DIRECTION_R2.md` for architecture-direction prose.
 
-Anything under `docs/archive/` is historical and not current architectural authority.
-
-If archived documentation conflicts with Architecture R2 current documentation, current documentation wins. Frozen experiment artifacts remain authoritative for their experiment.
+Anything under `docs/archive/` is historical and not current architectural authority. Frozen experiment artifacts remain authoritative for their experiment.
 
 ## Change discipline
 

@@ -59,10 +59,13 @@ Read in this order:
 
 1. `CLAUDE.md`
 2. `README.md`
-3. `docs/CURRENT_STATE.md`
-4. `docs/ARCHITECTURE.md`
+3. `docs/CURRENT_DIRECTION_R2.md` — current ecosystem role and migration direction
+4. `docs/CURRENT_STATE.md` — generated capability/claims document; preserve its markers
 5. `docs/ROLE_IN_TONAL.md`
-6. active experiment specification
+6. `docs/ARCHITECTURE.md` for Origami-internal technical architecture
+7. active experiment specification
+
+`docs/CURRENT_STATE.md` serves a machine-checked claims function as well as human documentation. Do not replace it with a narrative summary; use `CURRENT_DIRECTION_R2.md` for architecture-direction prose.
 
 Anything under `docs/archive/` is historical and not current architectural authority.
 
@@ -75,4 +78,5 @@ If archived documentation conflicts with Architecture R2 current documentation, 
 - Do not use model priors as proof of carrier fidelity.
 - Keep deterministic and native-model evidence clearly separated.
 - Preserve portable/standalone Origami testing where meaningful.
+- Preserve generated claims markers and machine-checked documentation contracts.
 - Archive superseded architecture instead of deleting project history.
